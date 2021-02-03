@@ -47,7 +47,7 @@ void RecoveryItem::RecoveryPlayerHP()
 				SE_Recovery->Init(L"Assets/sound/SE_Recovery.wav");
 				SE_Recovery->Play(false);
 				//当たったらプレイヤーのHPを回復する。
-				player->SetHP(RECOVERY_HP);
+				player->SetHP(player->GetMaxHP());
 				player->SetBeforeHp(player->GetHP());
 				DeleteGO(this);
 			}

@@ -92,7 +92,7 @@ bool PlayerStatusUI::Start()
 void PlayerStatusUI::Update()
 {
 	//HPƒQ[ƒW‚ÌXŽ²‚ðŒvŽZB(0.0`1.0)
-	m_hp = m_currentPlayerHP / PLAYER_MAX_HP;
+	m_hp = m_currentPlayerHP / m_player->GetMaxHP();
 	m_spriteScale[en_playerUIHP].x = m_hp;
 	//SPƒQ[ƒW‚ÌXŽ²‚ðŒvŽZB(0.0`1.0)
 	m_sp = m_currentPlayerSP / PLAYER_MAX_SP;
@@ -133,6 +133,6 @@ void PlayerStatusUI::Update()
 	m_fontNumber[en_playerStatusHP]->SetDisplayNum(m_player->GetHP());
 	m_fontNumber[en_playerStatusHP]->SetPosition({ 560.0f, -250.0f, 0.0f });
 	//ƒvƒŒƒCƒ„[‚ÌÅ‘åHPB
-	m_fontNumber[en_playerStatusMaxHP]->SetDisplayNum(PLAYER_MAX_HP);
+	m_fontNumber[en_playerStatusMaxHP]->SetDisplayNum(m_player->GetMaxHP());
 	m_fontNumber[en_playerStatusMaxHP]->SetPosition({ 510.0f, -250.0f, 0.0f });
 }

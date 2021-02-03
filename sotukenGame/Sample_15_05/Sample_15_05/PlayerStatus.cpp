@@ -61,7 +61,7 @@ void PlayerStatus::Update()
 	m_fontNumber[en_playerStatusLevel]->SetDisplayNum(m_player->GetPlayerLevel());
 	m_fontNumber[en_playerStatusLevel]->SetPosition({ -350.0f, 140.0f, 0.0f });
 	//プレイヤーのHP。
-	m_fontNumber[en_playerStatusHP]->SetDisplayNum(m_playerStatusUI->GetMaxPlayerHP());
+	m_fontNumber[en_playerStatusHP]->SetDisplayNum(m_player->GetMaxHP());
 	m_fontNumber[en_playerStatusHP]->SetPosition({ -350.0f, 40.0f, 0.0f });
 	//プレイヤーの攻撃力。
 	m_fontNumber[en_playerStatusAttack]->SetDisplayNum(m_player->GetmAtaackPow());
