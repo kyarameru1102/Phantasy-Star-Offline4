@@ -20,7 +20,7 @@ CSoundSource::~CSoundSource()
 void CSoundSource::InitCommon()
 {
 }
-void CSoundSource::Init(wchar_t* filePath)
+void CSoundSource::Init(const wchar_t* filePath)
 {
 	m_isAvailable = false;
 	m_waveFile = g_soundEngine->GetWaveFileBank().FindWaveFile(0, filePath);
