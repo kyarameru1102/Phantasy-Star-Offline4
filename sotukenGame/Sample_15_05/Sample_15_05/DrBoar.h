@@ -96,5 +96,7 @@ private:
 	int					m_count = 0;					//攻撃が入るまでのカウント。
 	GhostObject			m_ghostObj;						//ゴースト。
 	int					m_deathCount = 0;				//死んだときのカウント。
+
+	
 };
 

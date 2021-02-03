@@ -39,7 +39,7 @@ bool DrUsurper::Start()
 	//ÉLÉÉÉâÉRÉìèâä˙âªÅB
 	m_charaCon.Init(145.0f, 200.0f, m_position);
 	Vector3 ghostPos = m_position;
-	m_ghostObj.CreateBox(ghostPos, m_rotation, Vector3(50.0f, 50.0f, 50.0f));
+	m_ghostObj.CreateBox(ghostPos, m_rotation, Vector3(80.0f, 50.0f, 80.0f));
 
 	m_player = FindGO<Player>("player");
 	//çUåÇóÕÇèâä˙âªÅB
@@ -53,12 +53,37 @@ bool DrUsurper::Start()
 
 void DrUsurper::Move()
 {
-	m_status = Walk_state;
 	Vector3 playerLen = m_toPlayer;
 	playerLen.Normalize();
-	m_movespeed = playerLen * 1.2f;
-	m_movespeed.y = m_speedY;
+	if (m_toPlayer.Length() <= 800.0f && m_isMouthATK == false && m_isFlameATK == false)
+	{
+		
+		m_movespeed = playerLen * 2.5;
+		m_movespeed.y = 10.0f;
+		m_isHandATK = true;
+
+	}
+	if (m_toPlayer.Length() <= 300.0f && m_isHandATK == false && m_isFlameATK == false)
+	{
+		m_isMouthATK = true;
+		m_movespeed = { 0.0f, 0.0f, 0.0f };
+	}
+	if (m_toPlayer.Length() <= 1000.0f && m_HandATKCount >= 2 && m_MouthATKCont >= 2)
+	{
+		m_isFlameATK = true;
+		m_movespeed = { 0.0f, 0.0f, 0.0f };
+		
+	}
+	else
+	{
+		m_status = Run_state;
+
+		m_movespeed = playerLen * 1.7f;
+		m_movespeed.y = m_speedY;
+	}
+	
 	m_position = m_charaCon.Execute(1.0f, m_movespeed);
+	
 }
 
 void DrUsurper::Turn()
@@ -76,28 +101,25 @@ void DrUsurper::Scream()
 }
 void DrUsurper::HandAttack()
 {
-	if (m_toPlayer.Length() <= 200.0f)
-	{
-		m_status = HandAttack_state;
-		CharacterController& charaCon = *m_player->GetCharacterController();
-		g_physics.ContactTestCharaCon(charaCon, [&](const btCollisionObject& collisionObject) {
-			if (m_ghostObj.IsSelf(collisionObject) == true) {
-				if (m_isAttack && !m_ATKoff) {
-					if (m_count >= 60 && m_count <= 70) {
-						m_player->ReceiveDamage(10);
-						m_ATKoff = true;
-						printf_s("Enemy_KOUGEKI\n");
-					}
+	m_status = HandAttack_state;
+	CharacterController& charaCon = *m_player->GetCharacterController();
+	g_physics.ContactTestCharaCon(charaCon, [&](const btCollisionObject& collisionObject) {
+		if (m_ghostObj.IsSelf(collisionObject) == true) {
+			if (m_isAttack && !m_ATKoff) {
+				if (m_count >= 60 && m_count <= 70) {
+					m_player->ReceiveDamage(10);
+					m_ATKoff = true;
+					printf_s("Enemy_KOUGEKI\n");
 				}
 			}
-			});
-	}
+		}
+	});
 }
 
 void DrUsurper::MouthAttack()
 {
-	if (m_toPlayer.Length() <= 200.0f)
-	{
+	
+	
 		m_status = MouthAttack_state;
 		CharacterController& charaCon = *m_player->GetCharacterController();
 		g_physics.ContactTestCharaCon(charaCon, [&](const btCollisionObject& collisionObject) {
@@ -111,13 +133,11 @@ void DrUsurper::MouthAttack()
 				}
 			}
 			});
-	}
+	
 }
 
 void DrUsurper::FlameAttack()
 {
-	if (m_toPlayer.Length() <= 200.0f)
-	{
 		m_status = FlameAttack_state;
 		CharacterController& charaCon = *m_player->GetCharacterController();
 		g_physics.ContactTestCharaCon(charaCon, [&](const btCollisionObject& collisionObject) {
@@ -131,7 +151,7 @@ void DrUsurper::FlameAttack()
 				}
 			}
 			});
-	}
+	
 }
 
 void DrUsurper::FlyFlame()
@@ -176,18 +196,31 @@ void DrUsurper::Update()
 	//ÉvÉåÉCÉÑÅ[Ç…ãﬂÇ√Ç≠ÅB
 	if (m_status != GetDamage_state) {
 		Scream();
-		if (m_status != HandAttack_state && m_status != Die_state) {
+		if (m_status != MouthAttack_state && m_status != Die_state) {
 			Move();
 			Turn();
 		}
 
 		//ãóó£Ç™ãﬂÇ√Ç≠Ç∆ÅB
 		//ëñÇËÇ©ÇÁÇÃòrçUåÇÅ@ÇPâÒ
+		if (m_isHandATK == true)
+		{
+			HandAttack();
+		}
 		//	äöÇ›Ç¬Ç´ÇQâÒ
+		if (m_isMouthATK == true)
+		{
+			MouthAttack();
+		}
 		//	å„ÇÎÇ…îÚÇ‘
+
 		//	âŒâäçUåÇÅ@ÇPâÒ
-		//	ëOÉWÉÉÉìÇ©ÇÁÇÃòrçUåÇÅ@2âÒ
-		HandAttack();
+		if (m_isFlameATK == true)
+		{
+			FlameAttack();
+		}
+		//	ëOÉWÉÉÉìÇ©ÇÁÇÃòrçUåÇÅ@1âÒ
+		
 	}
 	//ëÃóÕÇ™É[ÉçÇ…Ç»ÇÈÇ∆
 	Die();
@@ -199,6 +232,9 @@ void DrUsurper::Update()
 		break;
 	case Walk_state:
 		m_animState = UsurperAnimInfo::enUs_Walk;
+		break;
+	case Run_state:
+		m_animState = UsurperAnimInfo::enUs_Run;
 		break;
 	case Scream_state:
 		m_animState = UsurperAnimInfo::enUs_Scream;
@@ -219,6 +255,8 @@ void DrUsurper::Update()
 			m_isAttack = false;
 			m_ATKoff = false;
 			m_count = 0;
+			m_HandATKCount++;
+			m_isHandATK = false;
 			m_animState = UsurperAnimInfo::enUs_Idle01;
 			m_skinModelRender->PlayAnimation(m_animState, 0.0f);
 		}
@@ -232,6 +270,8 @@ void DrUsurper::Update()
 			m_isAttack = false;
 			m_ATKoff = false;
 			m_count = 0;
+			m_MouthATKCont++;
+			m_isMouthATK = false;
 			m_animState = UsurperAnimInfo::enUs_Idle01;
 			m_skinModelRender->PlayAnimation(m_animState, 0.0f);
 		}
@@ -245,6 +285,10 @@ void DrUsurper::Update()
 			m_isAttack = false;
 			m_ATKoff = false;
 			m_count = 0;
+			m_FlameATKCount++;
+			m_HandATKCount = 0;
+			m_MouthATKCont = 0;
+			m_isFlameATK = false;
 			m_animState = UsurperAnimInfo::enUs_Idle01;
 			m_skinModelRender->PlayAnimation(m_animState, 0.0f);
 		}

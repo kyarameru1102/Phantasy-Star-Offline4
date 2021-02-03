@@ -96,8 +96,11 @@ private:
 	int					m_count = 0;					//攻撃が入るまでのカウント。
 	bool                m_screamflag = true;            //咆哮フラグ
 	bool                m_isATK = true;                 //噛みつき攻撃をするフラグ
-	bool                m_isTailATK = false;            //爪攻撃をするフラグ
-	bool                m_isFireBallATK = false;           //火炎攻撃をするフラグ
+	bool                m_isTailATK = false;            //尻尾攻撃をするフラグ
+	bool                m_isFireBallATK = false;        //火炎弾攻撃をするフラグ
+	int                 m_ATKCount = 0;                 //腕攻撃のカウント
+	int                 m_TailATKCont = 0;              //噛みつき攻撃のカウント
+	int                 m_FireBallATKCount = 0;            //火炎攻撃のカウント
 	GhostObject			m_ghostObj;						//ゴースト。
 	int					m_deathCount = 0;				//死んだときのカウント。
 };

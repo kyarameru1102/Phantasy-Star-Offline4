@@ -1,6 +1,7 @@
 #include "stdafx.h"
 #include "DrBoar.h"
 #include "Player.h"
+#include "Game.h"
 DrBoar::DrBoar()
 {
 }

@@ -55,11 +55,22 @@ void DrNightmare::Move()
 	
 	Vector3 playerLen = m_toPlayer;
 	playerLen.Normalize();
-	if (m_toPlayer.Length() <= 500.0f)
+	if (m_toPlayer.Length() <= 300.0f && m_isClawATK == false && m_isHornATK == false)
+	{
+		m_isBasicATK = true;
+	}
+	if (m_toPlayer.Length() <= 300.0f && m_isBasicATK == false && m_isHornATK == false)
+	{
+		m_isClawATK = true;
+	}
+	if (m_toPlayer.Length() <= 600.0f && m_isClawATK == false && m_isBasicATK == false)
+	{
+		m_isHornATK = true;
+	}
+	if (m_isHornATK == true)
 	{
 		m_status = Run_state;
-		
-		m_movespeed = playerLen * 1.4f;
+		m_movespeed = playerLen * 1.6;
 	}
 	else {
 		m_status = Walk_state;
@@ -86,64 +97,55 @@ void DrNightmare::Scream()
 }
 void DrNightmare::Attack()
 {
-	if (m_toPlayer.Length() <= 200.0f && m_isBasicATK == true)
-	{
-		m_status = Attack_state;
-		CharacterController& charaCon = *m_player->GetCharacterController();
-		g_physics.ContactTestCharaCon(charaCon, [&](const btCollisionObject& collisionObject) {
-			if (m_ghostObj.IsSelf(collisionObject) == true) {
-				if (m_isAttack && !m_ATKoff) {
-					if (m_count >= 60 && m_count <= 70) {
-						m_player->ReceiveDamage(10);
-						m_isATKcount += 1 ;
-						m_ATKoff = true;
-						printf_s("Enemy_KOUGEKI\n");
-					}
+	m_status = Attack_state;
+	CharacterController& charaCon = *m_player->GetCharacterController();
+	g_physics.ContactTestCharaCon(charaCon, [&](const btCollisionObject& collisionObject) {
+		if (m_ghostObj.IsSelf(collisionObject) == true) {
+			if (m_isAttack && !m_ATKoff) {
+				if (m_count >= 60 && m_count <= 70) {
+					m_player->ReceiveDamage(10);
+					m_ATKoff = true;
+					printf_s("Enemy_KOUGEKI\n");
 				}
 			}
-		});
+		}
+	});
 		
-	}
+	
 }
 
 void DrNightmare::ClawAttack()
 {
-	if (m_toPlayer.Length() <= 200.0f && m_isClawATK ==true)
-	{
-		m_status = ClawAttack_state;
-		CharacterController& charaCon = *m_player->GetCharacterController();
-		g_physics.ContactTestCharaCon(charaCon, [&](const btCollisionObject& collisionObject) {
-			if (m_ghostObj.IsSelf(collisionObject) == true) {
-				if (m_isAttack && !m_ATKoff) {
-					if (m_count >= 60 && m_count <= 70) {
-						m_player->ReceiveDamage(12);
-						m_ATKoff = true;
-						printf_s("Enemy_KOUGEKI\n");
-					}
+	m_status = ClawAttack_state;
+	CharacterController& charaCon = *m_player->GetCharacterController();
+	g_physics.ContactTestCharaCon(charaCon, [&](const btCollisionObject& collisionObject) {
+		if (m_ghostObj.IsSelf(collisionObject) == true) {
+			if (m_isAttack && !m_ATKoff) {
+				if (m_count >= 60 && m_count <= 70) {
+					m_player->ReceiveDamage(12);
+					m_ATKoff = true;
+					printf_s("Enemy_KOUGEKI\n");
 				}
 			}
-			});
-	}
+		}
+	});
 }
 
 void DrNightmare::HornAttack()
 {
-	if (m_toPlayer.Length() <= 200.0f && m_isClawATK == true)
-	{
-		m_status = HornAttack_state;
-		CharacterController& charaCon = *m_player->GetCharacterController();
-		g_physics.ContactTestCharaCon(charaCon, [&](const btCollisionObject& collisionObject) {
-			if (m_ghostObj.IsSelf(collisionObject) == true) {
-				if (m_isAttack && !m_ATKoff) {
-					if (m_count >= 60 && m_count <= 70) {
-						m_player->ReceiveDamage(12);
-						m_ATKoff = true;
-						printf_s("Enemy_KOUGEKI\n");
-					}
+	m_status = HornAttack_state;
+	CharacterController& charaCon = *m_player->GetCharacterController();
+	g_physics.ContactTestCharaCon(charaCon, [&](const btCollisionObject& collisionObject) {
+		if (m_ghostObj.IsSelf(collisionObject) == true) {
+			if (m_isAttack && !m_ATKoff) {
+				if (m_count >= 60 && m_count <= 70) {
+					m_player->ReceiveDamage(12);
+					m_ATKoff = true;
+					printf_s("Enemy_KOUGEKI\n");
 				}
 			}
-			});
-	}
+		}
+	});
 }
 
 void DrNightmare::Die()
@@ -174,13 +176,37 @@ void DrNightmare::Update()
 		}
 
 		//ãóó£Ç™ãﬂÇ√Ç≠Ç∆ÅB
-		Attack();
+		if (m_isBasicATK == true && m_isClawATK == false && m_isHornATK == false)
+		{
+			Attack();
+		}
+		
 		if (m_isATKcount == 2)
 		{
-			m_isBasicATK = false;
 			m_isClawATK = true;
+			m_isBasicATK = false;
+			m_isHornATK = false;
+		
+			
 		}
-		ClawAttack();
+		if (m_isClawATKcount == 1)
+		{
+			m_isBasicATK = true;
+			m_isClawATK = false;
+			m_isHornATK = false;
+			m_isATKcount = 0;
+			m_isClawATKcount = 0;
+		}
+		if (m_isClawATK == true && m_isBasicATK == false && m_isHornATK == false)
+		{
+			ClawAttack();
+		}
+
+		if (m_isHornATK == true && m_isClawATK == false && m_isBasicATK == false && m_toPlayer.Length() <= 300.0f)
+		{
+			HornAttack();
+		}
+		
 	}
 	//ëÃóÕÇ™É[ÉçÇ…Ç»ÇÈÇ∆
 	Die();
@@ -215,6 +241,8 @@ void DrNightmare::Update()
 			m_isAttack = false;
 			m_ATKoff = false;
 			m_count = 0;
+			m_isATKcount++;
+			m_isBasicATK = false;
 			m_animState = NightmAnimInfo::enNi_Idle01;
 			m_skinModelRender->PlayAnimation(m_animState, 0.0f);
 		}
@@ -228,6 +256,8 @@ void DrNightmare::Update()
 			m_isAttack = false;
 			m_ATKoff = false;
 			m_count = 0;
+			m_isClawATKcount++;
+			m_isClawATK = false;
 			m_animState = NightmAnimInfo::enNi_Idle01;
 			m_skinModelRender->PlayAnimation(m_animState, 0.0f);
 		}
@@ -241,6 +271,8 @@ void DrNightmare::Update()
 			m_isAttack = false;
 			m_ATKoff = false;
 			m_count = 0;
+			m_isHornATKcount++;
+			m_isHornATK = false;
 			m_animState = NightmAnimInfo::enNi_Idle01;
 			m_skinModelRender->PlayAnimation(m_animState, 0.0f);
 		}

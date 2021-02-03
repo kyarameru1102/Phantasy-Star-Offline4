@@ -197,6 +197,7 @@ void DrTerrorBringer::Update()
 		//ƒpƒ^[ƒ“‚P
 		if (m_screamflag == false && m_ATKOne == true)
 		{
+			
 			//Šš‚İ‚Â‚«UŒ‚
 			if (m_isFangATK == true)
 			{

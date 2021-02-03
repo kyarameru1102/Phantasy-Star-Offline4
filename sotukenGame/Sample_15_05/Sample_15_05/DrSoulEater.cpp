@@ -51,6 +51,7 @@ bool DrSoulEater::Start()
 
 void DrSoulEater::Move()
 {
+	
 	m_status = Walk_state;
 	Vector3 playerLen = m_toPlayer;
 	playerLen.Normalize();
@@ -114,7 +115,7 @@ void DrSoulEater::TailAttack()
 
 void DrSoulEater::FireballShoot()
 {
-	if (m_toPlayer.Length() <= 200.0f)
+	if (m_toPlayer.Length() <= 400.0f)
 	{
 		m_status = FireballShoot_state;
 		CharacterController& charaCon = *m_player->GetCharacterController();
@@ -159,8 +160,19 @@ void DrSoulEater::Update()
 			Turn();
 		}
 
-		//‹——£‚ª‹ß‚Ã‚­‚ÆB
-		Attack();
+		if (m_isATK == true)
+		{
+			Attack();
+		}
+		if (m_isTailATK == true)
+		{
+			TailAttack();
+		}
+		if (m_isFireBallATK == true)
+		{
+			FireballShoot();
+		}
+		
 	}
 	//‘Ì—Í‚ªƒ[ƒ‚É‚È‚é‚Æ
 	Die();

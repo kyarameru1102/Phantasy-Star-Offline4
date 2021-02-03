@@ -92,10 +92,13 @@ private:
 	std::vector<int>	nightcolor = { 1,2,3,4 };		//配色決定。
 	bool				m_isAttack = false;				//攻撃しているか。
 	bool				m_ATKoff = false;				//一回の攻撃でダメージを一回だけ入れるためのフラグ。
-	bool                m_isBasicATK = true;            //噛みつき攻撃の判定
+	bool                m_isBasicATK = false;           //噛みつき攻撃の判定
 	bool                m_isClawATK = false;            //爪攻撃の判定
 	bool                m_isHornATK = false;            //角攻撃
 	int                 m_isATKcount = 0;               //攻撃した回数のカウント
+	int                 m_isClawATKcount = 0;           //爪攻撃のカウント
+	int                 m_isHornATKcount = 0;           //角攻撃のカウント
+
 	int					m_count = 0;					//攻撃が入るまでのカウント。
 	bool                m_screamflag = true;            //咆哮フラグ
 	GhostObject			m_ghostObj;						//ゴースト。
