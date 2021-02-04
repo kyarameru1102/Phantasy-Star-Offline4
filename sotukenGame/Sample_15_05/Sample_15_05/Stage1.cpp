@@ -26,6 +26,12 @@ Stage1::~Stage1()
 		DeleteGO(drBoar);
 		return true;
 	});
+
+	QueryGOs<DrTerrorBringer>("dragon", [](DrTerrorBringer* drBoar)->bool
+		{
+			DeleteGO(drBoar);
+			return true;
+		});
 }
 
 bool Stage1::Start()

@@ -69,4 +69,8 @@ void Game::Update()
 			m_stage1 = NewGO<Stage1>(0, "stage");
 		}
 	}
+	m_playerDeath = m_player->GetDeathFlag();
+	if (m_playerDeath) {
+		//‚è‚´‚é‚ÆNewGO‚µ‚Ä‚ËB
+	}
 }
