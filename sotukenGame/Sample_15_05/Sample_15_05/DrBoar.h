@@ -7,6 +7,7 @@
 /// <summary>
 /// ドラゴンボアクラス
 /// </summary>
+
 class DrBoar : public EnBase
 {
 public:
@@ -97,6 +98,7 @@ private:
 	GhostObject			m_ghostObj;						//ゴースト。
 	int					m_deathCount = 0;				//死んだときのカウント。
 
+	
 	
 };
 

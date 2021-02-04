@@ -1,6 +1,7 @@
 #include "stdafx.h"
 #include "DrNightmare.h"
 #include "Player.h"
+#include "Game.h"
 DrNightmare::DrNightmare()
 {
 }
@@ -164,142 +165,147 @@ void DrNightmare::Die()
 }
 void DrNightmare::Update()
 {
-	//毎フレーム距離はかる。
-	m_toPlayer = m_player->GetPosition() - m_position;
-
-	//プレイヤーに近づく。
-	if (m_status != GetDamage_state) {
-		Scream();
-		if (m_status != Attack_state && m_status != ClawAttack_state && m_status != Die_state) {
-			Move();
-			Turn();
-		}
-
-		//距離が近づくと。
-		if (m_isBasicATK == true && m_isClawATK == false && m_isHornATK == false)
-		{
-			Attack();
-		}
-		
-		if (m_isATKcount == 2)
-		{
-			m_isClawATK = true;
-			m_isBasicATK = false;
-			m_isHornATK = false;
-		
-			
-		}
-		if (m_isClawATKcount == 1)
-		{
-			m_isBasicATK = true;
-			m_isClawATK = false;
-			m_isHornATK = false;
-			m_isATKcount = 0;
-			m_isClawATKcount = 0;
-		}
-		if (m_isClawATK == true && m_isBasicATK == false && m_isHornATK == false)
-		{
-			ClawAttack();
-		}
-
-		if (m_isHornATK == true && m_isClawATK == false && m_isBasicATK == false && m_toPlayer.Length() <= 300.0f)
-		{
-			HornAttack();
-		}
-		
-	}
-	//体力がゼロになると
-	Die();
-
-	switch (m_status)
+	//フェードのフラグがtrueで無い時
+	if (m_game->GetIsWave() != true)
 	{
-	case Idle_state:
-		m_animState = NightmAnimInfo::enNi_Idle01;
-		break;
-	case Walk_state:
-		m_animState = NightmAnimInfo::enNi_Walk;
-		break;
-	case Run_state:
-		m_animState = NightmAnimInfo::enNi_Run;
-		break;
-	case Scream_state:
-		m_animState = NightmAnimInfo::enNi_Scream;
-		
-		if (!m_skinModelRender->GetisAnimationPlaing())
-		{
-			m_screamflag = false;
-			m_animState = NightmAnimInfo::enNi_Idle01;
-			m_skinModelRender->PlayAnimation(m_animState, 0.0f);
-		}
-		break;
-	case Attack_state:
-		m_animState = NightmAnimInfo::enNi_BasicAttack;
-		m_count++;
-		m_isAttack = true;
-		if (!m_skinModelRender->GetisAnimationPlaing()) {
-			m_status = Idle_state;
-			m_isAttack = false;
-			m_ATKoff = false;
-			m_count = 0;
-			m_isATKcount++;
-			m_isBasicATK = false;
-			m_animState = NightmAnimInfo::enNi_Idle01;
-			m_skinModelRender->PlayAnimation(m_animState, 0.0f);
-		}
-		break;
-	case ClawAttack_state:
-		m_animState = NightmAnimInfo::enNi_ClawAttack;
-		m_count++;
-		m_isAttack = true;
-		if (!m_skinModelRender->GetisAnimationPlaing()) {
-			m_status = Idle_state;
-			m_isAttack = false;
-			m_ATKoff = false;
-			m_count = 0;
-			m_isClawATKcount++;
-			m_isClawATK = false;
-			m_animState = NightmAnimInfo::enNi_Idle01;
-			m_skinModelRender->PlayAnimation(m_animState, 0.0f);
-		}
-		break;
-	case HornAttack_state:
-		m_animState = NightmAnimInfo::enNi_HornAttack;
-		m_count++;
-		m_isAttack = true;
-		if (!m_skinModelRender->GetisAnimationPlaing()) {
-			m_status = Idle_state;
-			m_isAttack = false;
-			m_ATKoff = false;
-			m_count = 0;
-			m_isHornATKcount++;
-			m_isHornATK = false;
-			m_animState = NightmAnimInfo::enNi_Idle01;
-			m_skinModelRender->PlayAnimation(m_animState, 0.0f);
-		}
-		break;
-	case GetDamage_state:
-		m_animState = NightmAnimInfo::enNi_Gethit;
-		m_isAttack = false;
-		m_ATKoff = false;
-		m_count = 0;
-		if (!m_skinModelRender->GetisAnimationPlaing()) {
-			m_status = Idle_state;
-			m_animState = NightmAnimInfo::enNi_Idle01;
-			m_skinModelRender->PlayAnimation(m_animState, 0.0f);
-		}
-		break;
-	case Die_state:
-		m_animState = NightmAnimInfo::enNi_Die;
-		break;
-	default:
-		break;
-	}
+		//毎フレーム距離はかる。
+		m_toPlayer = m_player->GetPosition() - m_position;
 
-	if (m_movespeed.Length() >= 0.0f) {
-		m_dir = m_movespeed;
-		m_dir.Normalize();
-		m_dir *= 200.0f;
+		//プレイヤーに近づく。
+		if (m_status != GetDamage_state) {
+			Scream();
+			if (m_status != Attack_state && m_status != ClawAttack_state && m_status != Die_state) {
+				Move();
+				Turn();
+			}
+
+			//距離が近づくと。
+			if (m_isBasicATK == true && m_isClawATK == false && m_isHornATK == false)
+			{
+				Attack();
+			}
+
+			if (m_isATKcount == 2)
+			{
+				m_isClawATK = true;
+				m_isBasicATK = false;
+				m_isHornATK = false;
+
+
+			}
+			if (m_isClawATKcount == 1)
+			{
+				m_isBasicATK = true;
+				m_isClawATK = false;
+				m_isHornATK = false;
+				m_isATKcount = 0;
+				m_isClawATKcount = 0;
+			}
+			if (m_isClawATK == true && m_isBasicATK == false && m_isHornATK == false)
+			{
+				ClawAttack();
+			}
+
+			if (m_isHornATK == true && m_isClawATK == false && m_isBasicATK == false && m_toPlayer.Length() <= 300.0f)
+			{
+				HornAttack();
+			}
+
+		}
+		//体力がゼロになると
+		Die();
+
+		switch (m_status)
+		{
+		case Idle_state:
+			m_animState = NightmAnimInfo::enNi_Idle01;
+			break;
+		case Walk_state:
+			m_animState = NightmAnimInfo::enNi_Walk;
+			break;
+		case Run_state:
+			m_animState = NightmAnimInfo::enNi_Run;
+			break;
+		case Scream_state:
+			m_animState = NightmAnimInfo::enNi_Scream;
+
+			if (!m_skinModelRender->GetisAnimationPlaing())
+			{
+				m_screamflag = false;
+				m_animState = NightmAnimInfo::enNi_Idle01;
+				m_skinModelRender->PlayAnimation(m_animState, 0.0f);
+			}
+			break;
+		case Attack_state:
+			m_animState = NightmAnimInfo::enNi_BasicAttack;
+			m_count++;
+			m_isAttack = true;
+			if (!m_skinModelRender->GetisAnimationPlaing()) {
+				m_status = Idle_state;
+				m_isAttack = false;
+				m_ATKoff = false;
+				m_count = 0;
+				m_isATKcount++;
+				m_isBasicATK = false;
+				m_animState = NightmAnimInfo::enNi_Idle01;
+				m_skinModelRender->PlayAnimation(m_animState, 0.0f);
+			}
+			break;
+		case ClawAttack_state:
+			m_animState = NightmAnimInfo::enNi_ClawAttack;
+			m_count++;
+			m_isAttack = true;
+			if (!m_skinModelRender->GetisAnimationPlaing()) {
+				m_status = Idle_state;
+				m_isAttack = false;
+				m_ATKoff = false;
+				m_count = 0;
+				m_isClawATKcount++;
+				m_isClawATK = false;
+				m_animState = NightmAnimInfo::enNi_Idle01;
+				m_skinModelRender->PlayAnimation(m_animState, 0.0f);
+			}
+			break;
+		case HornAttack_state:
+			m_animState = NightmAnimInfo::enNi_HornAttack;
+			m_count++;
+			m_isAttack = true;
+			if (!m_skinModelRender->GetisAnimationPlaing()) {
+				m_status = Idle_state;
+				m_isAttack = false;
+				m_ATKoff = false;
+				m_count = 0;
+				m_isHornATKcount++;
+				m_isHornATK = false;
+				m_animState = NightmAnimInfo::enNi_Idle01;
+				m_skinModelRender->PlayAnimation(m_animState, 0.0f);
+			}
+			break;
+		case GetDamage_state:
+			m_animState = NightmAnimInfo::enNi_Gethit;
+			m_isAttack = false;
+			m_ATKoff = false;
+			m_count = 0;
+			if (!m_skinModelRender->GetisAnimationPlaing()) {
+				m_status = Idle_state;
+				m_animState = NightmAnimInfo::enNi_Idle01;
+				m_skinModelRender->PlayAnimation(m_animState, 0.0f);
+			}
+			break;
+		case Die_state:
+			m_animState = NightmAnimInfo::enNi_Die;
+			break;
+		default:
+			break;
+		}
+
+		if (m_movespeed.Length() >= 0.0f) {
+			m_dir = m_movespeed;
+			m_dir.Normalize();
+			m_dir *= 200.0f;
+		}
 	}
+	
 	m_ghostPos = m_position + m_dir;
 
 	m_ghostObj.SetPosition(m_ghostPos);

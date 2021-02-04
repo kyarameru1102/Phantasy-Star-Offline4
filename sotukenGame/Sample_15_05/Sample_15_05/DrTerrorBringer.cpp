@@ -1,6 +1,7 @@
 #include "stdafx.h"
 #include "DrTerrorBringer.h"
 #include "Player.h"
+#include "Game.h"
 DrTerrorBringer::DrTerrorBringer()
 {
 
@@ -177,221 +178,225 @@ void DrTerrorBringer::Die()
 }
 void DrTerrorBringer::Update()
 {
-	//–ˆƒtƒŒ[ƒ€‹——£‚Í‚©‚éB
-	m_toPlayer = m_player->GetPosition() - m_position;
-
-	//ƒvƒŒƒCƒ„[‚É‹ß‚Ã‚­B
-	if (m_status != GetDamage_state) {
-		
-		if (m_screamflag == true)
-		{
-			Scream();
-		}
-		if (m_screamflag ==false && m_status != Attack_state && m_status != WingClawAttack_state && m_status != FlameAttack_state && m_status != Die_state) {
-			
-			Move();
-			Turn();
-		}
-
-		//‹——£‚ª‹ß‚Ã‚­‚ÆB
-		//ƒpƒ^[ƒ“‚P
-		if (m_screamflag == false && m_ATKOne == true)
-		{
-			
-			//Šš‚Ý‚Â‚«UŒ‚
-			if (m_isFangATK == true)
-			{
-				Attack();
-			}
-			if (m_FangATKCount == 1)
-			{
-				m_isClawATK = true;
-				m_FangATKCount = 0;
-			}
-			//’ÜUŒ‚‚ð‚·‚é
-			if (m_isClawATK == true)
-			{
-				WingClawAttack();
-			}
-			if (m_ClawATKCont == 1)
-			{
-				m_isFlameATK = true;
-				m_ClawATKCont = 0;
-			}
-			//‰Î‰ŠUŒ‚‚ð‚·‚é
-			if (m_isFlameATK == true)
-			{
-				FlameAttack();
-			}
-			if (m_FlameATKCount == 1)
-			{
-				m_screamflag = true;
-				m_FlameATKCount = 0;
-				m_ATKTwe = true;
-				m_ATKOne = false;
-			}
-		}
-		//ƒpƒ^[ƒ“‚Q
-		if (m_screamflag == false && m_ATKTwe == true)
-		{
-			//Œã‚ë‚É”ò‚Ô
-			if (m_TweStart == false)
-			{
-				m_FlyFlag = true;
-			}
-			
-
-			//‰Î‰ŠUŒ‚‚ð‚·‚é
-			if (m_TweStart == true && m_FlyFlag == false && m_SetFly == false && m_LandFlag == false)
-			{
-				m_isFlameATK = true;
-			}
-			
-			if (m_isFlameATK == true)
-			{
-				FlameAttack();
-			}
-			else
-			{
-				m_ATKOne = true;
-				m_ATKTwe = false;
-			}
-		}
-		
-	}
-	//‘Ì—Í‚ªƒ[ƒ‚É‚È‚é‚Æ
-	Die();
-
-	switch (m_status)
+	if (m_game->GetIsWave() != true)
 	{
-	case Idle_state:
-		m_animState = TerrorBringerAnimInfo::enTe_Idle01;
-		break;
-	case Walk_state:
-		m_animState = TerrorBringerAnimInfo::enTe_Walk;
-		break;
-	case Run_state:
-		m_animState = TerrorBringerAnimInfo::enTe_Run;
-		break;
-	case Fly_state:
-		//—£—¤
-		m_animState = TerrorBringerAnimInfo::enTe_Takeoff;
-		if (!m_skinModelRender->GetisAnimationPlaing())
-		{
-			m_SetFly = true;
-			m_FlyFlag = false;
-		}
-		break;
-	case FlyMove_state:
-		m_animState = TerrorBringerAnimInfo::enTe_FlyForward;
-		if (!m_skinModelRender->GetisAnimationPlaing())
-		{
-			m_LandFlag = true;
-			m_SetFly = false;
-		}
-		break;
-	case FlyLand_state:
-		m_animState = TerrorBringerAnimInfo::enTe_Land;
-		if (!m_skinModelRender->GetisAnimationPlaing())
-		{
-			m_LandFlag = false;
-			m_TweStart = true;
-			m_animState = TerrorBringerAnimInfo::enTe_Idle01;
-			m_skinModelRender->PlayAnimation(m_animState, 0.0f);
-		}
-		break;
+		//–ˆƒtƒŒ[ƒ€‹——£‚Í‚©‚éB
+		m_toPlayer = m_player->GetPosition() - m_position;
 
-	case Scream_state:
-		m_animState = TerrorBringerAnimInfo::enTe_Scream;
-		
-		if (!m_skinModelRender->GetisAnimationPlaing())
-		{
-			m_screamflag = false;
-			m_animState = TerrorBringerAnimInfo::enTe_Idle01;
-			m_skinModelRender->PlayAnimation(m_animState, 0.0f);
-		}
-		break;
-	case Attack_state:
-		m_animState = TerrorBringerAnimInfo::enTe_BasicAttack;
-		m_count++;
-		m_isAttack = true;
-		if (!m_skinModelRender->GetisAnimationPlaing()) {
-			m_status = Idle_state;
-			m_isAttack = false;
-			m_ATKoff = false;
-			m_count = 0;
-			m_FangATKCount++;
-			m_animState = TerrorBringerAnimInfo::enTe_Idle01;
-			m_skinModelRender->PlayAnimation(m_animState, 0.0f);
-			m_isFangATK = false;
-		}
-		break;
-	case FlyAttack_state:
-		m_animState = TerrorBringerAnimInfo::enTe_FlyAttack;
-		m_count++;
-		m_isAttack = true;
-		if (!m_skinModelRender->GetisAnimationPlaing()) {
-			m_status = Idle_state;
-			m_isAttack = false;
-			m_ATKoff = false;
-			m_count = 0;
-			m_animState = TerrorBringerAnimInfo::enTe_Idle01;
-			m_skinModelRender->PlayAnimation(m_animState, 0.0f);
-		}
-		break;
-	case  WingClawAttack_state:
-		m_animState = TerrorBringerAnimInfo::enTe_WingClawAttack;
-		m_count++;
-		m_isAttack = true;
-		if (!m_skinModelRender->GetisAnimationPlaing()) {
-			m_status = Idle_state;
-			m_isAttack = false;
-			m_ATKoff = false;
-			m_count = 0;
-			m_ClawATKCont++;
-			m_animState = TerrorBringerAnimInfo::enTe_Idle01;
-			m_skinModelRender->PlayAnimation(m_animState, 0.0f);
-			m_isClawATK = false;
-		}
-		break;
-	case FlameAttack_state:
-		m_animState = TerrorBringerAnimInfo::enTe_FlameAttack;
-		m_count++;
-		m_isAttack = true;
-		if (!m_skinModelRender->GetisAnimationPlaing()) {
-			m_status = Idle_state;
-			m_isAttack = false;
-			m_ATKoff = false;
-			m_count = 0;
-			m_FlameATKCount++;
-			m_animState = TerrorBringerAnimInfo::enTe_Idle01;
-			m_skinModelRender->PlayAnimation(m_animState, 0.0f);
-			m_isFlameATK = false;
-		}
-		break;
-	case GetDamage_state:
-		m_animState = TerrorBringerAnimInfo::enTe_Gethit;
-		m_isAttack = false;
-		m_ATKoff = false;
-		m_count = 0;
-		if (!m_skinModelRender->GetisAnimationPlaing()) {
-			m_status = Idle_state;
-			m_animState = TerrorBringerAnimInfo::enTe_Idle01;
-			m_skinModelRender->PlayAnimation(m_animState, 0.0f);
-		}
-		break;
-	case Die_state:
-		m_animState = TerrorBringerAnimInfo::enTe_Die;
-		break;
-	default:
-		break;
-	}
+		//ƒvƒŒƒCƒ„[‚É‹ß‚Ã‚­B
+		if (m_status != GetDamage_state) {
 
-	if (m_movespeed.Length() >= 0.0f) {
-		m_dir = m_movespeed;
-		m_dir.Normalize();
-		m_dir *= 200.0f;
+			if (m_screamflag == true)
+			{
+				Scream();
+			}
+			if (m_screamflag == false && m_status != Attack_state && m_status != WingClawAttack_state && m_status != FlameAttack_state && m_status != Die_state) {
+
+				Move();
+				Turn();
+			}
+
+			//‹——£‚ª‹ß‚Ã‚­‚ÆB
+			//ƒpƒ^[ƒ“‚P
+			if (m_screamflag == false && m_ATKOne == true)
+			{
+
+				//Šš‚Ý‚Â‚«UŒ‚
+				if (m_isFangATK == true)
+				{
+					Attack();
+				}
+				if (m_FangATKCount == 1)
+				{
+					m_isClawATK = true;
+					m_FangATKCount = 0;
+				}
+				//’ÜUŒ‚‚ð‚·‚é
+				if (m_isClawATK == true)
+				{
+					WingClawAttack();
+				}
+				if (m_ClawATKCont == 1)
+				{
+					m_isFlameATK = true;
+					m_ClawATKCont = 0;
+				}
+				//‰Î‰ŠUŒ‚‚ð‚·‚é
+				if (m_isFlameATK == true)
+				{
+					FlameAttack();
+				}
+				if (m_FlameATKCount == 1)
+				{
+					m_screamflag = true;
+					m_FlameATKCount = 0;
+					m_ATKTwe = true;
+					m_ATKOne = false;
+				}
+			}
+			//ƒpƒ^[ƒ“‚Q
+			if (m_screamflag == false && m_ATKTwe == true)
+			{
+				//Œã‚ë‚É”ò‚Ô
+				if (m_TweStart == false)
+				{
+					m_FlyFlag = true;
+				}
+
+
+				//‰Î‰ŠUŒ‚‚ð‚·‚é
+				if (m_TweStart == true && m_FlyFlag == false && m_SetFly == false && m_LandFlag == false)
+				{
+					m_isFlameATK = true;
+				}
+
+				if (m_isFlameATK == true)
+				{
+					FlameAttack();
+				}
+				else
+				{
+					m_ATKOne = true;
+					m_ATKTwe = false;
+				}
+			}
+
+		}
+		//‘Ì—Í‚ªƒ[ƒ‚É‚È‚é‚Æ
+		Die();
+
+		switch (m_status)
+		{
+		case Idle_state:
+			m_animState = TerrorBringerAnimInfo::enTe_Idle01;
+			break;
+		case Walk_state:
+			m_animState = TerrorBringerAnimInfo::enTe_Walk;
+			break;
+		case Run_state:
+			m_animState = TerrorBringerAnimInfo::enTe_Run;
+			break;
+		case Fly_state:
+			//—£—¤
+			m_animState = TerrorBringerAnimInfo::enTe_Takeoff;
+			if (!m_skinModelRender->GetisAnimationPlaing())
+			{
+				m_SetFly = true;
+				m_FlyFlag = false;
+			}
+			break;
+		case FlyMove_state:
+			m_animState = TerrorBringerAnimInfo::enTe_FlyForward;
+			if (!m_skinModelRender->GetisAnimationPlaing())
+			{
+				m_LandFlag = true;
+				m_SetFly = false;
+			}
+			break;
+		case FlyLand_state:
+			m_animState = TerrorBringerAnimInfo::enTe_Land;
+			if (!m_skinModelRender->GetisAnimationPlaing())
+			{
+				m_LandFlag = false;
+				m_TweStart = true;
+				m_animState = TerrorBringerAnimInfo::enTe_Idle01;
+				m_skinModelRender->PlayAnimation(m_animState, 0.0f);
+			}
+			break;
+
+		case Scream_state:
+			m_animState = TerrorBringerAnimInfo::enTe_Scream;
+
+			if (!m_skinModelRender->GetisAnimationPlaing())
+			{
+				m_screamflag = false;
+				m_animState = TerrorBringerAnimInfo::enTe_Idle01;
+				m_skinModelRender->PlayAnimation(m_animState, 0.0f);
+			}
+			break;
+		case Attack_state:
+			m_animState = TerrorBringerAnimInfo::enTe_BasicAttack;
+			m_count++;
+			m_isAttack = true;
+			if (!m_skinModelRender->GetisAnimationPlaing()) {
+				m_status = Idle_state;
+				m_isAttack = false;
+				m_ATKoff = false;
+				m_count = 0;
+				m_FangATKCount++;
+				m_animState = TerrorBringerAnimInfo::enTe_Idle01;
+				m_skinModelRender->PlayAnimation(m_animState, 0.0f);
+				m_isFangATK = false;
+			}
+			break;
+		case FlyAttack_state:
+			m_animState = TerrorBringerAnimInfo::enTe_FlyAttack;
+			m_count++;
+			m_isAttack = true;
+			if (!m_skinModelRender->GetisAnimationPlaing()) {
+				m_status = Idle_state;
+				m_isAttack = false;
+				m_ATKoff = false;
+				m_count = 0;
+				m_animState = TerrorBringerAnimInfo::enTe_Idle01;
+				m_skinModelRender->PlayAnimation(m_animState, 0.0f);
+			}
+			break;
+		case  WingClawAttack_state:
+			m_animState = TerrorBringerAnimInfo::enTe_WingClawAttack;
+			m_count++;
+			m_isAttack = true;
+			if (!m_skinModelRender->GetisAnimationPlaing()) {
+				m_status = Idle_state;
+				m_isAttack = false;
+				m_ATKoff = false;
+				m_count = 0;
+				m_ClawATKCont++;
+				m_animState = TerrorBringerAnimInfo::enTe_Idle01;
+				m_skinModelRender->PlayAnimation(m_animState, 0.0f);
+				m_isClawATK = false;
+			}
+			break;
+		case FlameAttack_state:
+			m_animState = TerrorBringerAnimInfo::enTe_FlameAttack;
+			m_count++;
+			m_isAttack = true;
+			if (!m_skinModelRender->GetisAnimationPlaing()) {
+				m_status = Idle_state;
+				m_isAttack = false;
+				m_ATKoff = false;
+				m_count = 0;
+				m_FlameATKCount++;
+				m_animState = TerrorBringerAnimInfo::enTe_Idle01;
+				m_skinModelRender->PlayAnimation(m_animState, 0.0f);
+				m_isFlameATK = false;
+			}
+			break;
+		case GetDamage_state:
+			m_animState = TerrorBringerAnimInfo::enTe_Gethit;
+			m_isAttack = false;
+			m_ATKoff = false;
+			m_count = 0;
+			if (!m_skinModelRender->GetisAnimationPlaing()) {
+				m_status = Idle_state;
+				m_animState = TerrorBringerAnimInfo::enTe_Idle01;
+				m_skinModelRender->PlayAnimation(m_animState, 0.0f);
+			}
+			break;
+		case Die_state:
+			m_animState = TerrorBringerAnimInfo::enTe_Die;
+			break;
+		default:
+			break;
+		}
+
+		if (m_movespeed.Length() >= 0.0f) {
+			m_dir = m_movespeed;
+			m_dir.Normalize();
+			m_dir *= 200.0f;
+		}
 	}
+	
 	m_ghostPos = m_position + m_dir;
 
 	m_ghostObj.SetPosition(m_ghostPos);

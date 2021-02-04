@@ -1,6 +1,7 @@
 #include "stdafx.h"
 #include "DrSoulEater.h"
 #include "Player.h"
+#include "Game.h"
 DrSoulEater::DrSoulEater()
 {
 
@@ -149,115 +150,120 @@ void DrSoulEater::Die()
 
 void DrSoulEater::Update()
 {
-	//毎フレーム距離はかる。
-	m_toPlayer = m_player->GetPosition() - m_position;
-
-	//プレイヤーに近づく。
-	if (m_status != GetDamage_state) {
-		Scream();
-		if (m_status != Attack_state && m_status != Die_state) {
-			Move();
-			Turn();
-		}
-
-		if (m_isATK == true)
-		{
-			Attack();
-		}
-		if (m_isTailATK == true)
-		{
-			TailAttack();
-		}
-		if (m_isFireBallATK == true)
-		{
-			FireballShoot();
-		}
-		
-	}
-	//体力がゼロになると
-	Die();
-
-	switch (m_status)
+	//フェードのフラグがtrueで無い時
+	if (m_game->GetIsWave() != true)
 	{
-	case Idle_state:
-		m_animState = SoulEaterAnimInfo::enSo_Idle;
-		break;
-	case Walk_state:
-		m_animState = SoulEaterAnimInfo::enSo_Walk;
-		break;
-	case Scream_state:
-		m_animState = SoulEaterAnimInfo::enSo_Scream;
-		
-		if (!m_skinModelRender->GetisAnimationPlaing())
+		//毎フレーム距離はかる。
+		m_toPlayer = m_player->GetPosition() - m_position;
+
+		//プレイヤーに近づく。
+		if (m_status != GetDamage_state) {
+			Scream();
+			if (m_status != Attack_state && m_status != Die_state) {
+				Move();
+				Turn();
+			}
+
+			if (m_isATK == true)
+			{
+				Attack();
+			}
+			if (m_isTailATK == true)
+			{
+				TailAttack();
+			}
+			if (m_isFireBallATK == true)
+			{
+				FireballShoot();
+			}
+
+		}
+		//体力がゼロになると
+		Die();
+
+		switch (m_status)
 		{
-			m_screamflag = false;
+		case Idle_state:
 			m_animState = SoulEaterAnimInfo::enSo_Idle;
-			m_skinModelRender->PlayAnimation(m_animState, 0.0f);
+			break;
+		case Walk_state:
+			m_animState = SoulEaterAnimInfo::enSo_Walk;
+			break;
+		case Scream_state:
+			m_animState = SoulEaterAnimInfo::enSo_Scream;
+
+			if (!m_skinModelRender->GetisAnimationPlaing())
+			{
+				m_screamflag = false;
+				m_animState = SoulEaterAnimInfo::enSo_Idle;
+				m_skinModelRender->PlayAnimation(m_animState, 0.0f);
+			}
+
+			break;
+		case Attack_state:
+			m_animState = SoulEaterAnimInfo::enSo_BasicAttack;
+			m_count++;
+			m_isAttack = true;
+			if (!m_skinModelRender->GetisAnimationPlaing()) {
+				m_status = Idle_state;
+				m_isAttack = false;
+				m_ATKoff = false;
+				m_count = 0;
+				m_animState = SoulEaterAnimInfo::enSo_Idle;
+				m_skinModelRender->PlayAnimation(m_animState, 0.0f);
+			}
+			break;
+		case TailAttack_state:
+			m_animState = SoulEaterAnimInfo::enSo_TailAttack;
+			m_count++;
+			m_isAttack = true;
+			if (!m_skinModelRender->GetisAnimationPlaing()) {
+				m_status = Idle_state;
+				m_isAttack = false;
+				m_ATKoff = false;
+				m_count = 0;
+				m_animState = SoulEaterAnimInfo::enSo_Idle;
+				m_skinModelRender->PlayAnimation(m_animState, 0.0f);
+			}
+			break;
+		case FireballShoot_state:
+			m_animState = SoulEaterAnimInfo::enSo_FireballShoot;
+			m_count++;
+			m_isAttack = true;
+			if (!m_skinModelRender->GetisAnimationPlaing()) {
+				m_status = Idle_state;
+				m_isAttack = false;
+				m_ATKoff = false;
+				m_count = 0;
+				m_animState = SoulEaterAnimInfo::enSo_Idle;
+				m_skinModelRender->PlayAnimation(m_animState, 0.0f);
+			}
+			break;
+		case GetDamage_state:
+			m_animState = SoulEaterAnimInfo::enSo_Gethit;
+			m_isAttack = false;
+			m_ATKoff = false;
+			m_count = 0;
+			if (!m_skinModelRender->GetisAnimationPlaing()) {
+				m_status = Idle_state;
+				m_animState = SoulEaterAnimInfo::enSo_Idle;
+				m_skinModelRender->PlayAnimation(m_animState, 0.0f);
+			}
+			break;
+		case Die_state:
+			m_animState = SoulEaterAnimInfo::enSo_Die;
+			break;
+		default:
+			break;
 		}
 
-		break;
-	case Attack_state:
-		m_animState = SoulEaterAnimInfo::enSo_BasicAttack;
-		m_count++;
-		m_isAttack = true;
-		if (!m_skinModelRender->GetisAnimationPlaing()) {
-			m_status = Idle_state;
-			m_isAttack = false;
-			m_ATKoff = false;
-			m_count = 0;
-			m_animState = SoulEaterAnimInfo::enSo_Idle;
-			m_skinModelRender->PlayAnimation(m_animState, 0.0f);
+		if (m_movespeed.Length() >= 0.0f) {
+			m_dir = m_movespeed;
+			m_dir.Normalize();
+			m_dir *= 200.0f;
 		}
-		break;
-	case TailAttack_state:
-		m_animState = SoulEaterAnimInfo::enSo_TailAttack;
-		m_count++;
-		m_isAttack = true;
-		if (!m_skinModelRender->GetisAnimationPlaing()) {
-			m_status = Idle_state;
-			m_isAttack = false;
-			m_ATKoff = false;
-			m_count = 0;
-			m_animState = SoulEaterAnimInfo::enSo_Idle;
-			m_skinModelRender->PlayAnimation(m_animState, 0.0f);
-		}
-		break;
-	case FireballShoot_state:
-		m_animState = SoulEaterAnimInfo::enSo_FireballShoot;
-		m_count++;
-		m_isAttack = true;
-		if (!m_skinModelRender->GetisAnimationPlaing()) {
-			m_status = Idle_state;
-			m_isAttack = false;
-			m_ATKoff = false;
-			m_count = 0;
-			m_animState = SoulEaterAnimInfo::enSo_Idle;
-			m_skinModelRender->PlayAnimation(m_animState, 0.0f);
-		}
-		break;
-	case GetDamage_state:
-		m_animState = SoulEaterAnimInfo::enSo_Gethit;
-		m_isAttack = false;
-		m_ATKoff = false;
-		m_count = 0;
-		if (!m_skinModelRender->GetisAnimationPlaing()) {
-			m_status = Idle_state;
-			m_animState = SoulEaterAnimInfo::enSo_Idle;
-			m_skinModelRender->PlayAnimation(m_animState, 0.0f);
-		}
-		break;
-	case Die_state:
-		m_animState = SoulEaterAnimInfo::enSo_Die;
-		break;
-	default:
-		break;
 	}
-
-	if (m_movespeed.Length() >= 0.0f) {
-		m_dir = m_movespeed;
-		m_dir.Normalize();
-		m_dir *= 200.0f;
-	}
+	
 	m_ghostPos = m_position + m_dir;
 
 	m_ghostObj.SetPosition(m_ghostPos);

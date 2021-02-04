@@ -5,6 +5,7 @@
 /// 敵基底クラス
 /// </summary>
 class Player;
+class Game;
 class EnBase : public IGameObject
 {
 public:
@@ -164,6 +165,7 @@ protected:
 	float				m_hp = 50.0f;						//HP
 	float               m_magnificationHP = 1.0f;               //HPの倍率。
 	Player*				m_player = nullptr;						//プレイヤー。
+	Game*               m_game = nullptr;                       //Game
 	Vector3				m_toPlayer = Vector3::Zero;				//プレイヤーまでのベクトル。
 	bool				m_death = false;
 	bool                m_gethit = false;                       //プレイヤーからの攻撃判定

@@ -1,7 +1,7 @@
 #include "stdafx.h"
 #include "DrUsurper.h"
 #include "Player.h"
-
+#include "Game.h"
 DrUsurper::DrUsurper()
 {
 
@@ -190,145 +190,150 @@ void DrUsurper::Die()
 }
 void DrUsurper::Update()
 {
-	//–ˆƒtƒŒ[ƒ€‹——£‚Í‚©‚éB
-	m_toPlayer = m_player->GetPosition() - m_position;
-
-	//ƒvƒŒƒCƒ„[‚É‹ß‚Ã‚­B
-	if (m_status != GetDamage_state) {
-		Scream();
-		if (m_status != MouthAttack_state && m_status != Die_state) {
-			Move();
-			Turn();
-		}
-
-		//‹——£‚ª‹ß‚Ã‚­‚ÆB
-		//‘–‚è‚©‚ç‚Ì˜rUŒ‚@‚P‰ñ
-		if (m_isHandATK == true)
-		{
-			HandAttack();
-		}
-		//	Šš‚Ý‚Â‚«‚Q‰ñ
-		if (m_isMouthATK == true)
-		{
-			MouthAttack();
-		}
-		//	Œã‚ë‚É”ò‚Ô
-
-		//	‰Î‰ŠUŒ‚@‚P‰ñ
-		if (m_isFlameATK == true)
-		{
-			FlameAttack();
-		}
-		//	‘OƒWƒƒƒ“‚©‚ç‚Ì˜rUŒ‚@1‰ñ
-		
-	}
-	//‘Ì—Í‚ªƒ[ƒ‚É‚È‚é‚Æ
-	Die();
-
-	switch (m_status)
+	//ƒtƒF[ƒh‚Ìƒtƒ‰ƒO‚ªtrue‚Å‚È‚¢‚Æ‚«
+	if (m_game->GetIsWave() != true)
 	{
-	case Idle_state:
-		m_animState = UsurperAnimInfo::enUs_Idle01;
-		break;
-	case Walk_state:
-		m_animState = UsurperAnimInfo::enUs_Walk;
-		break;
-	case Run_state:
-		m_animState = UsurperAnimInfo::enUs_Run;
-		break;
-	case Scream_state:
-		m_animState = UsurperAnimInfo::enUs_Scream;
-		
-		if (!m_skinModelRender->GetisAnimationPlaing())
-		{
-			m_screamflag = false;
-			m_animState = UsurperAnimInfo::enUs_Idle01;
-			m_skinModelRender->PlayAnimation(m_animState, 0.0f);
-		}
-		break;
-	case HandAttack_state:
-		m_animState = UsurperAnimInfo::enUs_HandAttack;
-		m_count++;
-		m_isAttack = true;
-		if (!m_skinModelRender->GetisAnimationPlaing()) {
-			m_status = Idle_state;
-			m_isAttack = false;
-			m_ATKoff = false;
-			m_count = 0;
-			m_HandATKCount++;
-			m_isHandATK = false;
-			m_animState = UsurperAnimInfo::enUs_Idle01;
-			m_skinModelRender->PlayAnimation(m_animState, 0.0f);
-		}
-		break;
-	case MouthAttack_state:
-		m_animState = UsurperAnimInfo::enUs_MouthAttack;
-		m_count++;
-		m_isAttack = true;
-		if (!m_skinModelRender->GetisAnimationPlaing()) {
-			m_status = Idle_state;
-			m_isAttack = false;
-			m_ATKoff = false;
-			m_count = 0;
-			m_MouthATKCont++;
-			m_isMouthATK = false;
-			m_animState = UsurperAnimInfo::enUs_Idle01;
-			m_skinModelRender->PlayAnimation(m_animState, 0.0f);
-		}
-		break;
-	case FlameAttack_state:
-		m_animState = UsurperAnimInfo::enUs_FlameAttack;
-		m_count++;
-		m_isAttack = true;
-		if (!m_skinModelRender->GetisAnimationPlaing()) {
-			m_status = Idle_state;
-			m_isAttack = false;
-			m_ATKoff = false;
-			m_count = 0;
-			m_FlameATKCount++;
-			m_HandATKCount = 0;
-			m_MouthATKCont = 0;
-			m_isFlameATK = false;
-			m_animState = UsurperAnimInfo::enUs_Idle01;
-			m_skinModelRender->PlayAnimation(m_animState, 0.0f);
-		}
-		break;
-	case FlyFlame_state:
-		m_animState = UsurperAnimInfo::enUs_FlyFlame;
-		m_count++;
-		m_isAttack = true;
-		if (!m_skinModelRender->GetisAnimationPlaing()) {
-			m_status = Idle_state;
-			m_isAttack = false;
-			m_ATKoff = false;
-			m_count = 0;
-			m_animState = UsurperAnimInfo::enUs_Idle01;
-			m_skinModelRender->PlayAnimation(m_animState, 0.0f);
-		}
-		break;
-	case GetDamage_state:
-		m_animState = UsurperAnimInfo::enUs_Gethit;
-		m_isAttack = false;
-		m_ATKoff = false;
-		m_count = 0;
-		if (!m_skinModelRender->GetisAnimationPlaing()) {
-			m_status = Idle_state;
-			m_animState = UsurperAnimInfo::enUs_Idle01;
-			m_skinModelRender->PlayAnimation(m_animState, 0.0f);
-		}
-		break;
-	case Die_state:
-		m_animState = UsurperAnimInfo::enUs_Die;
-		break;
-	default:
-		break;
-	}
+		//–ˆƒtƒŒ[ƒ€‹——£‚Í‚©‚éB
+		m_toPlayer = m_player->GetPosition() - m_position;
 
-	if (m_movespeed.Length() >= 0.0f) {
-		m_dir = m_movespeed;
-		m_dir.Normalize();
-		m_dir *= 200.0f;
+		//ƒvƒŒƒCƒ„[‚É‹ß‚Ã‚­B
+		if (m_status != GetDamage_state) {
+			Scream();
+			if (m_status != MouthAttack_state && m_status != Die_state) {
+				Move();
+				Turn();
+			}
+
+			//‹——£‚ª‹ß‚Ã‚­‚ÆB
+			//‘–‚è‚©‚ç‚Ì˜rUŒ‚@‚P‰ñ
+			if (m_isHandATK == true)
+			{
+				HandAttack();
+			}
+			//	Šš‚Ý‚Â‚«‚Q‰ñ
+			if (m_isMouthATK == true)
+			{
+				MouthAttack();
+			}
+			//	Œã‚ë‚É”ò‚Ô
+
+			//	‰Î‰ŠUŒ‚@‚P‰ñ
+			if (m_isFlameATK == true)
+			{
+				FlameAttack();
+			}
+			//	‘OƒWƒƒƒ“‚©‚ç‚Ì˜rUŒ‚@1‰ñ
+
+		}
+		//‘Ì—Í‚ªƒ[ƒ‚É‚È‚é‚Æ
+		Die();
+
+		switch (m_status)
+		{
+		case Idle_state:
+			m_animState = UsurperAnimInfo::enUs_Idle01;
+			break;
+		case Walk_state:
+			m_animState = UsurperAnimInfo::enUs_Walk;
+			break;
+		case Run_state:
+			m_animState = UsurperAnimInfo::enUs_Run;
+			break;
+		case Scream_state:
+			m_animState = UsurperAnimInfo::enUs_Scream;
+
+			if (!m_skinModelRender->GetisAnimationPlaing())
+			{
+				m_screamflag = false;
+				m_animState = UsurperAnimInfo::enUs_Idle01;
+				m_skinModelRender->PlayAnimation(m_animState, 0.0f);
+			}
+			break;
+		case HandAttack_state:
+			m_animState = UsurperAnimInfo::enUs_HandAttack;
+			m_count++;
+			m_isAttack = true;
+			if (!m_skinModelRender->GetisAnimationPlaing()) {
+				m_status = Idle_state;
+				m_isAttack = false;
+				m_ATKoff = false;
+				m_count = 0;
+				m_HandATKCount++;
+				m_isHandATK = false;
+				m_animState = UsurperAnimInfo::enUs_Idle01;
+				m_skinModelRender->PlayAnimation(m_animState, 0.0f);
+			}
+			break;
+		case MouthAttack_state:
+			m_animState = UsurperAnimInfo::enUs_MouthAttack;
+			m_count++;
+			m_isAttack = true;
+			if (!m_skinModelRender->GetisAnimationPlaing()) {
+				m_status = Idle_state;
+				m_isAttack = false;
+				m_ATKoff = false;
+				m_count = 0;
+				m_MouthATKCont++;
+				m_isMouthATK = false;
+				m_animState = UsurperAnimInfo::enUs_Idle01;
+				m_skinModelRender->PlayAnimation(m_animState, 0.0f);
+			}
+			break;
+		case FlameAttack_state:
+			m_animState = UsurperAnimInfo::enUs_FlameAttack;
+			m_count++;
+			m_isAttack = true;
+			if (!m_skinModelRender->GetisAnimationPlaing()) {
+				m_status = Idle_state;
+				m_isAttack = false;
+				m_ATKoff = false;
+				m_count = 0;
+				m_FlameATKCount++;
+				m_HandATKCount = 0;
+				m_MouthATKCont = 0;
+				m_isFlameATK = false;
+				m_animState = UsurperAnimInfo::enUs_Idle01;
+				m_skinModelRender->PlayAnimation(m_animState, 0.0f);
+			}
+			break;
+		case FlyFlame_state:
+			m_animState = UsurperAnimInfo::enUs_FlyFlame;
+			m_count++;
+			m_isAttack = true;
+			if (!m_skinModelRender->GetisAnimationPlaing()) {
+				m_status = Idle_state;
+				m_isAttack = false;
+				m_ATKoff = false;
+				m_count = 0;
+				m_animState = UsurperAnimInfo::enUs_Idle01;
+				m_skinModelRender->PlayAnimation(m_animState, 0.0f);
+			}
+			break;
+		case GetDamage_state:
+			m_animState = UsurperAnimInfo::enUs_Gethit;
+			m_isAttack = false;
+			m_ATKoff = false;
+			m_count = 0;
+			if (!m_skinModelRender->GetisAnimationPlaing()) {
+				m_status = Idle_state;
+				m_animState = UsurperAnimInfo::enUs_Idle01;
+				m_skinModelRender->PlayAnimation(m_animState, 0.0f);
+			}
+			break;
+		case Die_state:
+			m_animState = UsurperAnimInfo::enUs_Die;
+			break;
+		default:
+			break;
+		}
+
+		if (m_movespeed.Length() >= 0.0f) {
+			m_dir = m_movespeed;
+			m_dir.Normalize();
+			m_dir *= 200.0f;
+		}
 	}
+	
 	m_ghostPos = m_position + m_dir;
 
 	m_ghostObj.SetPosition(m_ghostPos);
