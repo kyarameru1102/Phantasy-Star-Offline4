@@ -422,5 +422,7 @@ private:
 	int m_pressedAttackButton = noAttack; //押した攻撃ボタン。
 	bool m_specialAttackFlag = false; //特殊攻撃フラグ。
 	int m_attackState = enNormalState; //攻撃の状態。
+
+	int test = 0;
 };
 
