@@ -41,6 +41,7 @@ bool DrTerrorBringer::Start()
 	Vector3 ghostPos = m_position;
 	m_ghostObj.CreateBox(ghostPos, m_rotation, Vector3(50.0f, 50.0f, 50.0f));
 
+	m_game = FindGO<Game>("Game");
 	m_player = FindGO<Player>("player");
 	//UŒ‚—Í‚ğ‰Šú‰»B
 	m_attackPower = 10.0f;
