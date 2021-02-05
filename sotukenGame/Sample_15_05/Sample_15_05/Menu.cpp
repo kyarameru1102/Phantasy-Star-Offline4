@@ -1,6 +1,7 @@
 #include "stdafx.h"
 #include "Menu.h"
 #include "Game.h"
+#include "sound/SoundSource.h"
 
 Menu::Menu()
 {
@@ -8,6 +9,7 @@ Menu::Menu()
 
 Menu::~Menu()
 {
+	MenuSelectSE();
 	for (int i = 0; i < en_menuUINum; i++) {
 		DeleteGO(m_spriteRender[i]);
 	}
@@ -15,6 +17,8 @@ Menu::~Menu()
 
 bool Menu::Start()
 {
+	MenuSelectSE();
+
 	//画像の初期化。
 	m_spriteRender[en_menuUIMenu] = NewGO<SpriteRender>(0);
 	m_spriteRender[en_menuUIMenu]->Init("Assets/image/menu.DDS", 400, 304);
@@ -53,15 +57,18 @@ void Menu::ArrowButtonMove()
 	//矢印を上下で動かす。
 	if (g_pad[0]->IsTrigger(enButtonUp) && m_spritePosition[en_menuUIArrowButton].y <= 0.0f && m_playerStatus == nullptr) {
 		m_spritePosition[en_menuUIArrowButton].y = m_spritePosition[en_menuUIStatusMoji].y;
+		MenuSelectSE();
 	}
 	if (g_pad[0]->IsTrigger(enButtonDown) && m_spritePosition[en_menuUIArrowButton].y >= 0.0f && m_playerStatus == nullptr) {
 		m_spritePosition[en_menuUIArrowButton].y = m_spritePosition[en_menuUIReturnTitle].y;
+		MenuSelectSE();
 	}
 }
 
 void Menu::MenuSelect()
 {
 	if (g_pad[0]->IsTrigger(enButtonA) && m_spritePosition[en_menuUIArrowButton].y == m_spritePosition[en_menuUIReturnTitle].y) {
+		MenuSelectSE();
 		//タイトルに戻る。
 		m_title = NewGO<Title>(0);
 		DeleteGO(this);
@@ -69,7 +76,15 @@ void Menu::MenuSelect()
 		DeleteGO(m_game);
 	}
 	if (g_pad[0]->IsTrigger(enButtonA) && m_spritePosition[en_menuUIArrowButton].y == m_spritePosition[en_menuUIStatusMoji].y && m_playerStatus == nullptr) {
+		MenuSelectSE();
 		//プレイヤーのステータスを表示。
 		m_playerStatus = NewGO<PlayerStatus>(0, "playerStatus");
 	}
+}
+
+void Menu::MenuSelectSE()
+{
+	CSoundSource* SE_MenuSelect = NewGO<CSoundSource>(0);
+	SE_MenuSelect->Init(L"Assets/sound/SE_MenuSelect.wav");
+	SE_MenuSelect->Play(false);
 }
