@@ -2,6 +2,7 @@
 #include "DrNightmare.h"
 #include "Player.h"
 #include "Game.h"
+#include "sound/SoundSource.h"
 DrNightmare::DrNightmare()
 {
 }
@@ -10,6 +11,7 @@ DrNightmare::~DrNightmare()
 {
 	DeleteGO(m_skinModelRender);
 	DeleteGO(m_nightmAnim);
+	DeleteGO(SE_Haul);
 }
 
 bool DrNightmare::Start()
@@ -49,6 +51,9 @@ bool DrNightmare::Start()
 	//HPを初期化。
 	m_hp = 200.0f;
 	m_hp *= m_magnificationHP;
+	SE_Haul = NewGO<CSoundSource>(0, "SE_Haul");
+	SE_Haul->Init(L"Assets/sound/SE_Dragon_Haul.wav");
+
 	return true;
 }
 
@@ -92,10 +97,7 @@ void DrNightmare::Turn()
 }
 void DrNightmare::Scream()
 {
-	if (m_screamflag == true)
-	{
 		m_status = Scream_state;
-	}
 }
 void DrNightmare::Attack()
 {
@@ -174,8 +176,12 @@ void DrNightmare::Update()
 
 		//プレイヤーに近づく。
 		if (m_status != GetDamage_state) {
-			Scream();
-			if (m_status != Attack_state && m_status != ClawAttack_state && m_status != Die_state) {
+			if (m_screamflag == true)
+			{
+				Scream();
+			}
+			
+			if (m_screamflag == false && m_status != Attack_state && m_status != ClawAttack_state && m_status != Die_state) {
 				Move();
 				Turn();
 			}
@@ -229,10 +235,12 @@ void DrNightmare::Update()
 			break;
 		case Scream_state:
 			m_animState = NightmAnimInfo::enNi_Scream;
-
+			
+			SE_Haul->Play(true);
 			if (!m_skinModelRender->GetisAnimationPlaing())
 			{
 				m_screamflag = false;
+				SE_Haul->Stop();
 				m_animState = NightmAnimInfo::enNi_Idle01;
 				m_skinModelRender->PlayAnimation(m_animState, 0.0f);
 			}
