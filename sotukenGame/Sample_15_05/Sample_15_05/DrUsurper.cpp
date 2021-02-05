@@ -115,7 +115,7 @@ void DrUsurper::HandAttack()
 		if (m_ghostObj.IsSelf(collisionObject) == true) {
 			if (m_isAttack && !m_ATKoff) {
 				if (m_count >= 60 && m_count <= 70) {
-					m_player->ReceiveDamage(10);
+					m_player->ReceiveDamage(m_attackPower);
 					m_ATKoff = true;
 					printf_s("Enemy_KOUGEKI\n");
 				}
@@ -134,7 +134,7 @@ void DrUsurper::MouthAttack()
 			if (m_ghostObj.IsSelf(collisionObject) == true) {
 				if (m_isAttack && !m_ATKoff) {
 					if (m_count >= 60 && m_count <= 70) {
-						m_player->ReceiveDamage(10);
+						m_player->ReceiveDamage(m_attackPower);
 						m_ATKoff = true;
 						printf_s("Enemy_KOUGEKI\n");
 					}
@@ -152,7 +152,7 @@ void DrUsurper::FlameAttack()
 			if (m_ghostObj.IsSelf(collisionObject) == true) {
 				if (m_isAttack && !m_ATKoff) {
 					if (m_count >= 60 && m_count <= 70) {
-						m_player->ReceiveDamage(10);
+						m_player->ReceiveDamage(m_attackPower);
 						m_ATKoff = true;
 						printf_s("Enemy_KOUGEKI\n");
 					}
@@ -172,7 +172,7 @@ void DrUsurper::FlyFlame()
 			if (m_ghostObj.IsSelf(collisionObject) == true) {
 				if (m_isAttack && !m_ATKoff) {
 					if (m_count >= 60 && m_count <= 70) {
-						m_player->ReceiveDamage(10);
+						m_player->ReceiveDamage(m_attackPower);
 						m_ATKoff = true;
 						printf_s("Enemy_KOUGEKI\n");
 					}
