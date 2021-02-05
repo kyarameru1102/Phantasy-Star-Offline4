@@ -2,6 +2,7 @@
 #include "Stage2.h"
 #include "BackGround.h"
 #include "DrUsurper.h"
+#include "StageWave.h"
 #include "Game.h"
 Stage2::Stage2()
 {
@@ -20,6 +21,9 @@ Stage2::~Stage2()
 bool Stage2::Start()
 {
 	m_backGround = NewGO<BackGround>(0);
+	//ウェーブのスプライト。
+	StageWave* wave = NewGO<StageWave>(0);
+	wave->SetWaveSprite(StageWave::Wave_Two);
 	//Gameクラスを検索。
 	m_game = FindGO<Game>("Game");
 	//出現する敵の数を設定。
