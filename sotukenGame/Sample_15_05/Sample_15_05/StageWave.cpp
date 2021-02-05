@@ -11,10 +11,20 @@ StageWave::~StageWave()
 {
 	//íœB
 	DeleteGO(m_spriteRender);
+	DeleteGO(m_fontNumber);
 }
 
 bool StageWave::Start()
 {
+	Game* game = FindGO<Game>("Game");
+	game->SetIsWave(true);
+	m_spriteRender = NewGO<SpriteRender>(0);
+	m_spriteRender->Init("Assets/image/NewWave.DDS", 300.0f, 600.0f);
+	m_spriteRender->SetPosition({ 0.0f,0.0f,0.0f });
+	m_spriteRender->SetAlpha(0.0f);
+	m_fontNumber= NewGO<FontNumber>(0);
+	m_fontNumber->SetScale({ 0.5f, 0.5f, 0.5f });
+
 	return true;
 }
 void StageWave::SetWaveSprite(StageNumWave SWave)
@@ -105,4 +115,6 @@ void StageWave::Update()
 		DoNothing();		//‰½‚à‚µ‚È‚¢B
 		break;
 	}
+	m_fontNumber->SetDisplayNum(m_stageNum);
+	m_fontNumber->SetPosition({ -40.0f,60.0f,0.0f });
 }
