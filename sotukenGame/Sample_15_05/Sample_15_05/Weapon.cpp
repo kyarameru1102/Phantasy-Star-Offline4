@@ -25,6 +25,13 @@ void Weapon::AttackHit()
 					drBoar->ReceiveDamage(m_player->GetmAtaackPow());
 					//攻撃を受けたフラグを立てる。
 					drBoar->SetHit(true);
+					if (m_player->GetWeaponState() == enBladState) {
+						m_player->Sound(L"Assets/sound/SE_PlayerAttack_Blad.wav");
+					}
+					else if (m_player->GetWeaponState() == enSwordState) {
+						//ソード状態
+						m_player->Sound(L"Assets/sound/SE_PlayerAttack_Sword.wav");
+					}
 				}
 			});	
 		}

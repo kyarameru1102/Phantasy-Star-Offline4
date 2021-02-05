@@ -273,13 +273,18 @@ void PlayerAttackAnimation::AttackFlag(int attackTime01_blad, int* attackAnimNum
 {
 	m_player->SetAttackAnimationFlag(true);
 
-	if (m_player->GetWeaponState() == enBladState) {
-		m_player->Sound(L"Assets/sound/SE_PlayerAttack_Blad.wav");
-	}
-	else if (m_player->GetWeaponState() == enSwordState) {
-		//ソード状態
-		m_player->Sound(L"Assets/sound/SE_PlayerAttack_Sword.wav");
-	}
+	//if (m_player->GetAttackFlag() != true) {
+	//	m_soundFlag = false;
+	//}
+	//if (m_player->GetWeaponState() == enBladState && m_soundFlag != true) {
+	//	m_player->Sound(L"Assets/sound/SE_PlayerAttack_Blad.wav");
+	//	m_soundFlag = true;
+	//}
+	//else if (m_player->GetWeaponState() == enSwordState && m_soundFlag != true) {
+	//	//ソード状態
+	//	m_player->Sound(L"Assets/sound/SE_PlayerAttack_Sword.wav");
+	//	m_soundFlag = true;
+	//}
 
 	//m_attackAnimationFlag = true;
 	if (attackTimer <= 0) {
@@ -309,6 +314,8 @@ void PlayerAttackAnimation::AttackFlag(int attackTime01_blad, int* attackAnimNum
 		m_player->SetAttackAngleFlag(false);
 		//敵の攻撃当たり判定リセット。
 		MakeTheEnemyUnattacked();
+
+		m_soundFlag = false;
 	}
 }
 void PlayerAttackAnimation::AttackEnd()
@@ -353,6 +360,8 @@ void PlayerAttackAnimation::AttackEnd()
 	m_player->SetAttackAngleFlag(false);
 	//敵の攻撃当たり判定リセット。
 	MakeTheEnemyUnattacked();
+
+	m_soundFlag = false;
 
 }
 void PlayerAttackAnimation::Attack()
