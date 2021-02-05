@@ -100,5 +100,8 @@ private:
 	bool m_swordSpecialAttackAnim2Or3 = false;//ソード状態の特殊攻撃で、
 	                                           //2のアニメーションならfalse,
 	                                           //3のアニメーションならtrueを返す。
+
+
+	bool m_soundFlag = false;
 };
 

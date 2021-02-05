@@ -4,6 +4,7 @@
 #include "Weapon.h"
 #include "PlayerStatusUI.h"
 #include "PlayerAttackAnimation.h"
+#include "sound/SoundSource.h"
 const float MAX_SPEED_Y = 40.0f; //Y方向のスピードの最大値。
 const float FLAME_NUM = 30.0f;  //フレーム数。
 const float FLUCTUATION_VALUE_Y = MAX_SPEED_Y / FLAME_NUM; //Y方向のスピードの変動値。
@@ -34,6 +35,24 @@ Player::~Player()
 		DeleteGO(m_playerAnim);
 	}
 }
+void Player::InitSound()
+{
+	/*stageFilePaths[enSE_Player_Avoid] = L"enSE_Player_Avoid";
+	stageFilePaths[enSE_Player_Jump] = "";
+	stageFilePaths[enSE_Player_LevelUp] = "";
+	stageFilePaths[enSE_Player_WeaponChange] = "";
+	stageFilePaths[enSE_PlayerAttack_Blad] = "";
+	stageFilePaths[enSE_PlayerAttack_Sword] = "";
+	stageFilePaths[enSE_PlayerSpecialAttack_Blad] = "";
+	stageFilePaths[enSE_PlayerSpecialAttack_Sword] = "";*/
+}
+void Player::Sound(const wchar_t* filePath)
+{
+	//SEを再生する。
+	CSoundSource* SE_Recovery = NewGO<CSoundSource>(0);
+	SE_Recovery->Init(filePath);
+	SE_Recovery->Play(false);
+}
 void Player::GetExperiencePoint(const float experiencePoint)
 {
 	//経験値に倒した敵の経験値を加算する。
@@ -59,6 +78,7 @@ void Player::GetExperiencePoint(const float experiencePoint)
 			m_attackAnimNumY = 3;
 			m_levelToOpen = 99999;
 		}
+		Sound(L"Assets/sound/SE_Player_LevelUp.wav");
 	}
 }
 void Player::YDirMove()
@@ -74,6 +94,7 @@ void Player::YDirMove()
 			}
 			//ジャンプフラグを立てる。
 			m_jumpFlag = true;
+			Sound(L"Assets/sound/SE_Player_Jump.wav");
 			//SP消費。
 			m_playerSP -= 20.0f;
 			//Yスピードを最大値にする。
@@ -329,6 +350,10 @@ void Player::Death()
 }
 bool Player::Start()
 {
+	/*stageFilePaths[] = {
+		L"Assets/modelData/stage_3_1.cmo"
+	}*/
+
 	//武器のインスタンス作成。
 	m_weapon[0] = NewGO<Weapon>(0, "weapon_01");
 	m_weapon[1] = NewGO<Weapon>(0, "weapon_02");
@@ -389,6 +414,7 @@ void Player::Update()
 	if (g_pad[0]->IsTrigger(enButtonLB1) && m_doNothingFlag != true) {
 		//武器変更のフラグを立てる。
 		m_changeAnimFlag = true;
+		Sound(L"Assets/sound/SE_Player_WeaponChange.wav");
 		//m_doNothingFlag = true;
 		//攻撃アニメーションをしていたら、止める。
 		if (m_attackAnimationFlag != false) {
@@ -441,6 +467,7 @@ void Player::Update()
 	//回避のフラグ
 	if (g_pad[0]->IsTrigger(enButtonB) && m_doNothingFlag != true && m_playerSP >= 30.0f) {
 		//Bボタンを押した。
+		Sound(L"Assets/sound/SE_Player_Avoid.wav");
 		m_kaihiFlag = true;
 		m_animState = enKaihi_blad;
 		m_attackAngleFlag = false;
