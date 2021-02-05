@@ -164,6 +164,10 @@ void PlayerAttackAnimation::SpecialAttackStateBlad()
 		m_timer++;
 		m_player->SetMoveSpeed(Vector3::Zero);
 		if (m_timer > 10 && m_timer < 50) {
+			if (m_soundFlag != true) {
+				m_player->Sound(L"Assets/sound/SE_PlayerSpecialAttack_Blad.wav");
+				m_soundFlag = true;
+			}
 			Vector3 v = m_player->GetDir() * m_speed;
 			m_player->SetMoveSpeed(v);
 			m_speed -= 50.0f / 40.0f;
@@ -173,6 +177,7 @@ void PlayerAttackAnimation::SpecialAttackStateBlad()
 		}
 		if (!m_player->GetPlayerSkinModelRemder().GetisAnimationPlaing()) {
 			AttackEnd();
+			m_soundFlag = false;
 		}
 	}
 }
@@ -194,32 +199,53 @@ void PlayerAttackAnimation::SpecialAttackStateSword()
 		m_player->SetSP(sp);
 		m_player->SetSpecialAttackFlag(true);
 		if (m_specialAttackStartFlag != true) {
+			if (m_soundFlag != true) {
+				m_player->Sound(L"Assets/sound/SE_PlayerSpecialAttack_Sword.wav");
+				m_soundFlag = true;
+			}
 			//特殊攻撃のはじめのアニメーションを流す。
 			m_player->SetAnimState(enSpecialAttack_01_sword);
 			if (!m_player->GetPlayerSkinModelRemder().GetisAnimationPlaing()) {
 				//アニメーションが終わった。
 				m_specialAttackStartFlag = true;
+
+				m_soundFlag = false;
+
 				//アニメーション設定。
 				m_player->SetAnimState(enSpecialAttack_02_sword);
 			}
 		}//ボタン長押ししている間は2つの攻撃アニメーションを交互に繰り返す。
 		else if (m_swordSpecialAttackAnim2Or3 != true) {
+			if (m_soundFlag != true) {
+				m_player->Sound(L"Assets/sound/SE_PlayerSpecialAttack_Sword.wav");
+				m_soundFlag = true;
+			}
 			//フラグがfalseなら
 			m_player->SetAnimState(enSpecialAttack_02_sword);
 			if (!m_player->GetPlayerSkinModelRemder().GetisAnimationPlaing()) {
 				//アニメーションが終わった。
 				m_player->SetAnimState(enSpecialAttack_03_sword);
+
+				m_soundFlag = false;
+
 				m_swordSpecialAttackAnim2Or3 = true;
 				//敵の攻撃当たり判定リセット。
 				MakeTheEnemyUnattacked();
 			}
 		}
 		else if (m_swordSpecialAttackAnim2Or3 != false) {
+			if (m_soundFlag != true) {
+				m_player->Sound(L"Assets/sound/SE_PlayerSpecialAttack_Sword.wav");
+				m_soundFlag = true;
+			}
 			//フラグがtrueなら
 			m_player->SetAnimState(enSpecialAttack_03_sword);
 			if (!m_player->GetPlayerSkinModelRemder().GetisAnimationPlaing()) {
 				//アニメーションが終わった。
 				m_player->SetAnimState(enSpecialAttack_02_sword);
+
+				m_soundFlag = false;
+
 				m_swordSpecialAttackAnim2Or3 = false;
 				//敵の攻撃当たり判定リセット。
 				MakeTheEnemyUnattacked();
@@ -246,6 +272,20 @@ void PlayerAttackAnimation::SpecialAttackStateSword()
 void PlayerAttackAnimation::AttackFlag(int attackTime01_blad, int* attackAnimNum, int attackTime01_sword)
 {
 	m_player->SetAttackAnimationFlag(true);
+
+	//if (m_player->GetAttackFlag() != true) {
+	//	m_soundFlag = false;
+	//}
+	//if (m_player->GetWeaponState() == enBladState && m_soundFlag != true) {
+	//	m_player->Sound(L"Assets/sound/SE_PlayerAttack_Blad.wav");
+	//	m_soundFlag = true;
+	//}
+	//else if (m_player->GetWeaponState() == enSwordState && m_soundFlag != true) {
+	//	//ソード状態
+	//	m_player->Sound(L"Assets/sound/SE_PlayerAttack_Sword.wav");
+	//	m_soundFlag = true;
+	//}
+
 	//m_attackAnimationFlag = true;
 	if (attackTimer <= 0) {
 		//攻撃タイムが0以下。
@@ -274,6 +314,8 @@ void PlayerAttackAnimation::AttackFlag(int attackTime01_blad, int* attackAnimNum
 		m_player->SetAttackAngleFlag(false);
 		//敵の攻撃当たり判定リセット。
 		MakeTheEnemyUnattacked();
+
+		m_soundFlag = false;
 	}
 }
 void PlayerAttackAnimation::AttackEnd()
@@ -318,6 +360,8 @@ void PlayerAttackAnimation::AttackEnd()
 	m_player->SetAttackAngleFlag(false);
 	//敵の攻撃当たり判定リセット。
 	MakeTheEnemyUnattacked();
+
+	m_soundFlag = false;
 
 }
 void PlayerAttackAnimation::Attack()
