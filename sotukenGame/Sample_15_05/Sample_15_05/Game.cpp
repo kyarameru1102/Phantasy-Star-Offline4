@@ -6,6 +6,8 @@
 #include "Stage2.h"
 #include "Stage3.h"
 #include "Random.h"
+#include "StageWave.h"
+
 Game::Game()
 {
 
@@ -26,6 +28,11 @@ Game::~Game()
 bool Game::Start()
 {
 	m_stage1 = NewGO<Stage1>(0,"stage");
+	m_currentStage++;
+	//ウェーブのスプライト。
+	StageWave* wave = NewGO<StageWave>(0);
+	wave->SetNum(m_currentStage);
+
 	m_player = NewGO<Player>(0, "player");
 	m_gameCam = NewGO<GameCamera>(0, "gameCamera");
 	m_rand = NewGO<Random>(0, "rnad");
@@ -52,6 +59,10 @@ void Game::Update()
 			DeleteGO(m_stage1);
 			m_stage1 = nullptr;
 			m_stage2 = NewGO<Stage2>(0, "stage");
+			m_currentStage++;
+			//ウェーブのスプライト。
+			StageWave* wave = NewGO<StageWave>(0);
+			wave->SetNum(m_currentStage);
 		}
 	}
 	if (m_stage2 != nullptr) {
@@ -59,6 +70,10 @@ void Game::Update()
 			DeleteGO(m_stage2);
 			m_stage2 = nullptr;
 			m_stage3 = NewGO<Stage3>(0, "stage");
+			m_currentStage++;
+			//ウェーブのスプライト。
+			StageWave* wave = NewGO<StageWave>(0);
+			wave->SetNum(m_currentStage);
 		}
 	}
 	if (m_stage3 != nullptr) {
@@ -67,6 +82,10 @@ void Game::Update()
 			m_stage3 = nullptr;
 			m_stage3ClearCount++;
 			m_stage1 = NewGO<Stage1>(0, "stage");
+			m_currentStage++;
+			//ウェーブのスプライト。
+			StageWave* wave = NewGO<StageWave>(0);
+			wave->SetNum(m_currentStage);
 		}
 	}
 	m_playerDeath = m_player->GetDeathFlag();

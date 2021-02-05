@@ -76,5 +76,6 @@ private:
 	Random* m_rand = nullptr;
 	int m_stage3ClearCount = 0; //stage3をクリアする度にカウントしていく。
 	bool m_playerDeath = false;
+	int m_currentStage = 0;
 };
 
