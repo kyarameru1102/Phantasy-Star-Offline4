@@ -2,6 +2,7 @@
 #include "Stage3.h"
 #include "BackGround.h"
 #include "DrNightmare.h"
+#include "StageWave.h"
 #include "Game.h"
 Stage3::Stage3()
 {
@@ -21,6 +22,10 @@ Stage3::~Stage3()
 bool Stage3::Start()
 {
 	m_backGround = NewGO<BackGround>(0);
+	//ウェーブのスプライト。
+	StageWave* wave = NewGO<StageWave>(0);
+	wave->SetWaveSprite(StageWave::Wave_Boss);
+
 	m_game = FindGO<Game>("Game");
 	m_drNight = NewGO<DrNightmare>(0, "dragon");
 	m_drNight->SetPosition(InitEnemyPos());
