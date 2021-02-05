@@ -160,7 +160,7 @@ void DrSoulEater::Update()
 		//プレイヤーに近づく。
 		if (m_status != GetDamage_state) {
 			Scream();
-			if (m_status != Attack_state && m_status != Die_state) {
+			if (m_status != Attack_state && m_hp >0) {
 				Move();
 				Turn();
 			}

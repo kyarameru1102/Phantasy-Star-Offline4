@@ -191,7 +191,7 @@ void DrTerrorBringer::Update()
 			{
 				Scream();
 			}
-			if (m_screamflag == false && m_status != Attack_state && m_status != WingClawAttack_state && m_status != FlameAttack_state && m_status != Die_state) {
+			if (m_screamflag == false && m_status != Attack_state && m_status != WingClawAttack_state && m_status != FlameAttack_state && m_hp >0) {
 
 				Move();
 				Turn();

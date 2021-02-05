@@ -60,22 +60,26 @@ void DrUsurper::Move()
 	{
 		
 		m_movespeed = playerLen * 2.5;
-		m_movespeed.y = 10.0f;
+		m_movespeed.y = m_speedY;
 		m_isHandATK = true;
 
 	}
-	if (m_toPlayer.Length() <= 300.0f && m_isHandATK == false && m_isFlameATK == false)
+	if (m_HandATKCount == 1)
+	{
+		m_isHandATK = false;
+	}
+	if (m_toPlayer.Length() <= 500.0f && m_isHandATK == false && m_isFlameATK == false)
 	{
 		m_isMouthATK = true;
 		m_movespeed = { 0.0f, 0.0f, 0.0f };
 	}
-	if (m_toPlayer.Length() <= 1000.0f && m_HandATKCount >= 2 && m_MouthATKCont >= 2)
+	if (m_toPlayer.Length() <= 1000.0f && m_HandATKCount >= 1 && m_MouthATKCont >= 2)
 	{
 		m_isFlameATK = true;
 		m_movespeed = { 0.0f, 0.0f, 0.0f };
 		
 	}
-	else
+	else if ( m_isHandATK == false && m_isMouthATK == false && m_isFlameATK == false)
 	{
 		m_status = Run_state;
 
@@ -89,9 +93,12 @@ void DrUsurper::Move()
 
 void DrUsurper::Turn()
 {
-	Vector3 playerLen = m_player->GetPosition() - m_position;
-	float angle = atan2(playerLen.x, playerLen.z);
-	m_rotation.SetRotation(Vector3::AxisY, angle);
+	
+		Vector3 playerLen = m_player->GetPosition() - m_position;
+		float angle = atan2(playerLen.x, playerLen.z);
+		m_rotation.SetRotation(Vector3::AxisY, angle);
+	
+	
 }
 void DrUsurper::Scream()
 {
@@ -133,7 +140,7 @@ void DrUsurper::MouthAttack()
 					}
 				}
 			}
-			});
+		});
 	
 }
 
@@ -200,7 +207,7 @@ void DrUsurper::Update()
 		//プレイヤーに近づく。
 		if (m_status != GetDamage_state) {
 			Scream();
-			if (m_status != MouthAttack_state && m_status != Die_state) {
+			if (m_status != MouthAttack_state && m_status != FlameAttack_state && m_status != HandAttack_state && m_hp >0) {
 				Move();
 				Turn();
 			}
@@ -216,7 +223,7 @@ void DrUsurper::Update()
 			{
 				MouthAttack();
 			}
-			//	後ろに飛ぶ
+			
 
 			//	火炎攻撃　１回
 			if (m_isFlameATK == true)
