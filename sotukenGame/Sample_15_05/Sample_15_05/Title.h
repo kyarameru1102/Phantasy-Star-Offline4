@@ -1,4 +1,6 @@
 #pragma once
+#include "sound/SoundSource.h"
+
 /// <summary>
 /// タイトルシーン。
 /// </summary>
@@ -103,4 +105,9 @@ private:
 	const float FADEOUT_TIME = 1.0f;							//フェードアウトさせる時間。単位：フレーム。
 	Fade* fadein[3] = { nullptr };
 	Fade* fadeout[7] = { nullptr };
+
+	//サウンド関連。
+	CSoundSource* m_bgmTitle = nullptr;		//タイトルのBGM。
+	void GameStartSE();						//ゲームスタートした時に音を再生する。
+	void SelectSE();						//選択した時に音を再生する。
 };
