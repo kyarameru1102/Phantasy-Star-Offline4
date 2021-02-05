@@ -33,6 +33,11 @@ public:
 	/// </summary>
 	void MenuSelect();
 
+	/// <summary>
+	/// メニュー画面を選択している時の音を再生する。
+	/// </summary>
+	void MenuSelectSE();
+
 private:
 	const enum {
 		en_menuUIMenu,				//メニュー画面のUI。
