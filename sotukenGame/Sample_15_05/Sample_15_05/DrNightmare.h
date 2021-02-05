@@ -3,6 +3,7 @@
 #include "NightmareAnimation.h"
 #include "EnBase.h"
 #include "Physics/GhostObject.h"
+#include "sound/SoundSource.h"
 /// <summary>
 /// ドラゴンナイトメアクラス
 /// </summary>
@@ -103,7 +104,7 @@ private:
 	bool                m_screamflag = true;            //咆哮フラグ
 	GhostObject			m_ghostObj;						//ゴースト。
 	int					m_deathCount = 0;				//死んだときのカウント。
-	
+	CSoundSource* SE_Haul = nullptr;
 
 };
 

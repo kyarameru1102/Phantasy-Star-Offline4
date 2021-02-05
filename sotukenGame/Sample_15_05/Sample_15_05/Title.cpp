@@ -4,6 +4,7 @@
 
 #include "Fade.h"
 
+#include "sound/SoundSource.h"
 
 Title::Title()
 {
@@ -16,12 +17,18 @@ Title::~Title()
 	for (int i = 0; i < Title_Num; i++) {
 		DeleteGO(m_spriteRender[i]);
 	}
+	DeleteGO(m_bgmTitle);
 	DeleteGOs("FadeIn");
 	DeleteGOs("FadeOut");
 }
 
 bool Title::Start()
 {
+	//タイトルのBGMを再生する。
+	m_bgmTitle = NewGO<CSoundSource>(0);
+	m_bgmTitle->Init(L"Assets/sound/BGM_Title.wav");
+	m_bgmTitle->Play(true);
+
 	//背景。
 	{
 		//0番→Title1(背景)
@@ -151,9 +158,13 @@ void Title::TitleSelect()
 {
 	//ボタン選択。
 	if (g_pad[0]->IsTrigger(enButtonStart)) {
+		//ゲームスタートした時の音を再生する。
+		GameStartSE();
 		m_titleState = Title_FadeOut;
 	}
 	else if (m_buttonState == Button_Load && g_pad[0]->IsTrigger(enButtonUp)) {
+		//選択した時の音を再生する。
+		SelectSE();
 		//「はじめる」を選択する。
 		m_iconPos.y = SELECTICON_SET_START_POS;		//Y軸座標を動かす。
 		//選択中のアイコンを鮮明にさせる。
@@ -162,6 +173,8 @@ void Title::TitleSelect()
 		m_buttonState = Button_Start;
 	}
 	else if (m_buttonState == Button_Start && g_pad[0]->IsTrigger(enButtonDown)) {
+		//選択した時の音を再生する。
+		SelectSE();
 		//「つづける」を選択する。
 		m_iconPos.y = SELECTICON_SET_END_POS;		//Y軸座標を動かす。
 		//選択中のアイコンを鮮明にさせる。
@@ -227,6 +240,18 @@ void Title::TitleFadeOut()
 	}
 
 
+}
+void Title::GameStartSE()
+{
+	CSoundSource* SE_gameStart = NewGO<CSoundSource>(0);
+	SE_gameStart->Init(L"Assets/sound/SE_GameStart.wav");
+	SE_gameStart->Play(false);
+}
+void Title::SelectSE()
+{
+	CSoundSource* SE_select = NewGO<CSoundSource>(0);
+	SE_select->Init(L"Assets/sound/SE_MenuSelect.wav");
+	SE_select->Play(false);
 }
 void Title::Update()
 {
