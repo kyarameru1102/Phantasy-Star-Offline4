@@ -309,45 +309,81 @@ void Player::Rotation()
 	}
 	m_playerSkinModel->SetRotation(m_rotation);
 }
-void Player::ReceiveDamage()
+void Player::ReceiveDamageAndDeath()
 {
 	if (m_playerHP < m_beforeHp) {
-		//ダメージを受けた。
-		//アニメーション設定。
-		m_animState = enHit_blad;
 		//動かないようにする。
 		m_moveSpeed.x = 0.0f;
 		m_moveSpeed.z = 0.0f;
-		//m_doNothingFlag = true;
-		if (m_attackAnimationFlag != false) {
-			//攻撃中なら、攻撃をやめる。
-			m_playerAttackAnim->AttackEnd();
+		if (m_playerHP <= 0.0f) {
+			//HPが0になったので、死亡。
+		    //アニメーション設定。
+			m_animState = enDeath_blad;
+			m_deathSoundTimer++;
+			if (m_weaponState == enBladState) {
+				m_deathSoundTime = 105;
+			}
+			else {
+				m_deathSoundTime = 60;
+			}
+			if (m_soundFlag != true && m_deathSoundTimer >= m_deathSoundTime) {
+				Sound(L"Assets/sound/SE_Player_Death.wav");
+				m_soundFlag = true;
+			}
+			////動かないようにする。
+			//m_moveSpeed.x = 0.0f;
+			//m_moveSpeed.z = 0.0f;
+			if (m_attackAnimationFlag != false) {
+				//攻撃中なら、攻撃をやめる。
+				m_playerAttackAnim->AttackEnd();
+			}
+			if (!m_playerSkinModel->GetisAnimationPlaing()) {
+				//アニメーションが終わった。
+				m_deathFlag = true;
+				m_soundFlag = false;
+				m_deathSoundTimer = 0;
+			}
 		}
-		if (!m_playerSkinModel->GetisAnimationPlaing()) {
-			//アニメーションが終わった。
-			m_beforeHp = m_playerHP;
+		else {
+			//ダメージを受けた。
+		    //アニメーション設定。
+			m_animState = enHit_blad;
+			if (m_soundFlag != true) {
+				Sound(L"Assets/sound/SE_Player_Damage.wav");
+				m_soundFlag = true;
+			}
+			if (m_attackAnimationFlag != false) {
+				//攻撃中なら、攻撃をやめる。
+				m_playerAttackAnim->AttackEnd();
+			}
+			if (!m_playerSkinModel->GetisAnimationPlaing()) {
+				//アニメーションが終わった。
+				m_beforeHp = m_playerHP;
+				m_soundFlag = false;
+			}
 		}
+		
 	}
 }
-void Player::Death()
-{
-	if (m_playerHP <= 0.0f) {
-		//HPが0になったので、死亡。
-		//アニメーション設定。
-		m_animState = enDeath_blad;
-		//動かないようにする。
-		m_moveSpeed.x = 0.0f;
-		m_moveSpeed.z = 0.0f;
-		if (m_attackAnimationFlag != false) {
-			//攻撃中なら、攻撃をやめる。
-			m_playerAttackAnim->AttackEnd();
-		}
-		if (!m_playerSkinModel->GetisAnimationPlaing()) {
-			//アニメーションが終わった。
-			m_deathFlag = true;
-		}
-	}
-}
+//void Player::Death()
+//{
+//	if (m_playerHP <= 0.0f) {
+//		//HPが0になったので、死亡。
+//		//アニメーション設定。
+//		m_animState = enDeath_blad;
+//		//動かないようにする。
+//		m_moveSpeed.x = 0.0f;
+//		m_moveSpeed.z = 0.0f;
+//		if (m_attackAnimationFlag != false) {
+//			//攻撃中なら、攻撃をやめる。
+//			m_playerAttackAnim->AttackEnd();
+//		}
+//		if (!m_playerSkinModel->GetisAnimationPlaing()) {
+//			//アニメーションが終わった。
+//			m_deathFlag = true;
+//		}
+//	}
+//}
 bool Player::Start()
 {
 	/*stageFilePaths[] = {
@@ -493,11 +529,8 @@ void Player::Update()
 		m_playerAttackAnim->Attack();
 	}
 	//ダメージを受ける。
-	ReceiveDamage();
+	ReceiveDamageAndDeath();
 	
-	//死亡。
-	Death();
-
 	if (m_weaponState == enSwordState && m_pressedAttackButton != attackS) {
 		//ソード状態なら1足してソード状態のアニメーションを流す。
 		m_animState++;

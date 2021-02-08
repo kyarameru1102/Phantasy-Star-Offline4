@@ -81,13 +81,13 @@ public:
 	/// </summary>
 	void Rotation();
 	/// <summary>
-	/// ダメージを受ける。
+	/// ダメージを受ける判定と死亡判定。
 	/// </summary>
-	void ReceiveDamage();
+	void ReceiveDamageAndDeath();
 	/// <summary>
 	/// 死亡。
 	/// </summary>
-	void Death();
+	//void Death();
 	/// <summary>
 	/// スタート関数。
 	/// </summary>
@@ -440,6 +440,8 @@ private:
 	int m_attackState = enNormalState; //攻撃の状態。
 
 	wchar_t* stageFilePaths[8];
-	int test = 0;
+	bool m_soundFlag = false;
+	int m_deathSoundTime = 0;
+	int m_deathSoundTimer = 0;
 };
 
