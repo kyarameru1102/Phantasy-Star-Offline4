@@ -72,7 +72,7 @@ bool Stage1::Start()
 	m_recoveryItem->SetPosition({1000.0f, 0.0f, -2500.0f});
 
 	//ゴーストオブジェクトの作成。
-	m_ghostObject.CreateBox(m_ghostPosition, m_ghostRotation, m_ghostScale);
+	//m_ghostObject.CreateBox(m_ghostPosition, m_ghostRotation, m_ghostScale);
 
 	return true;
 }
@@ -81,7 +81,11 @@ void Stage1::Update()
 {
 	if (m_downEnemy == ENEMY_NUM)
 	{
-		GhostContactCharaCon();
+		m_timer++;
+		if (m_timer > m_stageChangeTime) {
+			m_sceanChangeOK = true;
+		}
+		//GhostContactCharaCon();
 	}
 
 	for (int i = 0; i < ENEMY_NUM; i++) {

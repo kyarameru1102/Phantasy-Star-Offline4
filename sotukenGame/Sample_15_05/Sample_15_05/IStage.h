@@ -1,6 +1,6 @@
 #pragma once
 #include "GameObject.h"
-#include "Physics/GhostObject.h"
+//#include "Physics/GhostObject.h"
 #include "EnBase.h"
 class Random;
 class Game;
@@ -32,7 +32,7 @@ protected:
 	/// <summary>
 	/// ゴーストオブジェクトとプレイヤーのキャラコンとの当たり判定処理。
 	/// </summary>
-	void GhostContactCharaCon();
+	//void GhostContactCharaCon();
 	/// <summary>
 	/// 敵の初期座標
 	/// </summary>
@@ -42,9 +42,10 @@ protected:
 	std::vector<EnBase*> m_enemyList;       //敵の可変長配列。
 	int m_downEnemy = 0;	//倒したエネミーの数。
 	int m_timer = 0;		//タイマー。
+	const int m_stageChangeTime = 150; //ステージ変更までの時間
 	bool m_sceanChangeOK = false;	//シーンを切り替えていいかどうかのフラグ。
 
-	GhostObject m_ghostObject;		//ゴーストオブジェクト。
+	//GhostObject m_ghostObject;		//ゴーストオブジェクト。
 
 	Vector3 m_ghostPosition = { -1400.0f, 0.0f, -2600.0f };		//ゴーストオブジェクトの座標。
 	Quaternion m_ghostRotation = Quaternion::Identity;			//ゴーストオブジェクトの回転。

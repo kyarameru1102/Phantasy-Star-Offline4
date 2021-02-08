@@ -40,7 +40,7 @@ bool Stage2::Start()
 		m_enemyList.push_back(drUs);
 	}
 	//ゴーストオブジェクトの作成。
-	m_ghostObject.CreateBox(m_ghostPosition, m_ghostRotation, m_ghostScale);
+	//m_ghostObject.CreateBox(m_ghostPosition, m_ghostRotation, m_ghostScale);
 
 	return true;
 }
@@ -49,7 +49,11 @@ void Stage2::Update()
 {
 	if (m_downEnemy == ENEMY_NUM)
 	{
-		GhostContactCharaCon();
+		m_timer++;
+		if (m_timer > m_stageChangeTime) {
+			m_sceanChangeOK = true;
+		}
+		//GhostContactCharaCon();
 	}
 
 	for (int i = 0; i < ENEMY_NUM; i++) {

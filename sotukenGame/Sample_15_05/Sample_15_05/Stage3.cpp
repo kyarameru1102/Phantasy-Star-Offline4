@@ -32,7 +32,7 @@ bool Stage3::Start()
 	m_drNight->SetMagnificationHP(mag);
 	
 	//ゴーストオブジェクトの作成。
-	m_ghostObject.CreateBox(m_ghostPosition, m_ghostRotation, m_ghostScale);
+	//m_ghostObject.CreateBox(m_ghostPosition, m_ghostRotation, m_ghostScale);
     return true;
 }
 
@@ -41,9 +41,8 @@ void Stage3::Update()
 	if (m_downEnemy == 1)
 	{
 		m_timer++;
-		if (m_timer > 150) {
-			//m_sceanChangeOK = true;
-			GhostContactCharaCon();
+		if (m_timer > m_stageChangeTime) {
+			m_sceanChangeOK = true;
 		}
 	}
 
