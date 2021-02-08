@@ -103,7 +103,7 @@ void DrTerrorBringer::Attack()
 			if (m_ghostObj.IsSelf(collisionObject) == true) {
 				if (m_isAttack && !m_ATKoff) {
 					if (m_count >= 60 && m_count <= 70) {
-						m_player->ReceiveDamage(10);
+						m_player->ReceiveDamage(m_attackPower);
 						m_ATKoff = true;
 						printf_s("Enemy_KOUGEKI\n");
 					}
@@ -121,7 +121,7 @@ void DrTerrorBringer::FlyAttack()
 		if (m_ghostObj.IsSelf(collisionObject) == true) {
 			if (m_isAttack && !m_ATKoff) {
 				if (m_count >= 60 && m_count <= 70) {
-					m_player->ReceiveDamage(15);
+					m_player->ReceiveDamage(m_attackPower);
 					m_ATKoff = true;
 					printf_s("Enemy_KOUGEKI\n");
 				}
@@ -138,7 +138,7 @@ void DrTerrorBringer::WingClawAttack()
 		if (m_ghostObj.IsSelf(collisionObject) == true) {
 			if (m_isAttack && !m_ATKoff) {
 				if (m_count >= 60 && m_count <= 70) {
-					m_player->ReceiveDamage(15);
+					m_player->ReceiveDamage(m_attackPower);
 					m_ATKoff = true;
 					printf_s("Enemy_KOUGEKI\n");
 				}
@@ -155,7 +155,7 @@ void DrTerrorBringer::FlameAttack()
 		if (m_ghostObj.IsSelf(collisionObject) == true) {
 			if (m_isAttack && !m_ATKoff) {
 				if (m_count >= 60 && m_count <= 70) {
-					m_player->ReceiveDamage(15);
+					m_player->ReceiveDamage(m_attackPower);
 					m_ATKoff = true;
 					printf_s("Enemy_KOUGEKI\n");
 				}
@@ -191,7 +191,7 @@ void DrTerrorBringer::Update()
 			{
 				Scream();
 			}
-			if (m_screamflag == false && m_status != Attack_state && m_status != WingClawAttack_state && m_status != FlameAttack_state && m_status != Die_state) {
+			if (m_screamflag == false && m_status != Attack_state && m_status != WingClawAttack_state && m_status != FlameAttack_state && m_hp >0) {
 
 				Move();
 				Turn();

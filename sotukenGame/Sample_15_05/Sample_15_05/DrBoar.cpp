@@ -115,7 +115,7 @@ void DrBoar::Attack()
 			if (m_ghostObj.IsSelf(collisionObject) == true) {
 				if (m_isAttack && !m_ATKoff) {
 					if (m_count >= 60 && m_count <= 70) {
-						m_player->ReceiveDamage(10);
+						m_player->ReceiveDamage(m_attackPower);
 						m_ATKoff = true;
 						printf_s("Enemy_KOUGEKI\n");
 					}
@@ -137,7 +137,7 @@ void DrBoar::HornAttack()
 			if (m_ghostObj.IsSelf(collisionObject) == true) {
 				if (m_isAttack && !m_ATKoff) {
 					if (m_count >= 60 && m_count <= 70) {
-						m_player->ReceiveDamage(10);
+						m_player->ReceiveDamage(m_attackPower);
 						m_ATKoff = true;
 						printf_s("Enemy_KOUGEKI\n");
 					}
