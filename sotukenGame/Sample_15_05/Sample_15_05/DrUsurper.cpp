@@ -87,19 +87,24 @@ void DrUsurper::Move()
 		m_movespeed = playerLen * 1.7f;
 		m_movespeed.y = m_speedY;
 	}
-	
-	m_position = m_charaCon.Execute(1.0f, m_movespeed);
+	if (m_toPlayer.Length() <= 200.0f)
+	{
+		m_position = m_oldpos;
+	}
+	else {
+		//m_movespeed.y = m_speedY;
+		m_position = m_charaCon.Execute(1.0f, m_movespeed);
+		m_oldpos = m_position;
+	}
+	//m_position = m_charaCon.Execute(1.0f, m_movespeed);
 	
 }
 
 void DrUsurper::Turn()
 {
-	
-		Vector3 playerLen = m_player->GetPosition() - m_position;
-		float angle = atan2(playerLen.x, playerLen.z);
-		m_rotation.SetRotation(Vector3::AxisY, angle);
-	
-	
+	Vector3 playerLen = m_player->GetPosition() - m_position;
+	float angle = atan2(playerLen.x, playerLen.z);
+	m_rotation.SetRotation(Vector3::AxisY, angle);
 }
 void DrUsurper::Scream()
 {
@@ -201,8 +206,8 @@ void DrUsurper::Die()
 void DrUsurper::Update()
 {
 	//フェードのフラグがtrueでないとき
-	//if (m_game->GetIsWave() != true)
-	//{
+	if (m_game->GetIsWave() != true)
+	{
 		//毎フレーム距離はかる。
 		m_toPlayer = m_player->GetPosition() - m_position;
 
@@ -342,7 +347,7 @@ void DrUsurper::Update()
 			m_dir.Normalize();
 			m_dir *= 200.0f;
 		}
-	//}
+	}
 	
 	m_ghostPos = m_position + m_dir;
 

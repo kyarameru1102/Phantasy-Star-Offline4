@@ -39,7 +39,7 @@ bool DrTerrorBringer::Start()
 	//ƒLƒƒƒ‰ƒRƒ“‰Šú‰»B
 	m_charaCon.Init(120.0f, 200.0f, m_position);
 	Vector3 ghostPos = m_position;
-	m_ghostObj.CreateBox(ghostPos, m_rotation, Vector3(200.0f, 200.0f, 200.0f));
+	m_ghostObj.CreateBox(ghostPos, m_rotation, Vector3(120.0f, 200.0f, 120.0f));
 
 	m_game = FindGO<Game>("Game");
 	m_player = FindGO<Player>("player");
@@ -75,9 +75,17 @@ void DrTerrorBringer::Move()
 		m_movespeed = playerLen * 1.4f;
 		m_movespeed.y = m_speedY;
 	}
-
+	if (m_toPlayer.Length() <= 150.0f)
+	{
+		m_position = m_oldpos;
+	}
+	else {
+		
+		m_position = m_charaCon.Execute(1.0f, m_movespeed);
+		m_oldpos = m_position;
+	}
 	
-	m_position = m_charaCon.Execute(1.0f, m_movespeed);
+	
 }
 void DrTerrorBringer::Turn()
 {

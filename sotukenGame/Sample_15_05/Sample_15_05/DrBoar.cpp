@@ -69,9 +69,17 @@ void DrBoar::Move()
 	Vector3 playerLen = m_toPlayer;
 	playerLen.Normalize();
 	m_movespeed = playerLen * 1.4f;
-	
-	m_movespeed.y = m_speedY;
-	m_position = m_charaCon.Execute(1.0f, m_movespeed);
+	if (m_toPlayer.Length() <= 150.0f)
+	{
+		m_position = m_oldpos;
+	}
+	else {
+		m_movespeed.y = m_speedY;
+		m_position = m_charaCon.Execute(1.0f, m_movespeed);
+		m_oldpos = m_position;
+	}
+	//m_movespeed.y = m_speedY;
+	//m_position = m_charaCon.Execute(1.0f, m_movespeed);
 	
 }
 void DrBoar::AttackMove()
@@ -94,9 +102,17 @@ void DrBoar::AttackMove()
 	else {
 		m_movespeed = playerLen * 1.3f;
 	}
+	if (m_toPlayer.Length() <= 150.0f)
+	{
+		m_position = m_oldpos;
+	}
+	else {
+		m_movespeed.y = m_speedY;
+		m_position = m_charaCon.Execute(1.0f, m_movespeed);
+		m_oldpos = m_position;
+	}
 	
-	m_movespeed.y = m_speedY;
-	m_position = m_charaCon.Execute(1.0f, m_movespeed);
+	
 }
 void DrBoar::Turn()
 {

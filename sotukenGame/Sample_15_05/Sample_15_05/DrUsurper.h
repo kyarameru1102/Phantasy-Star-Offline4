@@ -105,7 +105,7 @@ private:
 	int					m_deathCount = 0;				//死んだときのカウント。
 
 
-
+	           
 	Skeleton m_skelton;
 	int bornNum = 0;
 

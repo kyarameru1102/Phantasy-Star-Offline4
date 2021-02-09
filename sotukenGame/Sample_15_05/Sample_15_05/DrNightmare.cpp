@@ -38,7 +38,7 @@ bool DrNightmare::Start()
 		m_skinModelRender->Init("Assets/modelData/enemy/DragonNightmare/green/DrNmGr.tkm", m_nightmAnim->GetAnimationClip(), NightmAnimInfo::enNightmAnimClip_num);
 	}
 	//ƒLƒƒƒ‰ƒRƒ“‰Šú‰»B
-	m_charaCon.Init(200.0f, 200.0f, m_position);
+	m_charaCon.Init(230.0f, 200.0f, m_position);
 	Vector3 ghostPos = m_position;
 	m_ghostObj.CreateBox(ghostPos, m_rotation, Vector3(100.0f, 100.0f, 180.0f));
 
@@ -88,9 +88,17 @@ void DrNightmare::Move()
 		m_movespeed = playerLen * 1.2f;
 	}
 	
-	
-	m_movespeed.y = m_speedY;
-	m_position = m_charaCon.Execute(1.0f, m_movespeed);
+	if (m_toPlayer.Length() <= 230.0f)
+	{
+		m_position = m_oldpos;
+	}
+	else {
+		m_movespeed.y = m_speedY;
+		m_position = m_charaCon.Execute(1.0f, m_movespeed);
+		m_oldpos = m_position;
+	}
+	//m_movespeed.y = m_speedY;
+	//m_position = m_charaCon.Execute(1.0f, m_movespeed);
 }
 
 void DrNightmare::Turn()

@@ -161,8 +161,9 @@ protected:
 	Vector3				m_scale = Vector3::One;					//拡大率
 	Quaternion			m_rotation = Quaternion::Identity;		//回転
 	Vector3				m_movespeed = Vector3::Zero;			//移動速度
+	Vector3             m_oldpos = Vector3::Zero;                //古い座標
 	CharacterController m_charaCon;								//キャラコン。
-	float				m_hp = 50.0f;						//HP
+	float				m_hp = 50.0f;						    //HP
 	float               m_magnificationHP = 1.0f;               //HPの倍率。
 	Player*				m_player = nullptr;						//プレイヤー。
 	Game*               m_game = nullptr;                       //Game
