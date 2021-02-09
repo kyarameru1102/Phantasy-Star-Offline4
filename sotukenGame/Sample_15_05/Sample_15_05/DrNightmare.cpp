@@ -38,7 +38,7 @@ bool DrNightmare::Start()
 		m_skinModelRender->Init("Assets/modelData/enemy/DragonNightmare/green/DrNmGr.tkm", m_nightmAnim->GetAnimationClip(), NightmAnimInfo::enNightmAnimClip_num);
 	}
 	//キャラコン初期化。
-	m_charaCon.Init(230.0f, 200.0f, m_position);
+	m_charaCon.Init(240.0f, 200.0f, m_position);
 	Vector3 ghostPos = m_position;
 	m_ghostObj.CreateBox(ghostPos, m_rotation, Vector3(100.0f, 100.0f, 180.0f));
 
@@ -66,6 +66,12 @@ void DrNightmare::Move()
 	
 	Vector3 playerLen = m_toPlayer;
 	playerLen.Normalize();
+	if (m_isATKcount >= 2 || m_isClawATKcount >= 2)
+	{
+		m_isHornATK = true;
+		m_isBasicATK = false;
+		m_isClawATK = false;
+	}
 	if (m_toPlayer.Length() <= 300.0f && m_isClawATK == false && m_isHornATK == false)
 	{
 		m_isBasicATK = true;
@@ -74,21 +80,19 @@ void DrNightmare::Move()
 	{
 		m_isClawATK = true;
 	}
-	if (m_toPlayer.Length() <= 600.0f && m_isClawATK == false && m_isBasicATK == false)
+	if (m_toPlayer.Length() <= 800.0f && m_isClawATK == false && m_isBasicATK == false && m_isHornATK ==false && m_isHornATKcount != 1)
 	{
+		m_status = Walk_state;
+		m_movespeed = playerLen * 1.4;
 		m_isHornATK = true;
 	}
-	if (m_isHornATK == true)
-	{
-		m_status = Run_state;
-		m_movespeed = playerLen * 1.6;
-	}
+	
 	else {
-		m_status = Walk_state;
-		m_movespeed = playerLen * 1.2f;
+		m_status = Run_state;
+		m_movespeed = playerLen * 1.6f;
 	}
 	
-	if (m_toPlayer.Length() <= 230.0f)
+	if (m_toPlayer.Length() <= 500.0f)
 	{
 		m_position = m_oldpos;
 	}
@@ -114,56 +118,71 @@ void DrNightmare::Scream()
 void DrNightmare::Attack()
 {
 	m_status = Attack_state;
+	m_jawboneNum = m_skinModelRender->GetModel().GetSkeleton().FindBoneID(L"Jaw02");
+	m_skinModelRender->GetModel().GetSkeleton().GetBone(m_jawboneNum)->CalcWorldTRS(
+		m_jawpos,
+		m_jawrot,
+		m_jawscale
+	);
+	m_toJawPlayer = m_player->GetPosition() - m_jawpos;
 	//SE_Fang->Play(false);
-	CharacterController& charaCon = *m_player->GetCharacterController();
-	g_physics.ContactTestCharaCon(charaCon, [&](const btCollisionObject& collisionObject) {
-		if (m_ghostObj.IsSelf(collisionObject) == true) {
-			if (m_isAttack && !m_ATKoff) {
-				if (m_count >= 60 && m_count <= 70) {
-					m_player->ReceiveDamage(m_attackPower);
-					m_ATKoff = true;
-					printf_s("Enemy_KOUGEKI\n");
-				}
+	if (m_toJawPlayer.Length() <= 200)
+	{
+		if (m_isAttack && !m_ATKoff) {
+			if (m_count >= 60 && m_count <= 70) {
+				m_player->ReceiveDamage(m_attackPower);
+				m_ATKoff = true;
+				printf_s("Enemy_KOUGEKI\n");
 			}
 		}
-	});
-		
+	}
 	
 }
 
 void DrNightmare::ClawAttack()
 {
 	m_status = ClawAttack_state;
-	//SE_Claw->Play(false);
-	CharacterController& charaCon = *m_player->GetCharacterController();
-	g_physics.ContactTestCharaCon(charaCon, [&](const btCollisionObject& collisionObject) {
-		if (m_ghostObj.IsSelf(collisionObject) == true) {
-			if (m_isAttack && !m_ATKoff) {
-				if (m_count >= 60 && m_count <= 70) {
-					m_player->ReceiveDamage(m_attackPower);
-					m_ATKoff = true;
-					printf_s("Enemy_KOUGEKI\n");
-				}
+	m_armboneNum = m_skinModelRender->GetModel().GetSkeleton().FindBoneID(L"R_Hand");
+	m_skinModelRender->GetModel().GetSkeleton().GetBone(m_armboneNum)->CalcWorldTRS(
+		m_armpos,
+		m_armrot,
+		m_armscale
+	);
+	m_toArmPlayer = m_player->GetPosition() - m_armpos;
+	if (m_toArmPlayer.Length() <= 450)
+	{
+		if (m_isAttack && !m_ATKoff) {
+			if (m_count >= 60 && m_count <= 70) {
+				m_player->ReceiveDamage(m_attackPower);
+				m_ATKoff = true;
+				printf_s("Enemy_KOUGEKI\n");
 			}
 		}
-	});
+	}
+	
+	
 }
 
 void DrNightmare::HornAttack()
 {
 	m_status = HornAttack_state;
-	CharacterController& charaCon = *m_player->GetCharacterController();
-	g_physics.ContactTestCharaCon(charaCon, [&](const btCollisionObject& collisionObject) {
-		if (m_ghostObj.IsSelf(collisionObject) == true) {
-			if (m_isAttack && !m_ATKoff) {
-				if (m_count >= 60 && m_count <= 70) {
-					m_player->ReceiveDamage(m_attackPower);
-					m_ATKoff = true;
-					printf_s("Enemy_KOUGEKI\n");
-				}
+	m_hedboneNum = m_skinModelRender->GetModel().GetSkeleton().FindBoneID(L"UpperHead01");
+	m_skinModelRender->GetModel().GetSkeleton().GetBone(m_hedboneNum)->CalcWorldTRS(
+		m_hedpos,
+		m_hedrot,
+		m_hedscale
+	);
+	m_toHedPlayer = m_player->GetPosition() - m_hedpos;
+	if (m_toHedPlayer.Length() <= 500)
+	{
+		if (m_isAttack && !m_ATKoff) {
+			if (m_count >= 60 && m_count <= 1000) {
+				m_player->ReceiveDamage(m_attackPower);
+				m_ATKoff = true;
+				printf_s("Enemy_KOUGEKI\n");
 			}
 		}
-	});
+	}
 }
 
 void DrNightmare::Die()
@@ -187,7 +206,8 @@ void DrNightmare::Update()
 	{
 		//毎フレーム距離はかる。
 		m_toPlayer = m_player->GetPosition() - m_position;
-
+		
+		
 		//プレイヤーに近づく。
 		if (m_status != GetDamage_state) {
 			if (m_screamflag == true)
@@ -195,7 +215,7 @@ void DrNightmare::Update()
 				Scream();
 			}
 			
-			if (m_screamflag == false && m_status != Attack_state && m_status != ClawAttack_state && m_hp >0) {
+			if (m_screamflag == false && m_status != Attack_state && m_status != ClawAttack_state && m_status != HornAttack_state && m_hp >0) {
 				Move();
 				Turn();
 			}
@@ -219,8 +239,9 @@ void DrNightmare::Update()
 				m_isBasicATK = true;
 				m_isClawATK = false;
 				m_isHornATK = false;
-				m_isATKcount = 0;
-				m_isClawATKcount = 0;
+				m_isHornATKcount = 0;
+				//m_isATKcount = 0;
+				//m_isClawATKcount = 0;
 			}
 			if (m_isClawATK == true && m_isBasicATK == false && m_isHornATK == false)
 			{
@@ -302,6 +323,8 @@ void DrNightmare::Update()
 				m_count = 0;
 				m_isHornATKcount++;
 				m_isHornATK = false;
+				m_isATKcount = 0;
+				m_isClawATK = 0;
 				m_animState = NightmAnimInfo::enNi_Idle01;
 				m_skinModelRender->PlayAnimation(m_animState, 0.0f);
 			}
