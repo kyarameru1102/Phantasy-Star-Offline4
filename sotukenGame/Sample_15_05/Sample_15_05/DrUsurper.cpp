@@ -38,7 +38,7 @@ bool DrUsurper::Start()
 		m_skinModelRender->Init("Assets/modelData/enemy/DragonUsurper/red/DrUsRe.tkm", m_usurperAnim->GetAnimationClip(), UsurperAnimInfo::enUsurperAnimClip_num);
 	}
 	//キャラコン初期化。
-	m_charaCon.Init(145.0f, 200.0f, m_position);
+	m_charaCon.Init(200.0f, 200.0f, m_position);
 	Vector3 ghostPos = m_position;
 	m_ghostObj.CreateBox(ghostPos, m_rotation, Vector3(150.0f, 130.0f, 160.0f));
 
@@ -135,8 +135,18 @@ void DrUsurper::HandAttack()
 void DrUsurper::MouthAttack()
 {
 		m_status = MouthAttack_state;
-
-		CharacterController& charaCon = *m_player->GetCharacterController();
+		
+		if (m_toHedPlayer.Length() <= 100)
+		{
+			if (m_isAttack && !m_ATKoff) {
+				if (m_count >= 60 && m_count <= 70) {
+					m_player->ReceiveDamage(m_attackPower);
+					m_ATKoff = true;
+					printf_s("Enemy_KOUGEKI\n");
+				}
+			}
+		}
+		/*CharacterController& charaCon = *m_player->GetCharacterController();
 		g_physics.ContactTestCharaCon(charaCon, [&](const btCollisionObject& collisionObject) {
 			if (m_ghostObj.IsSelf(collisionObject) == true) {
 				if (m_isAttack && !m_ATKoff) {
@@ -147,7 +157,7 @@ void DrUsurper::MouthAttack()
 					}
 				}
 			}
-		});
+		});*/
 	
 }
 
@@ -210,7 +220,13 @@ void DrUsurper::Update()
 	{
 		//毎フレーム距離はかる。
 		m_toPlayer = m_player->GetPosition() - m_position;
-
+		m_boneNum = m_skinModelRender->GetModel().GetSkeleton().FindBoneID(L"Jaw01");
+		m_skinModelRender->GetModel().GetSkeleton().GetBone(m_boneNum)->CalcWorldTRS(
+			m_hedpos,
+			m_hedrot,
+			m_hedscale
+		);
+		m_toHedPlayer = m_player->GetPosition() - m_hedpos;
 		//プレイヤーに近づく。
 		if (m_status != GetDamage_state) {
 			Scream();
