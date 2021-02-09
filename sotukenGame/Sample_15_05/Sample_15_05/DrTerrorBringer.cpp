@@ -99,21 +99,30 @@ void DrTerrorBringer::Scream()
 }
 void DrTerrorBringer::Attack()
 {
+	
 	if (m_toPlayer.Length() <= 200.0f)
 	{
 		m_status = Attack_state;
-		CharacterController& charaCon = *m_player->GetCharacterController();
-		g_physics.ContactTestCharaCon(charaCon, [&](const btCollisionObject& collisionObject) {
-			if (m_ghostObj.IsSelf(collisionObject) == true) {
-				if (m_isAttack && !m_ATKoff) {
-					if (m_count >= 60 && m_count <= 70) {
-						m_player->ReceiveDamage(m_attackPower);
-						m_ATKoff = true;
-						printf_s("Enemy_KOUGEKI\n");
-					}
+		m_jawboneNum = m_skinModelRender->GetModel().GetSkeleton().FindBoneID(L"UpperHead2");
+		m_skinModelRender->GetModel().GetSkeleton().GetBone(m_jawboneNum)->CalcWorldTRS(
+			m_jawpos,
+			m_jawrot,
+			m_jawscale
+		);
+		m_toJawPlayer = m_player->GetPosition() - m_jawpos;
+
+		
+		if (m_toJawPlayer.Length() <= 750)
+		{
+			if (m_isAttack && !m_ATKoff) {
+				if (m_count >= 60 && m_count <= 70) {
+					m_player->ReceiveDamage(m_attackPower);
+					m_ATKoff = true;
+					printf_s("Enemy_KOUGEKI\n");
 				}
 			}
-		});
+		}
+		
 	}
 }
 
@@ -137,35 +146,48 @@ void DrTerrorBringer::FlyAttack()
 void DrTerrorBringer::WingClawAttack()
 {
 	m_status = WingClawAttack_state;
-	CharacterController& charaCon = *m_player->GetCharacterController();
-	g_physics.ContactTestCharaCon(charaCon, [&](const btCollisionObject& collisionObject) {
-		if (m_ghostObj.IsSelf(collisionObject) == true) {
-			if (m_isAttack && !m_ATKoff) {
-				if (m_count >= 60 && m_count <= 70) {
-					m_player->ReceiveDamage(m_attackPower);
-					m_ATKoff = true;
-					printf_s("Enemy_KOUGEKI\n");
-				}
+	m_armboneNum = m_skinModelRender->GetModel().GetSkeleton().FindBoneID(L"Wing3_L");
+	m_skinModelRender->GetModel().GetSkeleton().GetBone(m_armboneNum)->CalcWorldTRS(
+		m_armpos,
+		m_armrot,
+		m_armscale
+	);
+	m_toArmPlayer = m_player->GetPosition() - m_armpos;
+	if (m_toArmPlayer.Length() <= 700)
+	{
+		if (m_isAttack && !m_ATKoff) {
+			if (m_count >= 60 && m_count <= 70) {
+				m_player->ReceiveDamage(m_attackPower);
+				m_ATKoff = true;
+				printf_s("Enemy_KOUGEKI\n");
 			}
 		}
-		});
+	}
+	
 }
 
 void DrTerrorBringer::FlameAttack()
 {
 	m_status = FlameAttack_state;
-	CharacterController& charaCon = *m_player->GetCharacterController();
-	g_physics.ContactTestCharaCon(charaCon, [&](const btCollisionObject& collisionObject) {
-		if (m_ghostObj.IsSelf(collisionObject) == true) {
-			if (m_isAttack && !m_ATKoff) {
-				if (m_count >= 60 && m_count <= 70) {
-					m_player->ReceiveDamage(m_attackPower);
-					m_ATKoff = true;
-					printf_s("Enemy_KOUGEKI\n");
-				}
+	m_status = Attack_state;
+	m_jawboneNum = m_skinModelRender->GetModel().GetSkeleton().FindBoneID(L"UpperHead2");
+	m_skinModelRender->GetModel().GetSkeleton().GetBone(m_jawboneNum)->CalcWorldTRS(
+		m_jawpos,
+		m_jawrot,
+		m_jawscale
+	);
+	m_toJawPlayer = m_player->GetPosition() - m_jawpos;
+	if (m_toJawPlayer.Length() <= 1200)
+	{
+		if (m_isAttack && !m_ATKoff) {
+			if (m_count >= 60 && m_count <= 70) {
+				m_player->ReceiveDamage(m_attackPower);
+				m_ATKoff = true;
+				printf_s("Enemy_KOUGEKI\n");
 			}
 		}
-		});
+	}
+	
 }
 void DrTerrorBringer::Die()
 {
@@ -406,7 +428,7 @@ void DrTerrorBringer::Update()
 
 	m_ghostObj.SetPosition(m_ghostPos);
 	m_ghostObj.SetRotation(m_rotation);
-	m_skinModelRender->SetScale({ 50.0f, 50.0f, 50.0f });
+	m_skinModelRender->SetScale({ 60.0f, 60.0f, 60.0f });
 	m_skinModelRender->SetRotation(m_rotation);
 	m_skinModelRender->SetPosition(m_position);
 	m_skinModelRender->PlayAnimation(m_animState, 1.0f / 60.0f);
