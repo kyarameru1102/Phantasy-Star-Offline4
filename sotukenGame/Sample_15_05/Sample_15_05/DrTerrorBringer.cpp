@@ -77,12 +77,13 @@ void DrTerrorBringer::Move()
 	}
 	if (m_toPlayer.Length() <= 150.0f)
 	{
-		m_position = m_oldpos;
+		m_movespeed = { 0.0f, 0.0f, 0.0f };
+		m_position = m_charaCon.Execute(1.0f, m_movespeed);
 	}
 	else {
 		
 		m_position = m_charaCon.Execute(1.0f, m_movespeed);
-		m_oldpos = m_position;
+		
 	}
 	
 	
@@ -169,7 +170,6 @@ void DrTerrorBringer::WingClawAttack()
 void DrTerrorBringer::FlameAttack()
 {
 	m_status = FlameAttack_state;
-	m_status = Attack_state;
 	m_jawboneNum = m_skinModelRender->GetModel().GetSkeleton().FindBoneID(L"UpperHead2");
 	m_skinModelRender->GetModel().GetSkeleton().GetBone(m_jawboneNum)->CalcWorldTRS(
 		m_jawpos,
@@ -219,8 +219,8 @@ void DrTerrorBringer::Update()
 			}
 			if (m_screamflag == false && m_status != Attack_state && m_status != WingClawAttack_state && m_status != FlameAttack_state && m_hp >0) {
 
-				//Move();
-				//Turn();
+				Move();
+				Turn();
 			}
 
 			//‹——£‚ª‹ß‚Ã‚­‚ÆB
@@ -229,6 +229,7 @@ void DrTerrorBringer::Update()
 			{
 
 				//Šš‚Ý‚Â‚«UŒ‚
+				
 				if (m_isFangATK == true)
 				{
 					Attack();
@@ -236,6 +237,7 @@ void DrTerrorBringer::Update()
 				if (m_FangATKCount == 1)
 				{
 					m_isClawATK = true;
+					m_isFangATK = false;
 					m_FangATKCount = 0;
 				}
 				//’ÜUŒ‚‚ð‚·‚é
@@ -246,6 +248,7 @@ void DrTerrorBringer::Update()
 				if (m_ClawATKCont == 1)
 				{
 					m_isFlameATK = true;
+					m_isClawATK = false;
 					m_ClawATKCont = 0;
 				}
 				//‰Î‰ŠUŒ‚‚ð‚·‚é
@@ -253,7 +256,7 @@ void DrTerrorBringer::Update()
 				{
 					FlameAttack();
 				}				
-				if (m_FlameATKCount == 1)
+				if (m_FlameATKCount >= 1)
 				{
 					m_screamflag = true;
 					m_ATKTwe = true;
@@ -423,7 +426,6 @@ void DrTerrorBringer::Update()
 			m_dir *= 200.0f;
 		}
 	}
-	
 	m_ghostPos = m_position + m_dir;
 
 	m_ghostObj.SetPosition(m_ghostPos);

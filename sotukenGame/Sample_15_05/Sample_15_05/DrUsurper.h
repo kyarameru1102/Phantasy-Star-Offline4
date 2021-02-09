@@ -105,12 +105,25 @@ private:
 	int					m_deathCount = 0;				//死んだときのカウント。
 
 	//頭部のボーンの情報
+	int m_hedboneNum = 0;
 	Vector3             m_hedpos = Vector3::Zero;
 	Vector3             m_hedscale = Vector3::Zero;
 	Quaternion          m_hedrot = Quaternion::Identity; 
 	Vector3             m_toHedPlayer = Vector3::Zero;
+	//右腕のボーン情報
+	int m_RarmboneNum = 0;
+	Vector3             m_Rarmpos = Vector3::Zero;
+	Vector3             m_Rarmscale = Vector3::Zero;
+	Quaternion          m_Rarmrot = Quaternion::Identity;
+	Vector3             m_toRArmPlayer = Vector3::Zero;
+	//左腕のボーン情報
+	int m_LarmboneNum = 0;
+	Vector3             m_Larmpos = Vector3::Zero;
+	Vector3             m_Larmscale = Vector3::Zero;
+	Quaternion          m_Larmrot = Quaternion::Identity;
+	Vector3             m_toLArmPlayer = Vector3::Zero;
 	Skeleton m_skelton;
-	int m_boneNum = 0;
+	
 
 };
 

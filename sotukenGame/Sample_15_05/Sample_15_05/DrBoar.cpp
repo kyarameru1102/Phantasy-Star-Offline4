@@ -71,12 +71,12 @@ void DrBoar::Move()
 	m_movespeed = playerLen * 1.4f;
 	if (m_toPlayer.Length() <= 150.0f)
 	{
-		m_position = m_oldpos;
+		m_movespeed = { 0.0f, 0.0f, 0.0f };
+		m_position = m_charaCon.Execute(1.0f, m_movespeed);
 	}
 	else {
 		m_movespeed.y = m_speedY;
 		m_position = m_charaCon.Execute(1.0f, m_movespeed);
-		m_oldpos = m_position;
 	}
 	//m_movespeed.y = m_speedY;
 	//m_position = m_charaCon.Execute(1.0f, m_movespeed);
@@ -104,7 +104,8 @@ void DrBoar::AttackMove()
 	}
 	if (m_toPlayer.Length() <= 150.0f)
 	{
-		m_position = m_oldpos;
+		m_movespeed = { 0.0f, 0.0f, 0.0f };
+		m_position = m_charaCon.Execute(1.0f, m_movespeed);
 	}
 	else {
 		m_movespeed.y = m_speedY;

@@ -23,7 +23,7 @@ bool EnBehaviorTest::Start()
 	//m_drSoul ->SetPosition({ -1000.0f, 0.0f, 500.0f });
 	m_drTerror = NewGO<DrTerrorBringer>(0, "drterror");
 	m_drTerror->SetPosition({ -1000.0f, 0.0f, -500.0f });
-    //m_drUsurper = NewGO<DrUsurper>(0, "drusurper");
+   // m_drUsurper = NewGO<DrUsurper>(0, "drusurper");
 	//m_drUsurper->SetPosition({ -1000.0f, 0.0f, 1000.0f });
 
 	return true;
