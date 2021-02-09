@@ -2,6 +2,7 @@
 #include "DrUsurper.h"
 #include "Player.h"
 #include "Game.h"
+
 DrUsurper::DrUsurper()
 {
 
@@ -39,7 +40,7 @@ bool DrUsurper::Start()
 	//キャラコン初期化。
 	m_charaCon.Init(145.0f, 200.0f, m_position);
 	Vector3 ghostPos = m_position;
-	m_ghostObj.CreateBox(ghostPos, m_rotation, Vector3(80.0f, 50.0f, 80.0f));
+	m_ghostObj.CreateBox(ghostPos, m_rotation, Vector3(150.0f, 130.0f, 160.0f));
 
 	m_game = FindGO<Game>("Game");
 	m_player = FindGO<Player>("player");
@@ -109,7 +110,9 @@ void DrUsurper::Scream()
 }
 void DrUsurper::HandAttack()
 {
+	
 	m_status = HandAttack_state;
+	
 	CharacterController& charaCon = *m_player->GetCharacterController();
 	g_physics.ContactTestCharaCon(charaCon, [&](const btCollisionObject& collisionObject) {
 		if (m_ghostObj.IsSelf(collisionObject) == true) {
@@ -126,9 +129,8 @@ void DrUsurper::HandAttack()
 
 void DrUsurper::MouthAttack()
 {
-	
-	
 		m_status = MouthAttack_state;
+
 		CharacterController& charaCon = *m_player->GetCharacterController();
 		g_physics.ContactTestCharaCon(charaCon, [&](const btCollisionObject& collisionObject) {
 			if (m_ghostObj.IsSelf(collisionObject) == true) {
@@ -199,8 +201,8 @@ void DrUsurper::Die()
 void DrUsurper::Update()
 {
 	//フェードのフラグがtrueでないとき
-	if (m_game->GetIsWave() != true)
-	{
+	//if (m_game->GetIsWave() != true)
+	//{
 		//毎フレーム距離はかる。
 		m_toPlayer = m_player->GetPosition() - m_position;
 
@@ -340,13 +342,13 @@ void DrUsurper::Update()
 			m_dir.Normalize();
 			m_dir *= 200.0f;
 		}
-	}
+	//}
 	
 	m_ghostPos = m_position + m_dir;
 
 	m_ghostObj.SetPosition(m_ghostPos);
 	m_ghostObj.SetRotation(m_rotation);
-	m_skinModelRender->SetScale({ 40.0, 40.0, 40.0 });
+	m_skinModelRender->SetScale({ 50.0f, 50.0f, 50.0 });
 	m_skinModelRender->SetRotation(m_rotation);
 	m_skinModelRender->SetPosition(m_position);
 	m_skinModelRender->PlayAnimation(m_animState, 1.0f / 60.0f);

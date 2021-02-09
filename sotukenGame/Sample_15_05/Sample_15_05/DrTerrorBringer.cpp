@@ -37,9 +37,9 @@ bool DrTerrorBringer::Start()
 		m_skinModelRender->Init("Assets/modelData/enemy/DragonTerrorBringer/red/DrTeBrRe.tkm", m_terrorbAnim->GetAnimationClip(), TerrorBringerAnimInfo::enTerrorBringerAnimClip_num);
 	}
 	//キャラコン初期化。
-	m_charaCon.Init(145.0f, 200.0f, m_position);
+	m_charaCon.Init(120.0f, 200.0f, m_position);
 	Vector3 ghostPos = m_position;
-	m_ghostObj.CreateBox(ghostPos, m_rotation, Vector3(50.0f, 50.0f, 50.0f));
+	m_ghostObj.CreateBox(ghostPos, m_rotation, Vector3(200.0f, 200.0f, 200.0f));
 
 	m_game = FindGO<Game>("Game");
 	m_player = FindGO<Player>("player");
@@ -87,11 +87,7 @@ void DrTerrorBringer::Turn()
 }
 void DrTerrorBringer::Scream()
 {
-	if (m_screamflag == true)
-	{
 		m_status = Scream_state;
-	}
-	
 }
 void DrTerrorBringer::Attack()
 {
@@ -193,8 +189,8 @@ void DrTerrorBringer::Update()
 			}
 			if (m_screamflag == false && m_status != Attack_state && m_status != WingClawAttack_state && m_status != FlameAttack_state && m_hp >0) {
 
-				Move();
-				Turn();
+				//Move();
+				//Turn();
 			}
 
 			//距離が近づくと。
@@ -226,13 +222,13 @@ void DrTerrorBringer::Update()
 				if (m_isFlameATK == true)
 				{
 					FlameAttack();
-				}
+				}				
 				if (m_FlameATKCount == 1)
 				{
 					m_screamflag = true;
-					m_FlameATKCount = 0;
 					m_ATKTwe = true;
 					m_ATKOne = false;
+					m_FlameATKCount = 0;
 				}
 			}
 			//パターン２
@@ -402,7 +398,7 @@ void DrTerrorBringer::Update()
 
 	m_ghostObj.SetPosition(m_ghostPos);
 	m_ghostObj.SetRotation(m_rotation);
-	m_skinModelRender->SetScale({ 40.0, 40.0, 40.0 });
+	m_skinModelRender->SetScale({ 50.0f, 50.0f, 50.0f });
 	m_skinModelRender->SetRotation(m_rotation);
 	m_skinModelRender->SetPosition(m_position);
 	m_skinModelRender->PlayAnimation(m_animState, 1.0f / 60.0f);

@@ -104,7 +104,9 @@ private:
 	bool                m_screamflag = true;            //咆哮フラグ
 	GhostObject			m_ghostObj;						//ゴースト。
 	int					m_deathCount = 0;				//死んだときのカウント。
-	CSoundSource* SE_Haul = nullptr;
+	CSoundSource* SE_Haul = nullptr;                    //咆哮音
+	//CSoundSource* SE_Fang = nullptr;                    //噛みつき音
+	//CSoundSource* SE_Claw = nullptr;                    //爪攻撃音
 
 };
 

@@ -161,8 +161,8 @@ void DrSoulEater::Update()
 		if (m_status != GetDamage_state) {
 			Scream();
 			if (m_status != Attack_state && m_hp >0) {
-				Move();
-				Turn();
+				//Move();
+				//Turn();
 			}
 
 			if (m_isATK == true)

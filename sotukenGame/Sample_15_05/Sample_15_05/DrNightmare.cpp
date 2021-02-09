@@ -38,9 +38,9 @@ bool DrNightmare::Start()
 		m_skinModelRender->Init("Assets/modelData/enemy/DragonNightmare/green/DrNmGr.tkm", m_nightmAnim->GetAnimationClip(), NightmAnimInfo::enNightmAnimClip_num);
 	}
 	//キャラコン初期化。
-	m_charaCon.Init(145.0f, 200.0f, m_position);
+	m_charaCon.Init(200.0f, 200.0f, m_position);
 	Vector3 ghostPos = m_position;
-	m_ghostObj.CreateBox(ghostPos, m_rotation, Vector3(50.0f, 50.0f, 50.0f));
+	m_ghostObj.CreateBox(ghostPos, m_rotation, Vector3(100.0f, 100.0f, 180.0f));
 
 	m_game = FindGO<Game>("Game");
 	m_player = FindGO<Player>("player");
@@ -51,9 +51,13 @@ bool DrNightmare::Start()
 	//HPを初期化。
 	m_hp = 200.0f;
 	m_hp *= m_magnificationHP;
+	//SEの初期化
 	SE_Haul = NewGO<CSoundSource>(0, "SE_Haul");
 	SE_Haul->Init(L"Assets/sound/SE_Dragon_Haul.wav");
-
+	/*SE_Fang = NewGO<CSoundSource>(0, "SE_Fang");
+	SE_Fang->Init(L"Assets/sound/SE_Dragon_Fang.wav");
+	SE_Claw = NewGO<CSoundSource>(0, "SE_Claw");
+	SE_Claw->Init(L"Assets/sound/SE_Dragon_Claw.wav");*/
 	return true;
 }
 
@@ -102,6 +106,7 @@ void DrNightmare::Scream()
 void DrNightmare::Attack()
 {
 	m_status = Attack_state;
+	//SE_Fang->Play(false);
 	CharacterController& charaCon = *m_player->GetCharacterController();
 	g_physics.ContactTestCharaCon(charaCon, [&](const btCollisionObject& collisionObject) {
 		if (m_ghostObj.IsSelf(collisionObject) == true) {
@@ -121,6 +126,7 @@ void DrNightmare::Attack()
 void DrNightmare::ClawAttack()
 {
 	m_status = ClawAttack_state;
+	//SE_Claw->Play(false);
 	CharacterController& charaCon = *m_player->GetCharacterController();
 	g_physics.ContactTestCharaCon(charaCon, [&](const btCollisionObject& collisionObject) {
 		if (m_ghostObj.IsSelf(collisionObject) == true) {
@@ -249,6 +255,7 @@ void DrNightmare::Update()
 			m_animState = NightmAnimInfo::enNi_BasicAttack;
 			m_count++;
 			m_isAttack = true;
+			
 			if (!m_skinModelRender->GetisAnimationPlaing()) {
 				m_status = Idle_state;
 				m_isAttack = false;
@@ -264,6 +271,7 @@ void DrNightmare::Update()
 			m_animState = NightmAnimInfo::enNi_ClawAttack;
 			m_count++;
 			m_isAttack = true;
+			
 			if (!m_skinModelRender->GetisAnimationPlaing()) {
 				m_status = Idle_state;
 				m_isAttack = false;
@@ -319,7 +327,7 @@ void DrNightmare::Update()
 
 	m_ghostObj.SetPosition(m_ghostPos);
 	m_ghostObj.SetRotation(m_rotation);
-	m_skinModelRender->SetScale({ 50.0, 50.0, 50.0 });
+	m_skinModelRender->SetScale({ 75.0, 75.0, 75.0 });
 	m_skinModelRender->SetRotation(m_rotation);
 	m_skinModelRender->SetPosition(m_position);
 	m_skinModelRender->PlayAnimation(m_animState, 1.0f / 60.0f);
