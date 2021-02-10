@@ -72,11 +72,11 @@ void DrNightmare::Move()
 		m_isBasicATK = false;
 		m_isClawATK = false;
 	}
-	if (m_toPlayer.Length() <= 300.0f && m_isClawATK == false && m_isHornATK == false)
+	if (m_toPlayer.Length() <= 400.0f && m_isClawATK == false && m_isHornATK == false)
 	{
 		m_isBasicATK = true;
 	}
-	if (m_toPlayer.Length() <= 300.0f && m_isBasicATK == false && m_isHornATK == false)
+	if (m_toPlayer.Length() <= 400.0f && m_isBasicATK == false && m_isHornATK == false)
 	{
 		m_isClawATK = true;
 	}
@@ -90,6 +90,7 @@ void DrNightmare::Move()
 	else {
 		m_status = Run_state;
 		m_movespeed = playerLen * 1.6f;
+		
 	}
 	
 	if (m_toPlayer.Length() <= 500.0f)
@@ -241,8 +242,8 @@ void DrNightmare::Update()
 				m_isClawATK = false;
 				m_isHornATK = false;
 				m_isHornATKcount = 0;
-				//m_isATKcount = 0;
-				//m_isClawATKcount = 0;
+				m_isATKcount = 0;
+				m_isClawATKcount = 0;
 			}
 			if (m_isClawATK == true && m_isBasicATK == false && m_isHornATK == false)
 			{
