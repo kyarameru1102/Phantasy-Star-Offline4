@@ -94,12 +94,13 @@ void DrNightmare::Move()
 	
 	if (m_toPlayer.Length() <= 500.0f)
 	{
-		m_position = m_oldpos;
+		m_movespeed = { 0.0f, 0.0f, 0.0f };
+		m_position = m_charaCon.Execute(1.0f, m_movespeed);
 	}
 	else {
 		m_movespeed.y = m_speedY;
 		m_position = m_charaCon.Execute(1.0f, m_movespeed);
-		m_oldpos = m_position;
+		
 	}
 	//m_movespeed.y = m_speedY;
 	//m_position = m_charaCon.Execute(1.0f, m_movespeed);

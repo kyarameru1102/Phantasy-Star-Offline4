@@ -55,8 +55,16 @@ bool DrUsurper::Start()
 
 void DrUsurper::Move()
 {
+	
 	Vector3 playerLen = m_toPlayer;
 	playerLen.Normalize();
+	m_hedboneNum = m_skinModelRender->GetModel().GetSkeleton().FindBoneID(L"Jaw01");
+	m_skinModelRender->GetModel().GetSkeleton().GetBone(m_hedboneNum)->CalcWorldTRS(
+		m_hedpos,
+		m_hedrot,
+		m_hedscale
+	);
+	m_toHedPlayer = m_player->GetPosition() - m_hedpos;
 	if (m_toPlayer.Length() <= 800.0f && m_isMouthATK == false && m_isFlameATK == false)
 	{
 		
@@ -87,14 +95,14 @@ void DrUsurper::Move()
 		m_movespeed = playerLen * 1.7f;
 		m_movespeed.y = m_speedY;
 	}
-	if (m_toPlayer.Length() <= 200.0f)
+	if (m_toPlayer.Length() <= 200.0f )
 	{
-		m_position = m_oldpos;
+		m_movespeed = { 0.0f, 0.0f, 0.0f };
+		m_position = m_charaCon.Execute(1.0f, m_movespeed);
 	}
 	else {
 		//m_movespeed.y = m_speedY;
 		m_position = m_charaCon.Execute(1.0f, m_movespeed);
-		m_oldpos = m_position;
 	}
 	//m_position = m_charaCon.Execute(1.0f, m_movespeed);
 	
@@ -115,67 +123,97 @@ void DrUsurper::Scream()
 }
 void DrUsurper::HandAttack()
 {
-	
 	m_status = HandAttack_state;
+	if (m_skinModelRender->GetisAnimationPlaing() == true && m_toPlayer.Length() >= 500)
+	{
+		m_hedboneNum = m_skinModelRender->GetModel().GetSkeleton().FindBoneID(L"Jaw01");
+		m_skinModelRender->GetModel().GetSkeleton().GetBone(m_hedboneNum)->CalcWorldTRS(
+			m_hedpos,
+			m_hedrot,
+			m_hedscale
+		);
+		m_RarmboneNum = m_skinModelRender->GetModel().GetSkeleton().FindBoneID(L"Hand_R");
+	    m_skinModelRender->GetModel().GetSkeleton().GetBone(m_RarmboneNum)->CalcWorldTRS(
+		m_Rarmpos,
+		m_Rarmrot,
+		m_Rarmscale
+	    );
+		m_LarmboneNum = m_skinModelRender->GetModel().GetSkeleton().FindBoneID(L"Hand_L");
+		m_skinModelRender->GetModel().GetSkeleton().GetBone(m_LarmboneNum)->CalcWorldTRS(
+			m_Larmpos,
+			m_Larmrot,
+			m_Larmscale
+		);
+		m_toLArmPlayer = m_player->GetPosition() - m_Larmpos;
+	    m_toRArmPlayer = m_player->GetPosition() - m_Rarmpos;
+		m_toHedPlayer = m_player->GetPosition() - m_hedpos;
+	}
 	
-	CharacterController& charaCon = *m_player->GetCharacterController();
-	g_physics.ContactTestCharaCon(charaCon, [&](const btCollisionObject& collisionObject) {
-		if (m_ghostObj.IsSelf(collisionObject) == true) {
-			if (m_isAttack && !m_ATKoff) {
-				if (m_count >= 60 && m_count <= 70) {
-					m_player->ReceiveDamage(m_attackPower);
-					m_ATKoff = true;
-					printf_s("Enemy_KOUGEKI\n");
-				}
+	if (m_toHedPlayer.Length() <= 1000 || m_toRArmPlayer.Length() <= 1000 || m_toLArmPlayer.Length() <= 1000)
+	{
+		if (m_isAttack && !m_ATKoff) {
+			if (m_count >= 60 && m_count <= 70) {
+				m_player->ReceiveDamage(m_attackPower);
+				m_ATKoff = true;
+				printf_s("Enemy_KOUGEKI\n");
 			}
 		}
-	});
+	}
+	
 }
 
 void DrUsurper::MouthAttack()
 {
-		m_status = MouthAttack_state;
-		
-		if (m_toHedPlayer.Length() <= 100)
-		{
-			if (m_isAttack && !m_ATKoff) {
-				if (m_count >= 60 && m_count <= 70) {
-					m_player->ReceiveDamage(m_attackPower);
-					m_ATKoff = true;
-					printf_s("Enemy_KOUGEKI\n");
-				}
+	m_status = MouthAttack_state;
+	if (m_skinModelRender->GetisAnimationPlaing() == true)
+	{
+		m_hedboneNum = m_skinModelRender->GetModel().GetSkeleton().FindBoneID(L"Jaw01");
+		m_skinModelRender->GetModel().GetSkeleton().GetBone(m_hedboneNum)->CalcWorldTRS(
+			m_hedpos,
+			m_hedrot,
+			m_hedscale
+		);
+		m_toHedPlayer = m_player->GetPosition() - m_hedpos;
+	}
+	
+	if (m_toHedPlayer.Length() <= 300)
+	{
+		if (m_isAttack && !m_ATKoff) {
+			if (m_count >= 60 && m_count <= 70) {
+				m_player->ReceiveDamage(m_attackPower);
+				m_ATKoff = true;
+				printf_s("Enemy_KOUGEKI\n");
 			}
 		}
-		/*CharacterController& charaCon = *m_player->GetCharacterController();
-		g_physics.ContactTestCharaCon(charaCon, [&](const btCollisionObject& collisionObject) {
-			if (m_ghostObj.IsSelf(collisionObject) == true) {
-				if (m_isAttack && !m_ATKoff) {
-					if (m_count >= 60 && m_count <= 70) {
-						m_player->ReceiveDamage(m_attackPower);
-						m_ATKoff = true;
-						printf_s("Enemy_KOUGEKI\n");
-					}
-				}
-			}
-		});*/
-	
+	}
+		
 }
 
 void DrUsurper::FlameAttack()
 {
-		m_status = FlameAttack_state;
-		CharacterController& charaCon = *m_player->GetCharacterController();
-		g_physics.ContactTestCharaCon(charaCon, [&](const btCollisionObject& collisionObject) {
-			if (m_ghostObj.IsSelf(collisionObject) == true) {
-				if (m_isAttack && !m_ATKoff) {
-					if (m_count >= 60 && m_count <= 70) {
-						m_player->ReceiveDamage(m_attackPower);
-						m_ATKoff = true;
-						printf_s("Enemy_KOUGEKI\n");
-					}
-				}
+	m_status = FlameAttack_state;
+	if (m_skinModelRender->GetisAnimationPlaing() == true)
+	{
+		m_hedboneNum = m_skinModelRender->GetModel().GetSkeleton().FindBoneID(L"Jaw01");
+		m_skinModelRender->GetModel().GetSkeleton().GetBone(m_hedboneNum)->CalcWorldTRS(
+			m_hedpos,
+			m_hedrot,
+			m_hedscale
+		);
+		m_toHedPlayer = m_player->GetPosition() - m_hedpos;
+	}
+	
+	if (m_toHedPlayer.Length() <= 1200)
+	{
+		if (m_isAttack && !m_ATKoff) {
+			if (m_count >= 60 && m_count <= 70) {
+				m_player->ReceiveDamage(m_attackPower);
+				m_ATKoff = true;
+				printf_s("Enemy_KOUGEKI\n");
 			}
-			});
+		}
+	}
+	
 	
 }
 
@@ -195,7 +233,7 @@ void DrUsurper::FlyFlame()
 					}
 				}
 			}
-			});
+		});
 	}
 }
 
@@ -220,12 +258,7 @@ void DrUsurper::Update()
 	{
 		//毎フレーム距離はかる。
 		m_toPlayer = m_player->GetPosition() - m_position;
-		m_boneNum = m_skinModelRender->GetModel().GetSkeleton().FindBoneID(L"Jaw01");
-		m_skinModelRender->GetModel().GetSkeleton().GetBone(m_boneNum)->CalcWorldTRS(
-			m_hedpos,
-			m_hedrot,
-			m_hedscale
-		);
+		
 		m_toHedPlayer = m_player->GetPosition() - m_hedpos;
 		//プレイヤーに近づく。
 		if (m_status != GetDamage_state) {
