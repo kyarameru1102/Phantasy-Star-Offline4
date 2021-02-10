@@ -35,17 +35,6 @@ Player::~Player()
 		DeleteGO(m_playerAnim);
 	}
 }
-void Player::InitSound()
-{
-	/*stageFilePaths[enSE_Player_Avoid] = L"enSE_Player_Avoid";
-	stageFilePaths[enSE_Player_Jump] = "";
-	stageFilePaths[enSE_Player_LevelUp] = "";
-	stageFilePaths[enSE_Player_WeaponChange] = "";
-	stageFilePaths[enSE_PlayerAttack_Blad] = "";
-	stageFilePaths[enSE_PlayerAttack_Sword] = "";
-	stageFilePaths[enSE_PlayerSpecialAttack_Blad] = "";
-	stageFilePaths[enSE_PlayerSpecialAttack_Sword] = "";*/
-}
 void Player::Sound(const wchar_t* filePath)
 {
 	//SEを再生する。
@@ -326,13 +315,20 @@ void Player::ReceiveDamageAndDeath()
 			else {
 				m_deathSoundTime = 60;
 			}
-			if (m_soundFlag != true && m_deathSoundTimer >= m_deathSoundTime) {
+			if (m_soundFlag != true && m_deathSoundTimer > m_deathSoundTime) {
 				Sound(L"Assets/sound/SE_Player_Death.wav");
 				m_soundFlag = true;
 			}
-			////動かないようにする。
-			//m_moveSpeed.x = 0.0f;
-			//m_moveSpeed.z = 0.0f;
+			else {
+				if (m_soundFlag != true) {
+					Sound(L"Assets/sound/SE_Player_Damage.wav");
+					m_soundFlag = true;
+				}
+				if (m_deathSoundTimer == m_deathSoundTime) {
+					m_soundFlag = false;
+				}
+				
+			}
 			if (m_attackAnimationFlag != false) {
 				//攻撃中なら、攻撃をやめる。
 				m_playerAttackAnim->AttackEnd();
@@ -365,31 +361,9 @@ void Player::ReceiveDamageAndDeath()
 		
 	}
 }
-//void Player::Death()
-//{
-//	if (m_playerHP <= 0.0f) {
-//		//HPが0になったので、死亡。
-//		//アニメーション設定。
-//		m_animState = enDeath_blad;
-//		//動かないようにする。
-//		m_moveSpeed.x = 0.0f;
-//		m_moveSpeed.z = 0.0f;
-//		if (m_attackAnimationFlag != false) {
-//			//攻撃中なら、攻撃をやめる。
-//			m_playerAttackAnim->AttackEnd();
-//		}
-//		if (!m_playerSkinModel->GetisAnimationPlaing()) {
-//			//アニメーションが終わった。
-//			m_deathFlag = true;
-//		}
-//	}
-//}
+
 bool Player::Start()
 {
-	/*stageFilePaths[] = {
-		L"Assets/modelData/stage_3_1.cmo"
-	}*/
-
 	//武器のインスタンス作成。
 	m_weapon[0] = NewGO<Weapon>(0, "weapon_01");
 	m_weapon[1] = NewGO<Weapon>(0, "weapon_02");
