@@ -233,8 +233,6 @@ void DrNightmare::Update()
 				m_isClawATK = true;
 				m_isBasicATK = false;
 				m_isHornATK = false;
-
-
 			}
 			if (m_isClawATKcount == 1)
 			{
