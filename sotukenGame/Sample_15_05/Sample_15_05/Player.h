@@ -21,17 +21,6 @@ enum {
 	attackS,//特殊攻撃。
 	
 };
-enum {
-	//音
-	enSE_Player_Avoid,
-	enSE_Player_Jump,
-	enSE_Player_LevelUp,
-	enSE_Player_WeaponChange,
-	enSE_PlayerAttack_Blad,
-	enSE_PlayerAttack_Sword,
-	enSE_PlayerSpecialAttack_Blad,
-	enSE_PlayerSpecialAttack_Sword
-};
 /// <summary>
 /// プレイヤークラス。
 /// </summary>
@@ -46,7 +35,6 @@ public:
 	/// デストラクタ。
 	/// </summary>
 	~Player();
-	void InitSound();
 	/// <summary>
 	/// 音を出す。
 	/// </summary>
@@ -439,7 +427,6 @@ private:
 	bool m_specialAttackFlag = false; //特殊攻撃フラグ。
 	int m_attackState = enNormalState; //攻撃の状態。
 
-	wchar_t* stageFilePaths[8];
 	bool m_soundFlag = false;
 	int m_deathSoundTime = 0;
 	int m_deathSoundTimer = 0;
