@@ -118,7 +118,7 @@ void DrTerrorBringer::Attack()
 		m_toJawPlayer = m_player->GetPosition() - m_jawpos;
 
 		
-		if (m_toJawPlayer.Length() <= 300)
+		if (m_toJawPlayer.Length() <= 200)
 		{
 			if (m_isAttack && !m_ATKoff) {
 				if (m_count >= 60 && m_count <= 70) {
@@ -158,7 +158,7 @@ void DrTerrorBringer::WingClawAttack()
 		m_armscale
 	);
 	m_toArmPlayer = m_player->GetPosition() - m_armpos;
-	if (m_toArmPlayer.Length() <= 300)
+	if (m_toArmPlayer.Length() <= 200)
 	{
 		if (m_isAttack && !m_ATKoff) {
 			if (m_count >= 60 && m_count <= 70) {

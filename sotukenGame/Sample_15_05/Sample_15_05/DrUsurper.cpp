@@ -95,7 +95,7 @@ void DrUsurper::Move()
 		m_movespeed = playerLen * 1.7f;
 		m_movespeed.y = m_speedY;
 	}
-	if (m_toPlayer.Length() <= 200.0f )
+	if (m_toPlayer.Length() <= 300.0f )
 	{
 		m_movespeed = { 0.0f, 0.0f, 0.0f };
 		m_position = m_charaCon.Execute(1.0f, m_movespeed);
@@ -149,7 +149,7 @@ void DrUsurper::HandAttack()
 		m_toHedPlayer = m_player->GetPosition() - m_hedpos;
 	}
 	
-	if (m_toHedPlayer.Length() <= 1000 || m_toRArmPlayer.Length() <= 1000 || m_toLArmPlayer.Length() <= 1000)
+	if (m_toHedPlayer.Length() <= 700 || m_toRArmPlayer.Length() <= 500 || m_toLArmPlayer.Length() <= 700)
 	{
 		if (m_isAttack && !m_ATKoff) {
 			if (m_count >= 60 && m_count <= 70) {
@@ -176,7 +176,7 @@ void DrUsurper::MouthAttack()
 		m_toHedPlayer = m_player->GetPosition() - m_hedpos;
 	}
 	
-	if (m_toHedPlayer.Length() <= 300)
+	if (m_toHedPlayer.Length() <= 200)
 	{
 		if (m_isAttack && !m_ATKoff) {
 			if (m_count >= 60 && m_count <= 70) {
