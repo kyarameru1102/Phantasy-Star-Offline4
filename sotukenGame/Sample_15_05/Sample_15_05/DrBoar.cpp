@@ -265,10 +265,12 @@ void DrBoar::Update()
 			break;
 		case GetDamage_state:
 			m_animState = BoarAnimInfo::enBo_Gethit;
+			Sound(L"Assets/sound/SE_Dragon_Damage.wav");
 			m_isAttack = false;
 			m_ATKoff = false;
 			m_count = 0;
 			if (!m_skinModelRender->GetisAnimationPlaing()) {
+				m_soundFlag = false;
 				m_status = Idle_state;
 				m_animState = BoarAnimInfo::enBo_Idle;
 				m_skinModelRender->PlayAnimation(m_animState, 0.0f);

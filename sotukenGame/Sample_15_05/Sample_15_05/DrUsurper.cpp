@@ -382,10 +382,12 @@ void DrUsurper::Update()
 			break;
 		case GetDamage_state:
 			m_animState = UsurperAnimInfo::enUs_Gethit;
+			Sound(L"Assets/sound/SE_Dragon_Damage.wav");
 			m_isAttack = false;
 			m_ATKoff = false;
 			m_count = 0;
 			if (!m_skinModelRender->GetisAnimationPlaing()) {
+				m_soundFlag = false;
 				m_status = Idle_state;
 				m_animState = UsurperAnimInfo::enUs_Idle01;
 				m_skinModelRender->PlayAnimation(m_animState, 0.0f);
