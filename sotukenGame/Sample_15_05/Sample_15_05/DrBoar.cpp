@@ -278,6 +278,7 @@ void DrBoar::Update()
 			break;
 		case Die_state:
 			m_animState = BoarAnimInfo::enBo_Die;
+			Sound(L"Assets/sound/SE_Dragon_Die.wav");
 			break;
 		default:
 			break;
