@@ -253,6 +253,7 @@ void DrSoulEater::Update()
 			break;
 		case Die_state:
 			m_animState = SoulEaterAnimInfo::enSo_Die;
+			Sound(L"Assets/sound/SE_Dragon_Die2.wav");
 			break;
 		default:
 			break;

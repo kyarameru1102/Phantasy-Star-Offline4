@@ -343,6 +343,7 @@ void DrNightmare::Update()
 			break;
 		case Die_state:
 			m_animState = NightmAnimInfo::enNi_Die;
+			Sound(L"Assets/sound/SE_Dragon_Die2.wav");
 			break;
 		default:
 			break;
