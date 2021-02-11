@@ -55,7 +55,7 @@ int WINAPI wWinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPWSTR lpCmdLi
 	soundEngine.Init();
 
 	Stopwatch sw;
-	NewGO<Title>(0, "Title");
+	NewGO<EnBehaviorTest>(0, "Title");
 
 	// ここからゲームループ。
 	while (DispatchWindowMessage())

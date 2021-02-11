@@ -303,9 +303,10 @@ void DrTerrorBringer::Update()
 
 			case Scream_state:
 				m_animState = TerrorBringerAnimInfo::enTe_Scream;
-
+				Sound(L"Assets/sound/SE_Dragon_Haul.wav");
 				if (!m_skinModelRender->GetisAnimationPlaing())
 				{
+					m_soundFlag = false;
 					m_screamflag = false;
 					m_animState = TerrorBringerAnimInfo::enTe_Idle01;
 					m_skinModelRender->PlayAnimation(m_animState, 0.0f);
@@ -315,10 +316,12 @@ void DrTerrorBringer::Update()
 				m_animState = TerrorBringerAnimInfo::enTe_BasicAttack;
 				m_count++;
 				m_isAttack = true;
+				Sound(L"Assets/sound/SE_Dragon_Fang.wav");
 				if (!m_skinModelRender->GetisAnimationPlaing()) {
 					m_status = Idle_state;
 					m_isAttack = false;
 					m_ATKoff = false;
+					m_soundFlag = false;
 					m_count = 0;
 					m_FangATKCount++;
 					m_isFangATK = false;
@@ -344,10 +347,12 @@ void DrTerrorBringer::Update()
 				m_animState = TerrorBringerAnimInfo::enTe_WingClawAttack;
 				m_count++;
 				m_isAttack = true;
+				Sound(L"Assets/sound/SE_Dragon_Claw.wav");
 				if (!m_skinModelRender->GetisAnimationPlaing()) {
 					m_status = Idle_state;
 					m_isAttack = false;
 					m_ATKoff = false;
+					m_soundFlag = false;
 					m_count = 0;
 					m_ClawATKCont++;
 					m_isClawATK = false;
@@ -360,10 +365,12 @@ void DrTerrorBringer::Update()
 				m_animState = TerrorBringerAnimInfo::enTe_FlameAttack;
 				m_count++;
 				m_isAttack = true;
+				Sound(L"Assets/sound/SE_Dragon_Haul2.wav");
 				if (!m_skinModelRender->GetisAnimationPlaing()) {
 					m_status = Idle_state;
 					m_isAttack = false;
 					m_ATKoff = false;
+					m_soundFlag = false;
 					m_count = 0;
 					m_FlameATKCount++;
 					m_Flametotal++;

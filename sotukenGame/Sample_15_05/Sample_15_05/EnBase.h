@@ -1,6 +1,6 @@
 #pragma once
 #include "Physics/Character/CharacterController.h"
-
+#include "sound/SoundSource.h"
 /// <summary>
 /// 敵基底クラス
 /// </summary>
@@ -17,6 +17,23 @@ public:
 	/// デストラクタ
 	/// </summary>
 	~EnBase();
+	/// <summary>
+	/// 音を出す。
+	/// </summary>
+	void Sound(const wchar_t* filePath)
+	{
+		//SEを再生する。
+		if (m_soundFlag == false)
+		{
+			CSoundSource* SE_Recovery = NewGO<CSoundSource>(0);
+			SE_Recovery->Init(filePath);
+			SE_Recovery->Play(false);
+			
+			m_soundFlag = true;
+		}
+		
+		
+	}
 	/// <summary>
 	/// 座標を返す。
 	/// </summary>
@@ -173,6 +190,8 @@ protected:
 	Vector3				m_dir, m_ghostPos;
 	float               m_attackPower = 0.0f;                   //攻撃力。Start関数で初期化する。
 	float               m_magnificationAP = 1.0f;               //攻撃力の倍率。
+	bool m_soundFlag = false;
+	
 };
 
 

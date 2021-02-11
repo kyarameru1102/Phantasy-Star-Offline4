@@ -51,13 +51,8 @@ bool DrNightmare::Start()
 	//HP‚ğ‰Šú‰»B
 	m_hp = 200.0f;
 	m_hp *= m_magnificationHP;
-	//SE‚Ì‰Šú‰»
-	SE_Haul = NewGO<CSoundSource>(0, "SE_Haul");
-	SE_Haul->Init(L"Assets/sound/SE_Dragon_Haul.wav");
-	/*SE_Fang = NewGO<CSoundSource>(0, "SE_Fang");
-	SE_Fang->Init(L"Assets/sound/SE_Dragon_Fang.wav");
-	SE_Claw = NewGO<CSoundSource>(0, "SE_Claw");
-	SE_Claw->Init(L"Assets/sound/SE_Dragon_Claw.wav");*/
+	
+	
 	return true;
 }
 
@@ -127,7 +122,7 @@ void DrNightmare::Attack()
 		m_jawscale
 	);
 	m_toJawPlayer = m_player->GetPosition() - m_jawpos;
-	//SE_Fang->Play(false);
+	
 	if (m_toJawPlayer.Length() <= 200)
 	{
 		if (m_isAttack && !m_ATKoff) {
@@ -270,12 +265,12 @@ void DrNightmare::Update()
 			break;
 		case Scream_state:
 			m_animState = NightmAnimInfo::enNi_Scream;
+			Sound(L"Assets/sound/SE_Dragon_Haul.wav");
 			
-			SE_Haul->Play(true);
 			if (!m_skinModelRender->GetisAnimationPlaing())
 			{
+				m_soundFlag = false;
 				m_screamflag = false;
-				SE_Haul->Stop();
 				m_animState = NightmAnimInfo::enNi_Idle01;
 				m_skinModelRender->PlayAnimation(m_animState, 0.0f);
 			}
@@ -284,11 +279,12 @@ void DrNightmare::Update()
 			m_animState = NightmAnimInfo::enNi_BasicAttack;
 			m_count++;
 			m_isAttack = true;
-			
+			Sound(L"Assets/sound/SE_Dragon_Fang.wav");
 			if (!m_skinModelRender->GetisAnimationPlaing()) {
 				m_status = Idle_state;
 				m_isAttack = false;
 				m_ATKoff = false;
+				m_soundFlag = false;
 				m_count = 0;
 				m_isATKcount++;
 				m_isBasicATK = false;
@@ -300,11 +296,12 @@ void DrNightmare::Update()
 			m_animState = NightmAnimInfo::enNi_ClawAttack;
 			m_count++;
 			m_isAttack = true;
-			
+			Sound(L"Assets/sound/SE_Dragon_Claw.wav");
 			if (!m_skinModelRender->GetisAnimationPlaing()) {
 				m_status = Idle_state;
 				m_isAttack = false;
 				m_ATKoff = false;
+				m_soundFlag = false;
 				m_count = 0;
 				m_isClawATKcount++;
 				m_isClawATK = false;
@@ -316,10 +313,12 @@ void DrNightmare::Update()
 			m_animState = NightmAnimInfo::enNi_HornAttack;
 			m_count++;
 			m_isAttack = true;
+			Sound(L"Assets/sound/SE_Dragon_Fang.wav");
 			if (!m_skinModelRender->GetisAnimationPlaing()) {
 				m_status = Idle_state;
 				m_isAttack = false;
 				m_ATKoff = false;
+				m_soundFlag = false;
 				m_count = 0;
 				m_isHornATKcount++;
 				m_isHornATK = false;
