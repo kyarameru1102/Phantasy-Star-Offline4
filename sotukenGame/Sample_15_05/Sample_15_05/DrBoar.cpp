@@ -183,8 +183,8 @@ void DrBoar::Die()
 void DrBoar::Update()
 {
 	//フェードフラグがtrueで無い時
-	//if (m_game->GetIsWave() != true)
-	//{
+	if (m_game->GetIsWave() != true)
+	{
 		//毎フレーム距離はかる。
 		m_toPlayer = m_player->GetPosition() - m_position;
 
@@ -230,6 +230,10 @@ void DrBoar::Update()
 			break;
 		case Walk_state:
 			m_animState = BoarAnimInfo::enBo_Walk;
+			//WalkSound(L"Assets/sound/SE_Dragon_Walk.wav");
+			if (!m_skinModelRender->GetisAnimationPlaing()) {
+				m_soundFlag = false;
+			}
 			break;
 		case Attack_state:
 			m_animState = BoarAnimInfo::enBo_Attack;
@@ -252,11 +256,12 @@ void DrBoar::Update()
 			m_animState = BoarAnimInfo::enBo_Hornattack;
 			m_count++;
 			m_isAttack = true;
-
+			Sound(L"Assets/sound/SE_Dragon_Fang.wav");
 			if (!m_skinModelRender->GetisAnimationPlaing()) {
 				m_status = Idle_state;
 				m_isAttack = false;
 				m_ATKoff = false;
+				m_soundFlag = false;
 				m_ishornATKFlag = true;
 				m_count = 0;
 				m_animState = BoarAnimInfo::enBo_Idle;
@@ -289,7 +294,7 @@ void DrBoar::Update()
 			m_dir.Normalize();
 			m_dir *= 200.0f;
 		}
-	//}
+	}
 	
 	m_ghostPos = m_position + m_dir;
 

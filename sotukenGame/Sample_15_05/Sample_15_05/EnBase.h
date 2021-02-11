@@ -31,8 +31,18 @@ public:
 			
 			m_soundFlag = true;
 		}
-		
-		
+	}
+	void WalkSound(const wchar_t* filePath)
+	{
+		//SE‚ğÄ¶‚·‚éB
+		if (m_soundFlag == false)
+		{
+			CSoundSource* SE_Recovery = NewGO<CSoundSource>(0);
+			SE_Recovery->Init(filePath);
+			SE_Recovery->Play(true);
+
+			//m_soundFlag = true;
+		}
 	}
 	/// <summary>
 	/// À•W‚ğ•Ô‚·B
