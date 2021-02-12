@@ -183,7 +183,6 @@ private:
 	SpriteRender* m_scoreSR[Result_Score_Num] = { nullptr };							//スプライトレンダー。
 	SpriteRender* m_rankSR[Rank_Num] = { nullptr };							//スプライトレンダー。
 
-	Fade* fadein[1] = { nullptr };
 private:
 	//定数たち（各処理ごとに分けてます。）
 	const Vector3 RESULT_BACKGROUND_POS = { 0.0f,0.0f,0.0f };	//背景用テクスチャの座標。

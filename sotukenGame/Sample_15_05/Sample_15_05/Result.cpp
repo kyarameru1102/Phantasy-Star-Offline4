@@ -13,6 +13,38 @@ Result::Result()
 {}
 Result::~Result() 
 {
+	for (int i = 0; i < Result_ScoreNum; i++)
+	{
+		DeleteGO(m_fontNumber[i]);
+	}
+	for (int i = 0; i < Result_BattleResult_Num; i++)
+	{
+		DeleteGO(m_battleResultSR[i]);
+	}
+	for (int i = 0; i < Result_TimeScore_Num; i++)
+	{
+		DeleteGO(m_timeSR[i]);
+	}
+	for (int i = 0; i < Result_ClearFloorScore_Num; i++)
+	{
+		DeleteGO(m_clearFloorSR[i]);
+	}
+	for (int i = 0; i < Result_LastLevelScore_Num; i++)
+	{
+		DeleteGO(m_lastLevelSR[i]);
+	}
+	for (int i = 0; i < Result_EnemyScore_Num; i++)
+	{
+		DeleteGO(m_enemyScoreSR[i]);
+	}
+	for (int i = 0; i < Result_Score_Num; i++)
+	{
+		DeleteGO(m_scoreSR[i]);
+	}
+	for (int i = 0; i < Rank_Num; i++)
+	{
+		DeleteGO(m_rankSR[i]);
+	}
 
 }
 
