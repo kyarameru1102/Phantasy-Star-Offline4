@@ -70,10 +70,10 @@ bool DrTerrorBringer::Start()
 	m_game = FindGO<Game>("Game");
 	m_player = FindGO<Player>("player");
 	//UŒ‚—Í‚ğ‰Šú‰»B
-	m_attackPower = 10.0f;
+	
 	m_attackPower *= m_magnificationAP;
 	//HP‚ğ‰Šú‰»B
-	m_hp = 200.0f;
+	
 	m_hp *= m_magnificationHP;
 	return true;
 }

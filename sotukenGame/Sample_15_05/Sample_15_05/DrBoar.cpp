@@ -65,11 +65,11 @@ bool DrBoar::Start()
 	m_game = FindGO<Game>("Game");
 
 	//攻撃力を初期化。
-	//m_attackPower = 10.0f;
+	
 	//攻撃力に倍率をかける。
 	m_attackPower *= m_magnificationAP;
 	//HPを初期化。
-	//m_hp = 100.0f;
+	
 	//HPに倍率をかける。
 	m_hp *= m_magnificationHP;
 
