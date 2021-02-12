@@ -17,48 +17,61 @@ bool DrBoar::Start()
 	//プレイヤーのアニメーションのインスタンス作成。
 	m_boarAnim = NewGO<BoarAnimation>(0, "boarAnim");
 	//配色を決める。
-	m_appearcolor = boarcolor[rand() % boarcolor.size()];
+	//m_appearcolor = boarcolor[rand() % boarcolor.size()];
 	//モデルの初期化
-	if (m_appearcolor == 1) {
+	if (m_basicStatusNum == en1) {
 		m_skinModelRender = NewGO<SkinModelRender>(0);
 		m_skinModelRender->Init("Assets/modelData/enemy/DragonBoar/Blue/DrBoarBl.tkm", m_boarAnim->GetAnimationClip(), BoarAnimInfo::enBoarAnimClip_num);
-		//m_position = { 300.0f, 0.0f, -100.0f };
+		//攻撃力を初期化。
+		m_attackPower = 20.0f;
+		//HPを初期化。
+		m_hp = 100.0f;
 	}
-	else if (m_appearcolor == 2)
+	else if (m_basicStatusNum == en2)
 	{
 		m_skinModelRender = NewGO<SkinModelRender>(0);
 		m_skinModelRender->Init("Assets/modelData/enemy/DragonBoar/Gold/DrBoarGo.tkm", m_boarAnim->GetAnimationClip(), BoarAnimInfo::enBoarAnimClip_num);
-		//m_position = { 300.0f, 0.0f, 100.0f };
+		//攻撃力を初期化。
+		m_attackPower = 20.0f;
+		//HPを初期化。
+		m_hp = 150.0f;
 	}
-	else if (m_appearcolor == 3)
+	else if (m_basicStatusNum == en3)
 	{
 		m_skinModelRender = NewGO<SkinModelRender>(0);
 		m_skinModelRender->Init("Assets/modelData/enemy/DragonBoar/Green/DrBoarGr.tkm", m_boarAnim->GetAnimationClip(), BoarAnimInfo::enBoarAnimClip_num);
-		//m_position = { -300.0f, 0.0f, -100.0f };
+		//攻撃力を初期化。
+		m_attackPower = 25.0f;
+		//HPを初期化。
+		m_hp = 200.0f;
 	}
-	else if (m_appearcolor == 4)
+	else if (m_basicStatusNum == en4)
 	{
 		m_skinModelRender = NewGO<SkinModelRender>(0);
 		m_skinModelRender->Init("Assets/modelData/enemy/DragonBoar/Red/DrBoarRe.tkm", m_boarAnim->GetAnimationClip(), BoarAnimInfo::enBoarAnimClip_num);
-		//m_position = { -300.0f, 0.0f, 100.0f };
+		//攻撃力を初期化。
+		m_attackPower = 25.0f;
+		//HPを初期化。
+		m_hp = 250.0f;
 	}
-	
+
 	//.SetRotationDegY(90.0f);
 	//キャラコン初期化。
 	m_charaCon.Init(145.0f, 200.0f, m_position);
 	Vector3 ghostPos = m_position;
-	m_ghostObj.CreateBox(ghostPos, m_rotation, Vector3(50.0f, 50.0f, 50.0f));
+	m_ghostObj.CreateBox(ghostPos, m_rotation, Vector3(60.0f, 50.0f, 60.0f));
 
 	m_player = FindGO<Player>("player");
 	m_game = FindGO<Game>("Game");
 
 	//攻撃力を初期化。
-	m_attackPower = 10.0f;
+	
+	//攻撃力に倍率をかける。
 	m_attackPower *= m_magnificationAP;
 	//HPを初期化。
-	m_hp = 100.0f;
+	
+	//HPに倍率をかける。
 	m_hp *= m_magnificationHP;
-
 
 	return true;
 }
@@ -68,10 +81,18 @@ void DrBoar::Move()
 	m_status = Walk_state;
 	Vector3 playerLen = m_toPlayer;
 	playerLen.Normalize();
-	m_movespeed = playerLen * 1.4f;
-	
-	m_movespeed.y = m_speedY;
-	m_position = m_charaCon.Execute(1.0f, m_movespeed);
+	m_movespeed = playerLen * 1.6f;
+	if (m_toPlayer.Length() <= 150.0f)
+	{
+		m_movespeed = { 0.0f, 0.0f, 0.0f };
+		m_position = m_charaCon.Execute(1.0f, m_movespeed);
+	}
+	else {
+		m_movespeed.y = m_speedY;
+		m_position = m_charaCon.Execute(1.0f, m_movespeed);
+	}
+	//m_movespeed.y = m_speedY;
+	//m_position = m_charaCon.Execute(1.0f, m_movespeed);
 	
 }
 void DrBoar::AttackMove()
@@ -94,9 +115,18 @@ void DrBoar::AttackMove()
 	else {
 		m_movespeed = playerLen * 1.3f;
 	}
+	if (m_toPlayer.Length() <= 150.0f)
+	{
+		m_movespeed = { 0.0f, 0.0f, 0.0f };
+		m_position = m_charaCon.Execute(1.0f, m_movespeed);
+	}
+	else {
+		m_movespeed.y = m_speedY;
+		m_position = m_charaCon.Execute(1.0f, m_movespeed);
+		m_oldpos = m_position;
+	}
 	
-	m_movespeed.y = m_speedY;
-	m_position = m_charaCon.Execute(1.0f, m_movespeed);
+	
 }
 void DrBoar::Turn()
 {
@@ -110,12 +140,13 @@ void DrBoar::Attack()
 	if (m_toPlayer.Length() <= 200.0f && m_isATK == true)
 	{
 		m_status = Attack_state;
+		
 		CharacterController& charaCon = *m_player->GetCharacterController();
 		g_physics.ContactTestCharaCon(charaCon, [&](const btCollisionObject& collisionObject) {
 			if (m_ghostObj.IsSelf(collisionObject) == true) {
 				if (m_isAttack && !m_ATKoff) {
 					if (m_count >= 60 && m_count <= 70) {
-						m_player->ReceiveDamage(10);
+						m_player->ReceiveDamage(m_attackPower);
 						m_ATKoff = true;
 						printf_s("Enemy_KOUGEKI\n");
 					}
@@ -137,7 +168,7 @@ void DrBoar::HornAttack()
 			if (m_ghostObj.IsSelf(collisionObject) == true) {
 				if (m_isAttack && !m_ATKoff) {
 					if (m_count >= 60 && m_count <= 70) {
-						m_player->ReceiveDamage(10);
+						m_player->ReceiveDamage(m_attackPower);
 						m_ATKoff = true;
 						printf_s("Enemy_KOUGEKI\n");
 					}
@@ -212,15 +243,22 @@ void DrBoar::Update()
 			break;
 		case Walk_state:
 			m_animState = BoarAnimInfo::enBo_Walk;
+			//WalkSound(L"Assets/sound/SE_Dragon_Walk.wav");
+			if (!m_skinModelRender->GetisAnimationPlaing()) {
+				m_soundFlag = false;
+			}
 			break;
 		case Attack_state:
 			m_animState = BoarAnimInfo::enBo_Attack;
 			m_count++;
 			m_isAttack = true;
+		    Sound(L"Assets/sound/SE_Dragon_Fang.wav");
 			if (!m_skinModelRender->GetisAnimationPlaing()) {
 				m_status = Idle_state;
 				m_isAttack = false;
 				m_ATKoff = false;
+				m_soundFlag = false;
+				//m_secount = 0;
 				m_isATKcount += 1;
 				m_count = 0;
 				m_animState = BoarAnimInfo::enBo_Idle;
@@ -231,10 +269,12 @@ void DrBoar::Update()
 			m_animState = BoarAnimInfo::enBo_Hornattack;
 			m_count++;
 			m_isAttack = true;
+			Sound(L"Assets/sound/SE_Dragon_Fang.wav");
 			if (!m_skinModelRender->GetisAnimationPlaing()) {
 				m_status = Idle_state;
 				m_isAttack = false;
 				m_ATKoff = false;
+				m_soundFlag = false;
 				m_ishornATKFlag = true;
 				m_count = 0;
 				m_animState = BoarAnimInfo::enBo_Idle;
@@ -243,10 +283,12 @@ void DrBoar::Update()
 			break;
 		case GetDamage_state:
 			m_animState = BoarAnimInfo::enBo_Gethit;
+			Sound(L"Assets/sound/SE_Dragon_Damage.wav");
 			m_isAttack = false;
 			m_ATKoff = false;
 			m_count = 0;
 			if (!m_skinModelRender->GetisAnimationPlaing()) {
+				m_soundFlag = false;
 				m_status = Idle_state;
 				m_animState = BoarAnimInfo::enBo_Idle;
 				m_skinModelRender->PlayAnimation(m_animState, 0.0f);
@@ -254,6 +296,7 @@ void DrBoar::Update()
 			break;
 		case Die_state:
 			m_animState = BoarAnimInfo::enBo_Die;
+			Sound(L"Assets/sound/SE_Dragon_Die.wav");
 			break;
 		default:
 			break;

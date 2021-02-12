@@ -85,7 +85,7 @@ void DrSoulEater::Attack()
 			if (m_ghostObj.IsSelf(collisionObject) == true) {
 				if (m_isAttack && !m_ATKoff) {
 					if (m_count >= 60 && m_count <= 70) {
-						m_player->ReceiveDamage(10);
+						m_player->ReceiveDamage(m_attackPower);
 						m_ATKoff = true;
 						printf_s("Enemy_KOUGEKI\n");
 					}
@@ -105,7 +105,7 @@ void DrSoulEater::TailAttack()
 			if (m_ghostObj.IsSelf(collisionObject) == true) {
 				if (m_isAttack && !m_ATKoff) {
 					if (m_count >= 60 && m_count <= 70) {
-						m_player->ReceiveDamage(10);
+						m_player->ReceiveDamage(m_attackPower);
 						m_ATKoff = true;
 						printf_s("Enemy_KOUGEKI\n");
 					}
@@ -125,7 +125,7 @@ void DrSoulEater::FireballShoot()
 			if (m_ghostObj.IsSelf(collisionObject) == true) {
 				if (m_isAttack && !m_ATKoff) {
 					if (m_count >= 60 && m_count <= 70) {
-						m_player->ReceiveDamage(10);
+						m_player->ReceiveDamage(m_attackPower);
 						m_ATKoff = true;
 						printf_s("Enemy_KOUGEKI\n");
 					}
@@ -160,9 +160,9 @@ void DrSoulEater::Update()
 		//プレイヤーに近づく。
 		if (m_status != GetDamage_state) {
 			Scream();
-			if (m_status != Attack_state && m_status != Die_state) {
-				Move();
-				Turn();
+			if (m_status != Attack_state && m_hp >0) {
+				//Move();
+				//Turn();
 			}
 
 			if (m_isATK == true)
@@ -253,6 +253,7 @@ void DrSoulEater::Update()
 			break;
 		case Die_state:
 			m_animState = SoulEaterAnimInfo::enSo_Die;
+			Sound(L"Assets/sound/SE_Dragon_Die2.wav");
 			break;
 		default:
 			break;

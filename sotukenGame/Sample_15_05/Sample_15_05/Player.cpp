@@ -35,17 +35,6 @@ Player::~Player()
 		DeleteGO(m_playerAnim);
 	}
 }
-void Player::InitSound()
-{
-	/*stageFilePaths[enSE_Player_Avoid] = L"enSE_Player_Avoid";
-	stageFilePaths[enSE_Player_Jump] = "";
-	stageFilePaths[enSE_Player_LevelUp] = "";
-	stageFilePaths[enSE_Player_WeaponChange] = "";
-	stageFilePaths[enSE_PlayerAttack_Blad] = "";
-	stageFilePaths[enSE_PlayerAttack_Sword] = "";
-	stageFilePaths[enSE_PlayerSpecialAttack_Blad] = "";
-	stageFilePaths[enSE_PlayerSpecialAttack_Sword] = "";*/
-}
 void Player::Sound(const wchar_t* filePath)
 {
 	//SEを再生する。
@@ -74,9 +63,16 @@ void Player::GetExperiencePoint(const float experiencePoint)
 		//次に必要なレベルを1.1倍に増やす。
 		m_nextExperiencePoint *= 1.1f;
 		if (m_playerLevel > m_levelToOpen) {
-			m_attackAnimNumX = 4;
+			/*m_attackAnimNumX = 4;
 			m_attackAnimNumY = 3;
-			m_levelToOpen = 99999;
+			m_levelToOpen = 99999;*/
+			if (m_attackAnimNumX < 4) {
+				m_attackAnimNumX++;
+			}
+			if (m_attackAnimNumY < 3) {
+				m_attackAnimNumY++;
+			}
+			m_levelToOpen += 10;
 		}
 		Sound(L"Assets/sound/SE_Player_LevelUp.wav");
 	}
@@ -309,51 +305,73 @@ void Player::Rotation()
 	}
 	m_playerSkinModel->SetRotation(m_rotation);
 }
-void Player::ReceiveDamage()
+void Player::ReceiveDamageAndDeath()
 {
 	if (m_playerHP < m_beforeHp) {
-		//ダメージを受けた。
-		//アニメーション設定。
-		m_animState = enHit_blad;
 		//動かないようにする。
 		m_moveSpeed.x = 0.0f;
 		m_moveSpeed.z = 0.0f;
-		//m_doNothingFlag = true;
-		if (m_attackAnimationFlag != false) {
-			//攻撃中なら、攻撃をやめる。
-			m_playerAttackAnim->AttackEnd();
+		if (m_playerHP <= 0.0f) {
+			//HPが0になったので、死亡。
+		    //アニメーション設定。
+			m_animState = enDeath_blad;
+			m_deathSoundTimer++;
+			if (m_weaponState == enBladState) {
+				m_deathSoundTime = 105;
+			}
+			else {
+				m_deathSoundTime = 60;
+			}
+			if (m_soundFlag != true && m_deathSoundTimer > m_deathSoundTime) {
+				Sound(L"Assets/sound/SE_Player_Death.wav");
+				m_soundFlag = true;
+			}
+			else {
+				if (m_soundFlag != true) {
+					Sound(L"Assets/sound/SE_Player_Damage.wav");
+					m_soundFlag = true;
+				}
+				if (m_deathSoundTimer == m_deathSoundTime) {
+					m_soundFlag = false;
+				}
+				
+			}
+			if (m_attackAnimationFlag != false) {
+				//攻撃中なら、攻撃をやめる。
+				m_playerAttackAnim->AttackEnd();
+			}
+			if (!m_playerSkinModel->GetisAnimationPlaing()) {
+				//アニメーションが終わった。
+				m_deathFlag = true;
+				m_soundFlag = false;
+				m_deathSoundTimer = 0;
+				SetIsDead();
+			}
 		}
-		if (!m_playerSkinModel->GetisAnimationPlaing()) {
-			//アニメーションが終わった。
-			m_beforeHp = m_playerHP;
+		else {
+			//ダメージを受けた。
+		    //アニメーション設定。
+			m_animState = enHit_blad;
+			if (m_soundFlag != true) {
+				Sound(L"Assets/sound/SE_Player_Damage.wav");
+				m_soundFlag = true;
+			}
+			if (m_attackAnimationFlag != false) {
+				//攻撃中なら、攻撃をやめる。
+				m_playerAttackAnim->AttackEnd();
+			}
+			if (!m_playerSkinModel->GetisAnimationPlaing()) {
+				//アニメーションが終わった。
+				m_beforeHp = m_playerHP;
+				m_soundFlag = false;
+			}
 		}
+		
 	}
 }
-void Player::Death()
-{
-	if (m_playerHP <= 0.0f) {
-		//HPが0になったので、死亡。
-		//アニメーション設定。
-		m_animState = enDeath_blad;
-		//動かないようにする。
-		m_moveSpeed.x = 0.0f;
-		m_moveSpeed.z = 0.0f;
-		if (m_attackAnimationFlag != false) {
-			//攻撃中なら、攻撃をやめる。
-			m_playerAttackAnim->AttackEnd();
-		}
-		if (!m_playerSkinModel->GetisAnimationPlaing()) {
-			//アニメーションが終わった。
-			m_deathFlag = true;
-		}
-	}
-}
+
 bool Player::Start()
 {
-	/*stageFilePaths[] = {
-		L"Assets/modelData/stage_3_1.cmo"
-	}*/
-
 	//武器のインスタンス作成。
 	m_weapon[0] = NewGO<Weapon>(0, "weapon_01");
 	m_weapon[1] = NewGO<Weapon>(0, "weapon_02");
@@ -493,11 +511,8 @@ void Player::Update()
 		m_playerAttackAnim->Attack();
 	}
 	//ダメージを受ける。
-	ReceiveDamage();
+	ReceiveDamageAndDeath();
 	
-	//死亡。
-	Death();
-
 	if (m_weaponState == enSwordState && m_pressedAttackButton != attackS) {
 		//ソード状態なら1足してソード状態のアニメーションを流す。
 		m_animState++;
@@ -508,12 +523,15 @@ void Player::Update()
 	m_playerSkinModel->PlayAnimation(m_animState, complementaryTime);
 
 	//とりあえずプレイヤーのY座標が-500以下になったら戻るようにする。
-	if (m_charaCon.GetPosition().y <= -500.0f || m_deathFlag != false) {
+	/*if (m_charaCon.GetPosition().y <= -500.0f || m_deathFlag != false) {
 		m_charaCon.SetPosition({ 0.0f, 500.0f, 0.0f });
 		m_playerHP = m_maxPlayerHP;
 		m_beforeHp = m_playerHP;
 		m_gameCam->ResetToPlayerVec();
 		m_deathFlag = false;
+	}*/
+	if (m_charaCon.GetPosition().y <= -500.0f) {
+		m_charaCon.SetPosition({ 0.0f, 500.0f, 0.0f });
 	}
 
 	//座標を設定。

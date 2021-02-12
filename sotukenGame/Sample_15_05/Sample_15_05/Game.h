@@ -96,8 +96,12 @@ private:
 	Random* m_rand = nullptr;
 	int m_stage3ClearCount = 0; //stage3をクリアする度にカウントしていく。
 	bool m_playerDeath = false;
+<<<<<<< HEAD
 
 	int m_clearFloorNum = 0;	//クリアステージカウント格納。
 	int m_enemyDeadNum = 0;		//敵を倒した数。
+=======
+	int m_currentStage = 0;
+>>>>>>> 5735714fe9f9105b6036d19439e917c70f6833a0
 };
 

@@ -4,6 +4,7 @@
 #include "EnBase.h"
 #include "Physics/GhostObject.h"
 
+
 /// <summary>
 /// ドラゴンユーサープクラス
 /// </summary>
@@ -80,6 +81,9 @@ private:
 		Die_state
 	};
 
+	
+	
+
 	int					m_status = Idle_state;			//状態。
 	int					changeTimer = 0;				//アニメーション変更タイマー。
 	float				m_speedY = 0.0f;				//Y方向のスピード。
@@ -90,7 +94,7 @@ private:
 	bool				m_isAttack = false;				//攻撃しているか。
 	bool				m_ATKoff = false;				//一回の攻撃でダメージを一回だけ入れるためのフラグ。
 	int					m_count = 0;					//攻撃が入るまでのカウント。
-	bool                m_screamflag = true;            //咆哮のフラグ
+	bool                m_screamflag = false;            //咆哮のフラグ
 	bool                m_isHandATK = false;             //腕攻撃をするフラグ
 	bool                m_isMouthATK = false;           //噛みつき攻撃をするフラグ
 	bool                m_isFlameATK = false;           //火炎攻撃をするフラグ
@@ -100,5 +104,27 @@ private:
 	GhostObject			m_ghostObj;						//ゴースト。
 	int					m_deathCount = 0;				//死んだときのカウント。
 	
+
+	//頭部のボーンの情報
+	int m_hedboneNum = 0;
+	Vector3             m_hedpos = Vector3::Zero;
+	Vector3             m_hedscale = Vector3::Zero;
+	Quaternion          m_hedrot = Quaternion::Identity; 
+	Vector3             m_toHedPlayer = Vector3::Zero;
+	//右腕のボーン情報
+	int m_RarmboneNum = 0;
+	Vector3             m_Rarmpos = Vector3::Zero;
+	Vector3             m_Rarmscale = Vector3::Zero;
+	Quaternion          m_Rarmrot = Quaternion::Identity;
+	Vector3             m_toRArmPlayer = Vector3::Zero;
+	//左腕のボーン情報
+	int m_LarmboneNum = 0;
+	Vector3             m_Larmpos = Vector3::Zero;
+	Vector3             m_Larmscale = Vector3::Zero;
+	Quaternion          m_Larmrot = Quaternion::Identity;
+	Vector3             m_toLArmPlayer = Vector3::Zero;
+	Skeleton m_skelton;
+	
+
 };
 

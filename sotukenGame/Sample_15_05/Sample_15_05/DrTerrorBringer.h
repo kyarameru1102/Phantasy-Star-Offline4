@@ -111,10 +111,26 @@ private:
 	int                 m_FangATKCount = 0;             //噛みつき攻撃のカウント
 	int                 m_ClawATKCont = 0;              //爪攻撃のカウント
 	int                 m_FlameATKCount = 0;            //火炎攻撃のカウント
+	int                 m_Flametotal = 0;
 	bool                m_ATKOne = true;                //パターン１
 	bool                m_ATKTwe = false;               //パターン２
 	bool                m_TweStart = false;             //パターン２スタート
 	GhostObject			m_ghostObj;						//ゴースト。
 	int					m_deathCount = 0;				//死んだときのカウント。
+	
+
+	//顎のボーンの情報
+	int m_jawboneNum = 0;
+	Vector3             m_jawpos = Vector3::Zero;
+	Vector3             m_jawscale = Vector3::Zero;
+	Quaternion          m_jawrot = Quaternion::Identity;
+	Vector3             m_toJawPlayer = Vector3::Zero;
+	//腕のボーン情報
+	int m_armboneNum = 0;
+	Vector3             m_armpos = Vector3::Zero;
+	Vector3             m_armscale = Vector3::Zero;
+	Quaternion          m_armrot = Quaternion::Identity;
+	Vector3             m_toArmPlayer = Vector3::Zero;
+	Skeleton m_skelton;
 };
 

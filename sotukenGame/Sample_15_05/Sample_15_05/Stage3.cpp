@@ -1,7 +1,6 @@
 #include "stdafx.h"
 #include "Stage3.h"
 #include "BackGround.h"
-#include "DrNightmare.h"
 #include "StageWave.h"
 #include "Game.h"
 Stage3::Stage3()
@@ -11,48 +10,59 @@ Stage3::Stage3()
 Stage3::~Stage3()
 {
 	DeleteGO(m_backGround);
-	QueryGOs<DrNightmare>("dragon", [](DrNightmare * drUsurper)->bool
+	QueryGOs<EnBase>("dragon", [](EnBase * drBoar)->bool
 		{
-			DeleteGO(drUsurper);
+			if (drBoar->GetStageNumber() == enStageNum3) {
+				DeleteGO(drBoar);
+			}
 			return true;
 		});
-	//DeleteGO(m_drNight);
 }
 
 bool Stage3::Start()
 {
+	m_stageNum = enStageNum3;
 	m_backGround = NewGO<BackGround>(0);
-	//ウェーブのスプライト。
-	StageWave* wave = NewGO<StageWave>(0);
-	wave->SetWaveSprite(StageWave::Wave_Boss);
+	
 
 	m_game = FindGO<Game>("Game");
-	m_drNight = NewGO<DrNightmare>(0, "dragon");
-	m_drNight->SetPosition(InitEnemyPos());
-	float mag = m_game->GetStage3ClearCount() * MAG_AP_INCREASE + 1.0f;
-	m_drNight->SetMagnificationAP(mag);
-	m_drNight->SetMagnificationHP(mag);
+
+	if (m_game->GetStage3ClearCount() <= 1) {
+		PutOutDrTerrorBringer(en1);
+	}
+	else if (m_game->GetStage3ClearCount() <= 2) {
+		PutOutDrTerrorBringer(en2);
+	}
+	else if (m_game->GetStage3ClearCount() <= 3) {
+		PutOutDrTerrorBringer(en3);
+	}
+	else {
+		m_drTerrorBringerNum = 3;
+		PutOutDrTerrorBringer(en4);
+
+		m_drNightmareNum = 3;
+		PutOutDrNightmare(en4);
+	}
 	
-	//ゴーストオブジェクトの作成。
-	m_ghostObject.CreateBox(m_ghostPosition, m_ghostRotation, m_ghostScale);
     return true;
 }
 
 void Stage3::Update()
 {
-	if (m_downEnemy == 1)
+	if (m_downEnemy == ENEMY_NUM)
 	{
 		m_timer++;
-		if (m_timer > 150) {
-			//m_sceanChangeOK = true;
-			GhostContactCharaCon();
+		if (m_timer > m_stageChangeTime) {
+			m_sceanChangeOK = true;
 		}
 	}
 
-	if (m_drNight != nullptr) {
-		if (m_drNight->GetDeath()) {
-			m_downEnemy++;
-			m_drNight = nullptr;
+	for (int i = 0; i < ENEMY_NUM; i++) {
+		if (m_enemyList[i] != nullptr) {
+			if (m_enemyList[i]->GetDeath()) {
+				m_downEnemy++;
+				m_enemyList[i] = nullptr;
+			}
 		}
 	}
 

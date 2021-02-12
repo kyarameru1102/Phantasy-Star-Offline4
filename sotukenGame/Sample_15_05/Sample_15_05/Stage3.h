@@ -1,9 +1,5 @@
 #pragma once
 #include "IStage.h"
-
-
-class DrNightmare;
-class Game;
 class Stage3 : public IStage
 {
 public:
@@ -21,7 +17,5 @@ public:
 	/// </summary>
 	void Update()override;
 private:
-
-	DrNightmare* m_drNight = nullptr;
 };
 

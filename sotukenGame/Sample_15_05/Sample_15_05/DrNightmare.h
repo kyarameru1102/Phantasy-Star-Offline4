@@ -104,7 +104,29 @@ private:
 	bool                m_screamflag = true;            //咆哮フラグ
 	GhostObject			m_ghostObj;						//ゴースト。
 	int					m_deathCount = 0;				//死んだときのカウント。
-	CSoundSource* SE_Haul = nullptr;
+	CSoundSource* SE_Haul = nullptr;                    //咆哮音
+	
+
+	//顎のボーンの情報
+	int m_jawboneNum = 0;
+	Vector3             m_jawpos = Vector3::Zero;
+	Vector3             m_jawscale = Vector3::Zero;
+	Quaternion          m_jawrot = Quaternion::Identity;
+	Vector3             m_toJawPlayer = Vector3::Zero;
+	//腕のボーン情報
+	int m_armboneNum = 0;
+	Vector3             m_armpos = Vector3::Zero;
+	Vector3             m_armscale = Vector3::Zero;
+	Quaternion          m_armrot = Quaternion::Identity;
+	Vector3             m_toArmPlayer = Vector3::Zero;
+	//頭のボーンの情報
+	int m_hedboneNum = 0;
+	Vector3             m_hedpos = Vector3::Zero;
+	Vector3             m_hedscale = Vector3::Zero;
+	Quaternion          m_hedrot = Quaternion::Identity;
+	Vector3             m_toHedPlayer = Vector3::Zero;
+	Skeleton m_skelton;
+	
 
 };
 

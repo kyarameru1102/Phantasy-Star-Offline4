@@ -1,6 +1,16 @@
 #pragma once
 #include "Physics/Character/CharacterController.h"
-
+/// <summary>
+/// 敵の強さの段階を示す。
+/// 数値が大きくなるほど強くなる。
+/// </summary>
+enum EnPower {
+	en1,
+	en2,
+	en3,
+	en4
+};
+#include "sound/SoundSource.h"
 /// <summary>
 /// 敵基底クラス
 /// </summary>
@@ -17,6 +27,33 @@ public:
 	/// デストラクタ
 	/// </summary>
 	~EnBase();
+	/// <summary>
+	/// 音を出す。
+	/// </summary>
+	void Sound(const wchar_t* filePath)
+	{
+		//SEを再生する。
+		if (m_soundFlag == false)
+		{
+			CSoundSource* SE_Recovery = NewGO<CSoundSource>(0);
+			SE_Recovery->Init(filePath);
+			SE_Recovery->Play(false);
+			
+			m_soundFlag = true;
+		}
+	}
+	void WalkSound(const wchar_t* filePath)
+	{
+		//SEを再生する。
+		if (m_soundFlag == false)
+		{
+			CSoundSource* SE_Recovery = NewGO<CSoundSource>(0);
+			SE_Recovery->Init(filePath);
+			SE_Recovery->Play(true);
+
+			//m_soundFlag = true;
+		}
+	}
 	/// <summary>
 	/// 座標を返す。
 	/// </summary>
@@ -155,14 +192,39 @@ public:
 	{
 		return m_magnificationHP;
 	}
+	/// <summary>
+	/// 基礎ステータスの数値を設定する。
+	/// </summary>
+	/// <param name="basicStatusNum"></param>
+	void SetBasicStatusNum(const int basicStatusNum)
+	{
+		m_basicStatusNum = basicStatusNum;
+	}
+	/// <summary>
+	/// 敵のいるステージの番号を設定。
+	/// </summary>
+	/// <param name="stageNumber"></param>
+	void SetStageNumber(const int stageNumber)
+	{
+		m_stageNumber = stageNumber;
+	}
+	/// <summary>
+	/// 敵のいるステージの番号を返す。
+	/// </summary>
+	/// <returns></returns>
+	const int GetStageNumber() const
+	{
+		return m_stageNumber;
+	}
 protected:
 	SkinModelRender*	m_skinModelRender = nullptr;			//スキンモデル
 	Vector3				m_position = Vector3::Zero;				//座標
 	Vector3				m_scale = Vector3::One;					//拡大率
 	Quaternion			m_rotation = Quaternion::Identity;		//回転
 	Vector3				m_movespeed = Vector3::Zero;			//移動速度
+	Vector3             m_oldpos = Vector3::Zero;                //古い座標
 	CharacterController m_charaCon;								//キャラコン。
-	float				m_hp = 50.0f;						//HP
+	float				m_hp = 50.0f;						    //HP
 	float               m_magnificationHP = 1.0f;               //HPの倍率。
 	Player*				m_player = nullptr;						//プレイヤー。
 	Game*               m_game = nullptr;                       //Game
@@ -172,6 +234,12 @@ protected:
 	Vector3				m_dir, m_ghostPos;
 	float               m_attackPower = 0.0f;                   //攻撃力。Start関数で初期化する。
 	float               m_magnificationAP = 1.0f;               //攻撃力の倍率。
+
+	int                 m_basicStatusNum = 0;                   //基礎ステータスの数値。EnPowerの数値のいずれかが入る。
+	int                 m_stageNumber = 0;                      //敵のいるステージの番号。
+
+	bool m_soundFlag = false;
+	
 };
 
 

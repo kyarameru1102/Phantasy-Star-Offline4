@@ -1,4 +1,6 @@
 #pragma once
+#include "FontNumber.h"
+
 class StageWave : public IGameObject
 {
 public:
@@ -32,7 +34,9 @@ public:
 	/// Wave表示するStage階層スプライトの設定。
 	/// </summary>
 	void SetWaveSprite(StageNumWave SWave);
-
+	void SetNum(int num) {
+		m_stageNum = num;
+	}
 private:
 	//状態。
 	enum State {
@@ -53,6 +57,8 @@ private:
 	StageNumWave m_waveNumState = Wave_Num;		//階層数に合わせたウェイブ。
 	State	m_state = Wave_DoNothing;			//状態。
 	float m_timer = 0.0f;							//ウェイブの表示用タイマー。
+	int m_stageNum = 0;
+	FontNumber* m_fontNumber = nullptr;
 
 private:
 	const float WAVE_FADE_TIME = 30.0f;					//ウェイブをフェードさせる時間。
