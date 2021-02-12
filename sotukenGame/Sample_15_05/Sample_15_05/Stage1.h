@@ -1,13 +1,9 @@
 #pragma once
 #include "IStage.h"
-
 /// <summary>
 /// ステージ1クラス
 /// </summary>
 class RecoveryItem;
-//class DrBoar;
-//class DrTerrorBringer;
-//class Game;
 class Stage1 : public IStage
 {
 public:
@@ -25,7 +21,6 @@ public:
 	/// </summary>
 	void Update()override;
 private:
-	int ENEMY_NUM = 3;		//エネミーの数。
 	RecoveryItem* m_recoveryItem = nullptr;			//回復アイテムのインスタンス。
 };
 

@@ -2,20 +2,37 @@
 #include "IStage.h"
 #include "Player.h"
 #include "Random.h"
-//void IStage::GhostContactCharaCon()
-//{
-//	QueryGOs<Player>("player", [&](Player* player)->bool {
-//		//プレイヤーのキャラコンを取得。
-//		CharacterController& charaCon = *player->GetCharacterController();
-//		g_physics.ContactTestCharaCon(charaCon, [&](const btCollisionObject& collisionObject) {
-//			if (m_ghostObject.IsSelf(collisionObject) == true) {
-//				//当たったらステージを切り替える。
-//				m_sceanChangeOK = true;
-//			}
-//			});
-//		return true;
-//		});
-//}
+#include "DrBoar.h"
+#include "DrTerrorBringer.h"
+#include "DrNightmare.h"
+#include "DrSoulEater.h"
+#include "DrUsurper.h"
+
+void IStage::PutOutDrBoar(int stageNum, int enemyPower)
+{
+	MakeEnemesAppear<DrBoar>(stageNum, m_drBoarNum, enemyPower);
+}
+
+void IStage::PutOutDrTerrorBringer(int stageNum, int enemyPower)
+{
+	MakeEnemesAppear<DrTerrorBringer>(stageNum, m_drTerrorBringerNum, enemyPower);
+}
+
+void IStage::PutOutDrNightmare(int stageNum, int enemyPower)
+{
+	MakeEnemesAppear<DrNightmare>(stageNum, m_drNightmareNum, enemyPower);
+}
+
+void IStage::PutOutDrSoulEater(int stageNum, int enemyPower)
+{
+	MakeEnemesAppear<DrSoulEater>(stageNum, m_drSoulEaterNum, enemyPower);
+}
+
+void IStage::PutOutDrUsurper(int stageNum, int enemyPower)
+{
+	MakeEnemesAppear<DrUsurper>(stageNum, m_drUsurperNum, enemyPower);
+}
+
 Vector3 IStage::InitEnemyPos()
 {
 	//Randomクラスを検索。

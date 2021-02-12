@@ -1,10 +1,7 @@
 #include "stdafx.h"
 #include "Stage1.h"
-#include "DrBoar.h"
 #include "BackGround.h"
-#include "Player.h"
 #include "RecoveryItem.h"
-#include "DrTerrorBringer.h"
 #include "StageWave.h"
 #include "Game.h"
 Stage1::Stage1()
@@ -20,16 +17,11 @@ Stage1::~Stage1()
 		DeleteGO(recoveryItem);
 		return true;
 	});
-	
-	QueryGOs<DrBoar>("dragon", [](DrBoar* drBoar)->bool
-	{
-		DeleteGO(drBoar);
-		return true;
-	});
-
-	QueryGOs<DrTerrorBringer>("dragon", [](DrTerrorBringer* drBoar)->bool
+	QueryGOs<EnBase>("dragon", [](EnBase * drBoar)->bool
 		{
-			DeleteGO(drBoar);
+			if (drBoar->GetStageNumber() == enStageNum1) {
+				DeleteGO(drBoar);
+			}
 			return true;
 		});
 }
@@ -40,39 +32,28 @@ bool Stage1::Start()
 
 	//Gameクラスを検索。
 	m_game = FindGO<Game>("Game");
-	//出現する敵の数を設定。
-	ENEMY_NUM += m_game->GetStage3ClearCount();
-	int a = ENEMY_NUM;
-	a--;
-	for (int i = 0; i < a; i++) {
-		//敵をNewGOする。
-		DrBoar* drB = NewGO<DrBoar>(0, "dragon");
-		//座標設定。
-		drB->SetPosition(InitEnemyPos());
-		//攻撃力の倍率を設定。
-		float mag = m_game->GetStage3ClearCount() * MAG_AP_INCREASE + 1.0f;
-		drB->SetMagnificationAP(mag);
-		//HPの倍率を設定。
-		drB->SetMagnificationHP(mag);
-		//リストに入れる。
-		m_enemyList.push_back(drB);
-	}
-	DrTerrorBringer* drB = NewGO<DrTerrorBringer>(0, "dragon");
-	//座標設定。
-	drB->SetPosition(InitEnemyPos());
-	//攻撃力の倍率を設定。
-	float mag = m_game->GetStage3ClearCount() * MAG_AP_INCREASE + 1.0f;
-	drB->SetMagnificationAP(mag);
-	//HPの倍率を設定。
-	drB->SetMagnificationHP(mag);
-	//リストに入れる。
-	m_enemyList.push_back(drB);
 
+	//DrBoarの数を増やす。
+	m_drBoarNum += m_game->GetStage3ClearCount();
+	if (m_game->GetStage3ClearCount() <= 1) {
+		PutOutDrBoar(enStageNum1, en1);
+	}
+	else if (m_game->GetStage3ClearCount() <= 2) {
+		PutOutDrBoar(enStageNum1, en2);
+	}
+	else if (m_game->GetStage3ClearCount() <= 3) {
+		PutOutDrBoar(enStageNum1, en3);
+	}
+	else if (m_game->GetStage3ClearCount() <= 4) {
+		PutOutDrBoar(enStageNum1, en4);
+	}
+	/*PutOutDrTerrorBringer(enStageNum1);
+	PutOutDrNightmare(enStageNum1);
+	PutOutDrSoulEater(enStageNum1);
+	PutOutDrUsurper(enStageNum1);*/
 	m_recoveryItem = NewGO<RecoveryItem>(0, "recoveryItem");
 	m_recoveryItem->SetPosition({1000.0f, 0.0f, -2500.0f});
 
-	//ゴーストオブジェクトの作成。
-	//m_ghostObject.CreateBox(m_ghostPosition, m_ghostRotation, m_ghostScale);
 
 	return true;
 }
@@ -85,7 +66,6 @@ void Stage1::Update()
 		if (m_timer > m_stageChangeTime) {
 			m_sceanChangeOK = true;
 		}
-		//GhostContactCharaCon();
 	}
 
 	for (int i = 0; i < ENEMY_NUM; i++) {
