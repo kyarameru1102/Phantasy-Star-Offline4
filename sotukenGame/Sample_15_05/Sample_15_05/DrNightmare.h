@@ -105,8 +105,8 @@ private:
 	GhostObject			m_ghostObj;						//ゴースト。
 	int					m_deathCount = 0;				//死んだときのカウント。
 	CSoundSource* SE_Haul = nullptr;                    //咆哮音
-	//CSoundSource* SE_Fang = nullptr;                    //噛みつき音
-	//CSoundSource* SE_Claw = nullptr;                    //爪攻撃音
+	int                 m_basicStatusNum = 0;                   //基礎ステータスの数値。EnPowerの数値のいずれかが入る。
+	int                 m_stageNumber = 0;                      //敵のいるステージの番号。
 
 	//顎のボーンの情報
 	int m_jawboneNum = 0;

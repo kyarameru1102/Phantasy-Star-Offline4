@@ -18,24 +18,50 @@ bool DrTerrorBringer::Start()
 	//ドラゴンテラーブリンガー
 	m_terrorbAnim = NewGO<TerrorBringerAnimation>(0);
 	//配色を決める。
-	m_appearcolor = terrorcolor[rand() % terrorcolor.size()];
-	//モデルの初期化
-	if (m_appearcolor == 1) {
+	
+
+	if (m_basicStatusNum == en1) {
 		m_skinModelRender = NewGO<SkinModelRender>(0);
 		m_skinModelRender->Init("Assets/modelData/enemy/DragonTerrorBringer/blue/DrTeBrBl.tkm", m_terrorbAnim->GetAnimationClip(), TerrorBringerAnimInfo::enTerrorBringerAnimClip_num);
+		//攻撃力を初期化。
+		m_attackPower = 15.0f;
+		//HPを初期化。
+		m_hp = 150.0f;
 	}
-	else if (m_appearcolor == 2) {
+	else if (m_basicStatusNum == en2)
+	{
 		m_skinModelRender = NewGO<SkinModelRender>(0);
 		m_skinModelRender->Init("Assets/modelData/enemy/DragonTerrorBringer/green/DrTeBrGr.tkm", m_terrorbAnim->GetAnimationClip(), TerrorBringerAnimInfo::enTerrorBringerAnimClip_num);
+		//攻撃力を初期化。
+		m_attackPower = 15.0f;
+		//HPを初期化。
+		m_hp = 200.0f;
 	}
-	else if (m_appearcolor == 3) {
+	else if (m_basicStatusNum == en3)
+	{
 		m_skinModelRender = NewGO<SkinModelRender>(0);
 		m_skinModelRender->Init("Assets/modelData/enemy/DragonTerrorBringer/purple/DrTeBrPu.tkm", m_terrorbAnim->GetAnimationClip(), TerrorBringerAnimInfo::enTerrorBringerAnimClip_num);
+		//攻撃力を初期化。
+		m_attackPower = 23.0f;
+		//HPを初期化。
+		m_hp = 250.0f;
 	}
-	else if (m_appearcolor == 4) {
+	else if (m_basicStatusNum == en4)
+	{
 		m_skinModelRender = NewGO<SkinModelRender>(0);
 		m_skinModelRender->Init("Assets/modelData/enemy/DragonTerrorBringer/red/DrTeBrRe.tkm", m_terrorbAnim->GetAnimationClip(), TerrorBringerAnimInfo::enTerrorBringerAnimClip_num);
+		//攻撃力を初期化。
+		m_attackPower = 25.0f;
+		//HPを初期化。
+		m_hp = 270.0f;
 	}
+
+
+
+
+
+
+
 	//キャラコン初期化。
 	m_charaCon.Init(120.0f, 200.0f, m_position);
 	Vector3 ghostPos = m_position;

@@ -19,23 +19,42 @@ bool DrUsurper::Start()
 	//ドラゴンユーサープ
 	m_usurperAnim = NewGO<UsurperAnimation>(0);
 	//配色を決める。
-	m_appearcolor = usurpercolor[rand() % usurpercolor.size()];
-	//モデルの初期化
-	if (m_appearcolor == 1) {
+	
+
+	if (m_basicStatusNum == en1) {
 		m_skinModelRender = NewGO<SkinModelRender>(0);
 		m_skinModelRender->Init("Assets/modelData/enemy/DragonUsurper/blue/DrUsBl.tkm", m_usurperAnim->GetAnimationClip(), UsurperAnimInfo::enUsurperAnimClip_num);
+		//攻撃力を初期化。
+		m_attackPower = 20.0f;
+		//HPを初期化。
+		m_hp = 180.0f;
 	}
-	else if (m_appearcolor == 2) {
+	else if (m_basicStatusNum == en2)
+	{
 		m_skinModelRender = NewGO<SkinModelRender>(0);
 		m_skinModelRender->Init("Assets/modelData/enemy/DragonUsurper/green/DrUsGr.tkm", m_usurperAnim->GetAnimationClip(), UsurperAnimInfo::enUsurperAnimClip_num);
+		//攻撃力を初期化。
+		m_attackPower = 20.0f;
+		//HPを初期化。
+		m_hp = 200.0f;
 	}
-	else if (m_appearcolor == 3) {
+	else if (m_basicStatusNum == en3)
+	{
 		m_skinModelRender = NewGO<SkinModelRender>(0);
 		m_skinModelRender->Init("Assets/modelData/enemy/DragonUsurper/purple/DrUsPu.tkm", m_usurperAnim->GetAnimationClip(), UsurperAnimInfo::enUsurperAnimClip_num);
+		//攻撃力を初期化。
+		m_attackPower = 25.0f;
+		//HPを初期化。
+		m_hp = 250.0f;
 	}
-	else if (m_appearcolor == 4) {
+	else if (m_basicStatusNum == en4)
+	{
 		m_skinModelRender = NewGO<SkinModelRender>(0);
 		m_skinModelRender->Init("Assets/modelData/enemy/DragonUsurper/red/DrUsRe.tkm", m_usurperAnim->GetAnimationClip(), UsurperAnimInfo::enUsurperAnimClip_num);
+		//攻撃力を初期化。
+		m_attackPower = 30.0f;
+		//HPを初期化。
+		m_hp = 300.0f;
 	}
 	//キャラコン初期化。
 	m_charaCon.Init(200.0f, 200.0f, m_position);
@@ -149,7 +168,7 @@ void DrUsurper::HandAttack()
 		m_toHedPlayer = m_player->GetPosition() - m_hedpos;
 	}
 	
-	if (m_toHedPlayer.Length() <= 700 || m_toRArmPlayer.Length() <= 500 || m_toLArmPlayer.Length() <= 700)
+	if (m_toHedPlayer.Length() <= 300 || m_toRArmPlayer.Length() <= 300 || m_toLArmPlayer.Length() <= 300)
 	{
 		if (m_isAttack && !m_ATKoff) {
 			if (m_count >= 60 && m_count <= 70) {
@@ -176,7 +195,7 @@ void DrUsurper::MouthAttack()
 		m_toHedPlayer = m_player->GetPosition() - m_hedpos;
 	}
 	
-	if (m_toHedPlayer.Length() <= 200)
+	if (m_toHedPlayer.Length() <= 100)
 	{
 		if (m_isAttack && !m_ATKoff) {
 			if (m_count >= 60 && m_count <= 70) {
@@ -203,7 +222,7 @@ void DrUsurper::FlameAttack()
 		m_toHedPlayer = m_player->GetPosition() - m_hedpos;
 	}
 	
-	if (m_toHedPlayer.Length() <= 1200)
+	if (m_toHedPlayer.Length() <= 1000)
 	{
 		if (m_isAttack && !m_ATKoff) {
 			if (m_count >= 60 && m_count <= 70) {

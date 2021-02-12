@@ -11,32 +11,50 @@ DrNightmare::~DrNightmare()
 {
 	DeleteGO(m_skinModelRender);
 	DeleteGO(m_nightmAnim);
-	DeleteGO(SE_Haul);
+	
 }
 
 bool DrNightmare::Start()
 {
 	//ドラゴンナイトメアのアニメーションをロード。
 	m_nightmAnim = NewGO<NightmareAnimation>(0);
-	//配色を決める。
-	m_appearcolor = nightcolor[rand() % nightcolor.size()];
-	//モデルの初期化
-	if (m_appearcolor == 1) {
-		m_skinModelRender = NewGO<SkinModelRender>(0);
-		m_skinModelRender->Init("Assets/modelData/enemy/DragonNightmare/blue/DrNmBl.tkm", m_nightmAnim->GetAnimationClip(), NightmAnimInfo::enNightmAnimClip_num);
-	}
-	else if (m_appearcolor == 2) {
+	
+	if (m_basicStatusNum == en1) {
 		m_skinModelRender = NewGO<SkinModelRender>(0);
 		m_skinModelRender->Init("Assets/modelData/enemy/DragonNightmare/albino/DrNmAl.tkm", m_nightmAnim->GetAnimationClip(), NightmAnimInfo::enNightmAnimClip_num);
+		//攻撃力を初期化。
+		m_attackPower = 15.0f;
+		//HPを初期化。
+		m_hp = 130.0f;
 	}
-	else if (m_appearcolor == 3) {
+	else if (m_basicStatusNum == en2)
+	{
+		m_skinModelRender = NewGO<SkinModelRender>(0);
+		m_skinModelRender->Init("Assets/modelData/enemy/DragonNightmare/blue/DrNmBl.tkm", m_nightmAnim->GetAnimationClip(), NightmAnimInfo::enNightmAnimClip_num);
+		//攻撃力を初期化。
+		m_attackPower = 20.0f;
+		//HPを初期化。
+		m_hp = 180.0f;
+	}
+	else if (m_basicStatusNum == en3)
+	{
 		m_skinModelRender = NewGO<SkinModelRender>(0);
 		m_skinModelRender->Init("Assets/modelData/enemy/DragonNightmare/darkblue/DrNmDp.tkm", m_nightmAnim->GetAnimationClip(), NightmAnimInfo::enNightmAnimClip_num);
+		//攻撃力を初期化。
+		m_attackPower = 25.0f;
+		//HPを初期化。
+		m_hp = 220.0f;
 	}
-	else if (m_appearcolor == 4) {
+	else if (m_basicStatusNum == en4)
+	{
 		m_skinModelRender = NewGO<SkinModelRender>(0);
 		m_skinModelRender->Init("Assets/modelData/enemy/DragonNightmare/green/DrNmGr.tkm", m_nightmAnim->GetAnimationClip(), NightmAnimInfo::enNightmAnimClip_num);
+		//攻撃力を初期化。
+		m_attackPower = 25.0f;
+		//HPを初期化。
+		m_hp = 270.0f;
 	}
+
 	//キャラコン初期化。
 	m_charaCon.Init(240.0f, 200.0f, m_position);
 	Vector3 ghostPos = m_position;
