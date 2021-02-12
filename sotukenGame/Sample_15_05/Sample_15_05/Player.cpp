@@ -63,9 +63,16 @@ void Player::GetExperiencePoint(const float experiencePoint)
 		//次に必要なレベルを1.1倍に増やす。
 		m_nextExperiencePoint *= 1.1f;
 		if (m_playerLevel > m_levelToOpen) {
-			m_attackAnimNumX = 4;
+			/*m_attackAnimNumX = 4;
 			m_attackAnimNumY = 3;
-			m_levelToOpen = 99999;
+			m_levelToOpen = 99999;*/
+			if (m_attackAnimNumX < 4) {
+				m_attackAnimNumX++;
+			}
+			if (m_attackAnimNumY < 3) {
+				m_attackAnimNumY++;
+			}
+			m_levelToOpen += 10;
 		}
 		Sound(L"Assets/sound/SE_Player_LevelUp.wav");
 	}

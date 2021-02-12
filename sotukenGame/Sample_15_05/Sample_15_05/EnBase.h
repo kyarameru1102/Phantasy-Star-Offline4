@@ -1,5 +1,15 @@
 #pragma once
 #include "Physics/Character/CharacterController.h"
+/// <summary>
+/// 敵の強さの段階を示す。
+/// 数値が大きくなるほど強くなる。
+/// </summary>
+enum EnPower {
+	en1,
+	en2,
+	en3,
+	en4
+};
 #include "sound/SoundSource.h"
 /// <summary>
 /// 敵基底クラス
@@ -182,6 +192,30 @@ public:
 	{
 		return m_magnificationHP;
 	}
+	/// <summary>
+	/// 基礎ステータスの数値を設定する。
+	/// </summary>
+	/// <param name="basicStatusNum"></param>
+	void SetBasicStatusNum(const int basicStatusNum)
+	{
+		m_basicStatusNum = basicStatusNum;
+	}
+	/// <summary>
+	/// 敵のいるステージの番号を設定。
+	/// </summary>
+	/// <param name="stageNumber"></param>
+	void SetStageNumber(const int stageNumber)
+	{
+		m_stageNumber = stageNumber;
+	}
+	/// <summary>
+	/// 敵のいるステージの番号を返す。
+	/// </summary>
+	/// <returns></returns>
+	const int GetStageNumber() const
+	{
+		return m_stageNumber;
+	}
 protected:
 	SkinModelRender*	m_skinModelRender = nullptr;			//スキンモデル
 	Vector3				m_position = Vector3::Zero;				//座標
@@ -200,6 +234,10 @@ protected:
 	Vector3				m_dir, m_ghostPos;
 	float               m_attackPower = 0.0f;                   //攻撃力。Start関数で初期化する。
 	float               m_magnificationAP = 1.0f;               //攻撃力の倍率。
+
+	int                 m_basicStatusNum = 0;                   //基礎ステータスの数値。EnPowerの数値のいずれかが入る。
+	int                 m_stageNumber = 0;                      //敵のいるステージの番号。
+
 	bool m_soundFlag = false;
 	
 };
