@@ -114,7 +114,7 @@ void DrUsurper::Move()
 		m_movespeed = playerLen * 1.7f;
 		m_movespeed.y = m_speedY;
 	}
-	if (m_toPlayer.Length() <= 300.0f )
+	if (m_toPlayer.Length() <= 100.0f )
 	{
 		m_movespeed = { 0.0f, 0.0f, 0.0f };
 		m_position = m_charaCon.Execute(1.0f, m_movespeed);
