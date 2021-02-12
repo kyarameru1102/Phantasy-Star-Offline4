@@ -248,6 +248,7 @@
     <ClCompile Include="PostEffect.cpp" />
     <ClCompile Include="Random.cpp" />
     <ClCompile Include="RecoveryItem.cpp" />
+    <ClCompile Include="Result.cpp" />
     <ClCompile Include="Shadow\CascadeShadowMap.cpp" />
     <ClCompile Include="Shadow\IShadowMap.cpp" />
     <ClCompile Include="Shadow\ShadowMap.cpp" />
@@ -364,6 +365,7 @@
     <ClInclude Include="Primitive.h" />
     <ClInclude Include="Random.h" />
     <ClInclude Include="RecoveryItem.h" />
+    <ClInclude Include="Result.h" />
     <ClInclude Include="Shadow\CascadeShadowMap.h" />
     <ClInclude Include="Shadow\IShadowMap.h" />
     <ClInclude Include="Shadow\ShadowMap.h" />

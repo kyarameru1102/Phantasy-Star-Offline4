@@ -76,6 +76,7 @@ void FontNumber::RenderFont()
         m_spriteList[i]->SetPosition(m_position);
         m_position.x += (50.0 * m_scale.Length());
         m_spriteList[i]->SetScale(m_scale);
+		m_spriteList[i]->SetAlpha(m_alpha);
         m_spriteList[i]->Drow();
     }
 }

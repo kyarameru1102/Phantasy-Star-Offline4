@@ -47,6 +47,15 @@ public:
 		m_scale = scale;
 	}
 	/// <summary>
+	/// 大きさを取得する関数。
+	/// </summary>
+	/// <returns></returns>
+	const Vector3& GetScale() const
+	{
+		return m_scale;
+	}
+
+	/// <summary>
 	/// ピボットを設定する関数。
 	/// </summary>
 	/// <param name="pivot">Vector2 pivot</param>

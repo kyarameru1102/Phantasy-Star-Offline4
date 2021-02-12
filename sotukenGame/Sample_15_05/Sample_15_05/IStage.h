@@ -28,6 +28,14 @@ public:
 	{
 		return m_sceanChangeOK;
 	}
+	/// <summary>
+	/// 倒した敵の数を返す。
+	/// </summary>
+	int GetDeathEnemyNum() const
+	{
+		return m_downEnemy;
+	}
+
 protected:
 	/// <summary>
 	/// ゴーストオブジェクトとプレイヤーのキャラコンとの当たり判定処理。

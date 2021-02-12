@@ -304,6 +304,9 @@
     <ClCompile Include="StageWave.cpp">
       <Filter>ソースファイル</Filter>
     </ClCompile>
+    <ClCompile Include="Result.cpp">
+      <Filter>ソースファイル\Game\Scean</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="system\system.h">
@@ -638,6 +641,9 @@
     </ClInclude>
     <ClInclude Include="StageWave.h">
       <Filter>ソースファイル</Filter>
+    </ClInclude>
+    <ClInclude Include="Result.h">
+      <Filter>ソースファイル\Game\Scean</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

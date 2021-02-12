@@ -70,6 +70,11 @@ public:
 	void SetScale(Vector3 scl) {
 		m_scale = scl;
 	}
+
+	void SetAlpha(float alpha) {
+		m_alpha = alpha;
+	}
+
 private:
 	std::vector<int>			m_numberList;
 	std::vector<FontSpriteRender*>	m_spriteList;
@@ -77,6 +82,7 @@ private:
 	Vector3						m_scale = Vector3(0.5f,0.5f,0.5f);			//サイズ。
 	int							m_displayNumber = 0;			//表示したい数字。
 	int							m_oldNum = -1;
+	float						m_alpha = 1.0f;
 	FontSpriteRender* m_spriteRender[10];
 	std::string m_filepass[10];
 };

@@ -6,6 +6,9 @@
 #include "Stage2.h"
 #include "Stage3.h"
 #include "Random.h"
+
+#include "Result.h"
+
 Game::Game()
 {
 
@@ -29,8 +32,8 @@ bool Game::Start()
 	m_player = NewGO<Player>(0, "player");
 	m_gameCam = NewGO<GameCamera>(0, "gameCamera");
 	m_rand = NewGO<Random>(0, "rnad");
-	m_rand->Init();
-    return true;
+	m_rand->Init((unsigned long)time(NULL));
+	return true;
 }
 
 void Game::Update()
@@ -49,28 +52,36 @@ void Game::Update()
 
 	if (m_stage1 != nullptr) {
 		if (m_stage1->GetsceanChangeOK()) {
+			m_enemyDeadNum += m_stage1->GetDeathEnemyNum();
 			DeleteGO(m_stage1);
 			m_stage1 = nullptr;
+			m_clearFloorNum++;
 			m_stage2 = NewGO<Stage2>(0, "stage");
 		}
 	}
 	if (m_stage2 != nullptr) {
 		if (m_stage2->GetsceanChangeOK()) {
+			m_enemyDeadNum += m_stage2->GetDeathEnemyNum();
 			DeleteGO(m_stage2);
 			m_stage2 = nullptr;
+			m_clearFloorNum++;
 			m_stage3 = NewGO<Stage3>(0, "stage");
 		}
 	}
 	if (m_stage3 != nullptr) {
 		if (m_stage3->GetsceanChangeOK()) {
+			m_enemyDeadNum += m_stage3->GetDeathEnemyNum();
 			DeleteGO(m_stage3);
 			m_stage3 = nullptr;
 			m_stage3ClearCount++;
+			m_clearFloorNum++;
 			m_stage1 = NewGO<Stage1>(0, "stage");
 		}
 	}
 	m_playerDeath = m_player->GetDeathFlag();
-	if (m_playerDeath) {
+	if (m_playerDeath != false) {
 		//ÇËÇ¥ÇÈÇ∆NewGOÇµÇƒÇÀÅB
+		NewGO<Result>(0, "result");
+
 	}
 }
