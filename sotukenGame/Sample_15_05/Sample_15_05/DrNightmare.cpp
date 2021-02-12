@@ -141,7 +141,7 @@ void DrNightmare::Attack()
 	);
 	m_toJawPlayer = m_player->GetPosition() - m_jawpos;
 	
-	if (m_toJawPlayer.Length() <= 150)
+	if (m_toJawPlayer.Length() <= 200)
 	{
 		if (m_isAttack && !m_ATKoff) {
 			if (m_count >= 60 && m_count <= 70) {
@@ -164,7 +164,7 @@ void DrNightmare::ClawAttack()
 		m_armscale
 	);
 	m_toArmPlayer = m_player->GetPosition() - m_armpos;
-	if (m_toArmPlayer.Length() <= 300)
+	if (m_toArmPlayer.Length() <= 450)
 	{
 		if (m_isAttack && !m_ATKoff) {
 			if (m_count >= 60 && m_count <= 70) {
@@ -188,10 +188,10 @@ void DrNightmare::HornAttack()
 		m_hedscale
 	);
 	m_toHedPlayer = m_player->GetPosition() - m_hedpos;
-	if (m_toHedPlayer.Length() <= 300)
+	if (m_toHedPlayer.Length() <= 350)
 	{
 		if (m_isAttack && !m_ATKoff) {
-			if (m_count >= 60 && m_count <= 1000) {
+			if (m_count >= 60 && m_count <= 70) {
 				m_player->ReceiveDamage(m_attackPower);
 				m_ATKoff = true;
 				printf_s("Enemy_KOUGEKI\n");
