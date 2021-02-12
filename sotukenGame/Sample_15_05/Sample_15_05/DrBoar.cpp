@@ -59,7 +59,7 @@ bool DrBoar::Start()
 	//ÉLÉÉÉâÉRÉìèâä˙âªÅB
 	m_charaCon.Init(145.0f, 200.0f, m_position);
 	Vector3 ghostPos = m_position;
-	m_ghostObj.CreateBox(ghostPos, m_rotation, Vector3(60.0f, 50.0f, 60.0f));
+	m_ghostObj.CreateBox(ghostPos, m_rotation, Vector3(50.0f, 80.0f, 63.0f));
 
 	m_player = FindGO<Player>("player");
 	m_game = FindGO<Game>("Game");
@@ -82,7 +82,7 @@ void DrBoar::Move()
 	Vector3 playerLen = m_toPlayer;
 	playerLen.Normalize();
 	m_movespeed = playerLen * 1.6f;
-	if (m_toPlayer.Length() <= 150.0f)
+	if (m_toPlayer.Length() <= 160.0f)
 	{
 		m_movespeed = { 0.0f, 0.0f, 0.0f };
 		m_position = m_charaCon.Execute(1.0f, m_movespeed);
@@ -91,8 +91,7 @@ void DrBoar::Move()
 		m_movespeed.y = m_speedY;
 		m_position = m_charaCon.Execute(1.0f, m_movespeed);
 	}
-	//m_movespeed.y = m_speedY;
-	//m_position = m_charaCon.Execute(1.0f, m_movespeed);
+	
 	
 }
 void DrBoar::AttackMove()
@@ -100,22 +99,17 @@ void DrBoar::AttackMove()
 	Vector3 playerLen = m_toPlayer;
 	playerLen.Normalize();
 
-	if (m_isATKcount == 2 && m_backtimer <= 100)
-	{
-		m_backtimer++;
-		
-		m_movespeed = playerLen * -1.4f;
-	}
-	if (m_backtimer >= 100)
-	{
-		m_movespeed = playerLen * 1.5f;
-		m_jyosoufin = true;
-	}
-	
-	else {
-		m_movespeed = playerLen * 1.3f;
-	}
-	if (m_toPlayer.Length() <= 150.0f)
+
+	m_movespeed = playerLen * 1.3f;
+
+	/*CharacterController& charaCon = *m_player->GetCharacterController();
+	g_physics.ContactTestCharaCon(charaCon, [&](const btCollisionObject& collisionObject) {
+		if (m_ghostObj.IsSelf(collisionObject) == true) {
+			m_movespeed = { 0.0f, 0.0f, 0.0f };
+			m_position = m_charaCon.Execute(1.0f, m_movespeed);
+		}
+	});*/
+	if (m_toPlayer.Length() <= 160.0f)
 	{
 		m_movespeed = { 0.0f, 0.0f, 0.0f };
 		m_position = m_charaCon.Execute(1.0f, m_movespeed);
@@ -137,10 +131,9 @@ void DrBoar::Turn()
 
 void DrBoar::Attack()
 {
-	if (m_toPlayer.Length() <= 200.0f && m_isATK == true)
+	if (m_toPlayer.Length() <= 180.0f && m_isATK == true)
 	{
 		m_status = Attack_state;
-		
 		CharacterController& charaCon = *m_player->GetCharacterController();
 		g_physics.ContactTestCharaCon(charaCon, [&](const btCollisionObject& collisionObject) {
 			if (m_ghostObj.IsSelf(collisionObject) == true) {
@@ -160,7 +153,7 @@ void DrBoar::Attack()
 void DrBoar::HornAttack()
 {
 
-	if (m_jyosoufin == true && m_isHornATK == true && m_ishornATKFlag == false)
+	if ( m_isHornATK == true && m_ishornATKFlag == false)
 	{
 		m_status = HornAttack_state;
 		CharacterController& charaCon = *m_player->GetCharacterController();
@@ -258,7 +251,6 @@ void DrBoar::Update()
 				m_isAttack = false;
 				m_ATKoff = false;
 				m_soundFlag = false;
-				//m_secount = 0;
 				m_isATKcount += 1;
 				m_count = 0;
 				m_animState = BoarAnimInfo::enBo_Idle;
