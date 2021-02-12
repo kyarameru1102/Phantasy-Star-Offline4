@@ -21,22 +21,23 @@ Stage3::~Stage3()
 
 bool Stage3::Start()
 {
+	m_stageNum = enStageNum3;
 	m_backGround = NewGO<BackGround>(0);
 	
 
 	m_game = FindGO<Game>("Game");
 
 	if (m_game->GetStage3ClearCount() <= 1) {
-		PutOutDrTerrorBringer(enStageNum3, en1);
+		PutOutDrTerrorBringer(en1);
 	}
 	else if (m_game->GetStage3ClearCount() <= 2) {
-		PutOutDrTerrorBringer(enStageNum3, en2);
+		PutOutDrTerrorBringer(en2);
 	}
 	else if (m_game->GetStage3ClearCount() <= 3) {
-		PutOutDrTerrorBringer(enStageNum3, en3);
+		PutOutDrTerrorBringer(en3);
 	}
 	else {
-		PutOutDrTerrorBringer(enStageNum3, en4);
+		PutOutDrTerrorBringer(en4);
 	}
 	
     return true;

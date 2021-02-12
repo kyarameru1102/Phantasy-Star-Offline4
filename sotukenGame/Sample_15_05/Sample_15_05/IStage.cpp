@@ -8,29 +8,29 @@
 #include "DrSoulEater.h"
 #include "DrUsurper.h"
 
-void IStage::PutOutDrBoar(int stageNum, int enemyPower)
+void IStage::PutOutDrBoar(int enemyPower)
 {
-	MakeEnemesAppear<DrBoar>(stageNum, m_drBoarNum, enemyPower);
+	MakeEnemesAppear<DrBoar>(m_drBoarNum, enemyPower);
 }
 
-void IStage::PutOutDrTerrorBringer(int stageNum, int enemyPower)
+void IStage::PutOutDrTerrorBringer(int enemyPower)
 {
-	MakeEnemesAppear<DrTerrorBringer>(stageNum, m_drTerrorBringerNum, enemyPower);
+	MakeEnemesAppear<DrTerrorBringer>(m_drTerrorBringerNum, enemyPower);
 }
 
-void IStage::PutOutDrNightmare(int stageNum, int enemyPower)
+void IStage::PutOutDrNightmare(int enemyPower)
 {
-	MakeEnemesAppear<DrNightmare>(stageNum, m_drNightmareNum, enemyPower);
+	MakeEnemesAppear<DrNightmare>(m_drNightmareNum, enemyPower);
 }
 
-void IStage::PutOutDrSoulEater(int stageNum, int enemyPower)
+void IStage::PutOutDrSoulEater(int enemyPower)
 {
-	MakeEnemesAppear<DrSoulEater>(stageNum, m_drSoulEaterNum, enemyPower);
+	MakeEnemesAppear<DrSoulEater>(m_drSoulEaterNum, enemyPower);
 }
 
-void IStage::PutOutDrUsurper(int stageNum, int enemyPower)
+void IStage::PutOutDrUsurper(int enemyPower)
 {
-	MakeEnemesAppear<DrUsurper>(stageNum, m_drUsurperNum, enemyPower);
+	MakeEnemesAppear<DrUsurper>(m_drUsurperNum, enemyPower);
 }
 
 Vector3 IStage::InitEnemyPos()
