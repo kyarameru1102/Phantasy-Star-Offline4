@@ -106,7 +106,7 @@ void DrNightmare::Move()
 		
 	}
 	
-	if (m_toPlayer.Length() <= 500.0f)
+	if (m_toPlayer.Length() <= 100.0f)
 	{
 		m_movespeed = { 0.0f, 0.0f, 0.0f };
 		m_position = m_charaCon.Execute(1.0f, m_movespeed);
