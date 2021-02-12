@@ -345,6 +345,7 @@ void Player::ReceiveDamageAndDeath()
 				m_deathFlag = true;
 				m_soundFlag = false;
 				m_deathSoundTimer = 0;
+				SetIsDead();
 			}
 		}
 		else {
@@ -522,12 +523,15 @@ void Player::Update()
 	m_playerSkinModel->PlayAnimation(m_animState, complementaryTime);
 
 	//とりあえずプレイヤーのY座標が-500以下になったら戻るようにする。
-	if (m_charaCon.GetPosition().y <= -500.0f || m_deathFlag != false) {
+	/*if (m_charaCon.GetPosition().y <= -500.0f || m_deathFlag != false) {
 		m_charaCon.SetPosition({ 0.0f, 500.0f, 0.0f });
 		m_playerHP = m_maxPlayerHP;
 		m_beforeHp = m_playerHP;
 		m_gameCam->ResetToPlayerVec();
 		m_deathFlag = false;
+	}*/
+	if (m_charaCon.GetPosition().y <= -500.0f) {
+		m_charaCon.SetPosition({ 0.0f, 500.0f, 0.0f });
 	}
 
 	//座標を設定。
