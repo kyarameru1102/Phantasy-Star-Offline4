@@ -59,7 +59,7 @@ bool DrBoar::Start()
 	//ƒLƒƒƒ‰ƒRƒ“‰Šú‰»B
 	m_charaCon.Init(145.0f, 200.0f, m_position);
 	Vector3 ghostPos = m_position;
-	m_ghostObj.CreateBox(ghostPos, m_rotation, Vector3(50.0f, 50.0f, 50.0f));
+	m_ghostObj.CreateBox(ghostPos, m_rotation, Vector3(60.0f, 50.0f, 60.0f));
 
 	m_player = FindGO<Player>("player");
 	m_game = FindGO<Game>("Game");
