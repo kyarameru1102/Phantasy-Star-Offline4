@@ -28,6 +28,7 @@ Stage1::~Stage1()
 
 bool Stage1::Start()
 {
+	m_stageNum = enStageNum1;
 	m_backGround = NewGO<BackGround>(0);
 
 	//Gameクラスを検索。
@@ -36,21 +37,18 @@ bool Stage1::Start()
 	//DrBoarの数を増やす。
 	m_drBoarNum += m_game->GetStage3ClearCount();
 	if (m_game->GetStage3ClearCount() <= 1) {
-		PutOutDrBoar(enStageNum1, en1);
+		PutOutDrBoar(en1);
 	}
 	else if (m_game->GetStage3ClearCount() <= 2) {
-		PutOutDrBoar(enStageNum1, en2);
+		PutOutDrBoar(en2);
 	}
 	else if (m_game->GetStage3ClearCount() <= 3) {
-		PutOutDrBoar(enStageNum1, en3);
+		PutOutDrBoar(en3);
 	}
 	else if (m_game->GetStage3ClearCount() <= 4) {
-		PutOutDrBoar(enStageNum1, en4);
+		PutOutDrBoar(en4);
 	}
-	/*PutOutDrTerrorBringer(enStageNum1);
-	PutOutDrNightmare(enStageNum1);
-	PutOutDrSoulEater(enStageNum1);
-	PutOutDrUsurper(enStageNum1);*/
+	
 	m_recoveryItem = NewGO<RecoveryItem>(0, "recoveryItem");
 	m_recoveryItem->SetPosition({1000.0f, 0.0f, -2500.0f});
 

@@ -21,24 +21,25 @@ Stage2::~Stage2()
 
 bool Stage2::Start()
 {
+	m_stageNum = enStageNum2;
 	m_backGround = NewGO<BackGround>(0);
 
 	//GameƒNƒ‰ƒX‚ğŒŸõB
 	m_game = FindGO<Game>("Game");
 	
 	if (m_game->GetStage3ClearCount() <= 1) {
-		PutOutDrNightmare(enStageNum2, en1);
+		PutOutDrNightmare(en1);
 	}
 	else if (m_game->GetStage3ClearCount() <= 2) {
-		PutOutDrNightmare(enStageNum2, en2);
+		PutOutDrNightmare(en2);
 	}
 	else if (m_game->GetStage3ClearCount() <= 3) {
-		PutOutDrNightmare(enStageNum2, en3);
-		PutOutDrUsurper(enStageNum2, en1);
+		PutOutDrNightmare(en3);
+		PutOutDrUsurper(en1);
 	}
 	else if (m_game->GetStage3ClearCount() <= 4) {
-		PutOutDrNightmare(enStageNum2, en4);
-		PutOutDrUsurper(enStageNum2, en2);
+		PutOutDrNightmare(en4);
+		PutOutDrUsurper(en2);
 	}
 	return true;
 }

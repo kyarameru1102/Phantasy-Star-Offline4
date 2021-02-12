@@ -42,40 +42,40 @@ protected:
 	/// </summary>
 	/// <param name="stageNum"></param>
 	/// <param name="enemyPower"></param>
-	void PutOutDrBoar(int stageNum, int enemyPower = en1);
+	void PutOutDrBoar(int enemyPower = en1);
 	/// <summary>
 	/// DrTerrorBringerを生成。
 	/// この関数の前にm_drTerrorBringerNumを設定することで数を設定できる。
 	/// </summary>
 	/// <param name="stageNum"></param>
 	/// <param name="enemyPower"></param>
-	void PutOutDrTerrorBringer(int stageNum, int enemyPower = en1);
+	void PutOutDrTerrorBringer(int enemyPower = en1);
 	/// <summary>
 	/// DrNightmareを生成。
 	/// この関数の前にm_drNightmareNumを設定することで数を設定できる。
 	/// </summary>
 	/// <param name="stageNum"></param>
 	/// <param name="enemyPower"></param>
-	void PutOutDrNightmare(int stageNum, int enemyPower = en1);
+	void PutOutDrNightmare(int enemyPower = en1);
 	/// <summary>
 	/// DrSoulEaterを生成。
 	/// この関数の前にm_drSoulEaterNumを設定することで数を設定できる。
 	/// </summary>
 	/// <param name="stageNum"></param>
 	/// <param name="enemyPower"></param>
-	void PutOutDrSoulEater(int stageNum, int enemyPower = en1);
+	void PutOutDrSoulEater(int enemyPower = en1);
 	/// <summary>
 	/// DrUsurperを生成。
 	/// この関数の前にm_drUsurperNumを設定することで数を設定できる。
 	/// </summary>
 	/// <param name="stageNum"></param>
 	/// <param name="enemyPower"></param>
-	void PutOutDrUsurper(int stageNum, int enemyPower = en1);
+	void PutOutDrUsurper(int enemyPower = en1);
 	/// <summary>
 	/// 敵を出す関数。
 	/// </summary>
 	template<class T>
-	void MakeEnemesAppear(int stageNum, int enemyNum, int enemyPower)
+	void MakeEnemesAppear(int enemyNum, int enemyPower)
 	{
 		if (enemyNum <= 0) {
 			//生成する敵の数が0以下にならないようにする。
@@ -94,7 +94,7 @@ protected:
 			//HPの倍率を設定。
 			drB->SetMagnificationHP(mag);
 			//どのStageにいるかを設定。
-			drB->SetStageNumber(stageNum);
+			drB->SetStageNumber(m_stageNum);
 			//敵の数を加算。
 			ENEMY_NUM++;
 			//リストに入れる。
@@ -118,6 +118,7 @@ protected:
 	Game* m_game = nullptr;
 	const float MAG_AP_INCREASE = 0.2f;//攻撃力の倍率の増加量。
 
+	int m_stageNum = 0;
 	int ENEMY_NUM = 0;		//エネミーの数。
 	int m_drBoarNum = 2;//DrBoarの数。
 	int m_drTerrorBringerNum = 1;//DrTerrorBringerの数。
