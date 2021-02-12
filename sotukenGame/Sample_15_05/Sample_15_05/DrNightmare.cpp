@@ -11,7 +11,7 @@ DrNightmare::~DrNightmare()
 {
 	DeleteGO(m_skinModelRender);
 	DeleteGO(m_nightmAnim);
-	DeleteGO(SE_Haul);
+	
 }
 
 bool DrNightmare::Start()

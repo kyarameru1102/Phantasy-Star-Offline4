@@ -149,7 +149,7 @@ void DrUsurper::HandAttack()
 		m_toHedPlayer = m_player->GetPosition() - m_hedpos;
 	}
 	
-	if (m_toHedPlayer.Length() <= 700 || m_toRArmPlayer.Length() <= 500 || m_toLArmPlayer.Length() <= 700)
+	if (m_toHedPlayer.Length() <= 300 || m_toRArmPlayer.Length() <= 300 || m_toLArmPlayer.Length() <= 300)
 	{
 		if (m_isAttack && !m_ATKoff) {
 			if (m_count >= 60 && m_count <= 70) {
@@ -176,7 +176,7 @@ void DrUsurper::MouthAttack()
 		m_toHedPlayer = m_player->GetPosition() - m_hedpos;
 	}
 	
-	if (m_toHedPlayer.Length() <= 200)
+	if (m_toHedPlayer.Length() <= 100)
 	{
 		if (m_isAttack && !m_ATKoff) {
 			if (m_count >= 60 && m_count <= 70) {
@@ -203,7 +203,7 @@ void DrUsurper::FlameAttack()
 		m_toHedPlayer = m_player->GetPosition() - m_hedpos;
 	}
 	
-	if (m_toHedPlayer.Length() <= 1200)
+	if (m_toHedPlayer.Length() <= 1000)
 	{
 		if (m_isAttack && !m_ATKoff) {
 			if (m_count >= 60 && m_count <= 70) {
