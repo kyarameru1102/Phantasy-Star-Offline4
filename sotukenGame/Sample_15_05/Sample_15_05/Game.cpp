@@ -26,6 +26,7 @@ Game::~Game()
 			DeleteGO(stage);
 			return true;
 		});
+	DeleteGO(m_bgm);
 }
 
 bool Game::Start()
