@@ -11,6 +11,7 @@ enum EnPower {
 	en4
 };
 #include "sound/SoundSource.h"
+#include "Player.h"
 /// <summary>
 /// “GŠî’êƒNƒ‰ƒX
 /// </summary>
@@ -35,10 +36,12 @@ public:
 		//SE‚ğÄ¶‚·‚éB
 		if (m_soundFlag == false)
 		{
-			CSoundSource* SE_Recovery = NewGO<CSoundSource>(0);
-			SE_Recovery->Init(filePath);
-			SE_Recovery->Play(false);
-			
+			if (m_player->GetDeathFlag() == false)
+			{
+				CSoundSource* SE_Recovery = NewGO<CSoundSource>(0);
+				SE_Recovery->Init(filePath);
+				SE_Recovery->Play(false);
+			}
 			m_soundFlag = true;
 		}
 	}
