@@ -1,5 +1,6 @@
 #pragma once
 #include "Physics/Character/CharacterController.h"
+<<<<<<< HEAD
 /// <summary>
 /// 敵の強さの段階を示す。
 /// 数値が大きくなるほど強くなる。
@@ -10,6 +11,9 @@ enum EnPower {
 	en3,
 	en4
 };
+=======
+#include "sound/SoundSource.h"
+>>>>>>> 82150b7670f38261bb7f1e7c90d702f3efc69810
 /// <summary>
 /// 敵基底クラス
 /// </summary>
@@ -26,6 +30,33 @@ public:
 	/// デストラクタ
 	/// </summary>
 	~EnBase();
+	/// <summary>
+	/// 音を出す。
+	/// </summary>
+	void Sound(const wchar_t* filePath)
+	{
+		//SEを再生する。
+		if (m_soundFlag == false)
+		{
+			CSoundSource* SE_Recovery = NewGO<CSoundSource>(0);
+			SE_Recovery->Init(filePath);
+			SE_Recovery->Play(false);
+			
+			m_soundFlag = true;
+		}
+	}
+	void WalkSound(const wchar_t* filePath)
+	{
+		//SEを再生する。
+		if (m_soundFlag == false)
+		{
+			CSoundSource* SE_Recovery = NewGO<CSoundSource>(0);
+			SE_Recovery->Init(filePath);
+			SE_Recovery->Play(true);
+
+			//m_soundFlag = true;
+		}
+	}
 	/// <summary>
 	/// 座標を返す。
 	/// </summary>
@@ -206,8 +237,13 @@ protected:
 	Vector3				m_dir, m_ghostPos;
 	float               m_attackPower = 0.0f;                   //攻撃力。Start関数で初期化する。
 	float               m_magnificationAP = 1.0f;               //攻撃力の倍率。
+<<<<<<< HEAD
 	int                 m_basicStatusNum = 0;                   //基礎ステータスの数値。EnPowerの数値のいずれかが入る。
 	int                 m_stageNumber = 0;                      //敵のいるステージの番号。
+=======
+	bool m_soundFlag = false;
+	
+>>>>>>> 82150b7670f38261bb7f1e7c90d702f3efc69810
 };
 
 

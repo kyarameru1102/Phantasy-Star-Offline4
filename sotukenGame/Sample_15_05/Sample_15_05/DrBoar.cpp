@@ -164,6 +164,7 @@ void DrBoar::Attack()
 	if (m_toPlayer.Length() <= 200.0f && m_isATK == true)
 	{
 		m_status = Attack_state;
+		
 		CharacterController& charaCon = *m_player->GetCharacterController();
 		g_physics.ContactTestCharaCon(charaCon, [&](const btCollisionObject& collisionObject) {
 			if (m_ghostObj.IsSelf(collisionObject) == true) {
@@ -266,15 +267,22 @@ void DrBoar::Update()
 			break;
 		case Walk_state:
 			m_animState = BoarAnimInfo::enBo_Walk;
+			//WalkSound(L"Assets/sound/SE_Dragon_Walk.wav");
+			if (!m_skinModelRender->GetisAnimationPlaing()) {
+				m_soundFlag = false;
+			}
 			break;
 		case Attack_state:
 			m_animState = BoarAnimInfo::enBo_Attack;
 			m_count++;
 			m_isAttack = true;
+		    Sound(L"Assets/sound/SE_Dragon_Fang.wav");
 			if (!m_skinModelRender->GetisAnimationPlaing()) {
 				m_status = Idle_state;
 				m_isAttack = false;
 				m_ATKoff = false;
+				m_soundFlag = false;
+				//m_secount = 0;
 				m_isATKcount += 1;
 				m_count = 0;
 				m_animState = BoarAnimInfo::enBo_Idle;
@@ -285,10 +293,12 @@ void DrBoar::Update()
 			m_animState = BoarAnimInfo::enBo_Hornattack;
 			m_count++;
 			m_isAttack = true;
+			Sound(L"Assets/sound/SE_Dragon_Fang.wav");
 			if (!m_skinModelRender->GetisAnimationPlaing()) {
 				m_status = Idle_state;
 				m_isAttack = false;
 				m_ATKoff = false;
+				m_soundFlag = false;
 				m_ishornATKFlag = true;
 				m_count = 0;
 				m_animState = BoarAnimInfo::enBo_Idle;
@@ -297,10 +307,12 @@ void DrBoar::Update()
 			break;
 		case GetDamage_state:
 			m_animState = BoarAnimInfo::enBo_Gethit;
+			Sound(L"Assets/sound/SE_Dragon_Damage.wav");
 			m_isAttack = false;
 			m_ATKoff = false;
 			m_count = 0;
 			if (!m_skinModelRender->GetisAnimationPlaing()) {
+				m_soundFlag = false;
 				m_status = Idle_state;
 				m_animState = BoarAnimInfo::enBo_Idle;
 				m_skinModelRender->PlayAnimation(m_animState, 0.0f);
@@ -308,6 +320,7 @@ void DrBoar::Update()
 			break;
 		case Die_state:
 			m_animState = BoarAnimInfo::enBo_Die;
+			Sound(L"Assets/sound/SE_Dragon_Die.wav");
 			break;
 		default:
 			break;

@@ -111,6 +111,7 @@ private:
 	int                 m_FangATKCount = 0;             //噛みつき攻撃のカウント
 	int                 m_ClawATKCont = 0;              //爪攻撃のカウント
 	int                 m_FlameATKCount = 0;            //火炎攻撃のカウント
+	int                 m_Flametotal = 0;
 	bool                m_ATKOne = true;                //パターン１
 	bool                m_ATKTwe = false;               //パターン２
 	bool                m_TweStart = false;             //パターン２スタート

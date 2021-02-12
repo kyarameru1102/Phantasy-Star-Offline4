@@ -51,13 +51,8 @@ bool DrNightmare::Start()
 	//HPÇèâä˙âªÅB
 	m_hp = 200.0f;
 	m_hp *= m_magnificationHP;
-	//SEÇÃèâä˙âª
-	SE_Haul = NewGO<CSoundSource>(0, "SE_Haul");
-	SE_Haul->Init(L"Assets/sound/SE_Dragon_Haul.wav");
-	/*SE_Fang = NewGO<CSoundSource>(0, "SE_Fang");
-	SE_Fang->Init(L"Assets/sound/SE_Dragon_Fang.wav");
-	SE_Claw = NewGO<CSoundSource>(0, "SE_Claw");
-	SE_Claw->Init(L"Assets/sound/SE_Dragon_Claw.wav");*/
+	
+	
 	return true;
 }
 
@@ -72,11 +67,11 @@ void DrNightmare::Move()
 		m_isBasicATK = false;
 		m_isClawATK = false;
 	}
-	if (m_toPlayer.Length() <= 300.0f && m_isClawATK == false && m_isHornATK == false)
+	if (m_toPlayer.Length() <= 400.0f && m_isClawATK == false && m_isHornATK == false)
 	{
 		m_isBasicATK = true;
 	}
-	if (m_toPlayer.Length() <= 300.0f && m_isBasicATK == false && m_isHornATK == false)
+	if (m_toPlayer.Length() <= 400.0f && m_isBasicATK == false && m_isHornATK == false)
 	{
 		m_isClawATK = true;
 	}
@@ -90,6 +85,7 @@ void DrNightmare::Move()
 	else {
 		m_status = Run_state;
 		m_movespeed = playerLen * 1.6f;
+		
 	}
 	
 	if (m_toPlayer.Length() <= 500.0f)
@@ -126,8 +122,8 @@ void DrNightmare::Attack()
 		m_jawscale
 	);
 	m_toJawPlayer = m_player->GetPosition() - m_jawpos;
-	//SE_Fang->Play(false);
-	if (m_toJawPlayer.Length() <= 200)
+	
+	if (m_toJawPlayer.Length() <= 150)
 	{
 		if (m_isAttack && !m_ATKoff) {
 			if (m_count >= 60 && m_count <= 70) {
@@ -150,7 +146,7 @@ void DrNightmare::ClawAttack()
 		m_armscale
 	);
 	m_toArmPlayer = m_player->GetPosition() - m_armpos;
-	if (m_toArmPlayer.Length() <= 450)
+	if (m_toArmPlayer.Length() <= 300)
 	{
 		if (m_isAttack && !m_ATKoff) {
 			if (m_count >= 60 && m_count <= 70) {
@@ -174,7 +170,7 @@ void DrNightmare::HornAttack()
 		m_hedscale
 	);
 	m_toHedPlayer = m_player->GetPosition() - m_hedpos;
-	if (m_toHedPlayer.Length() <= 500)
+	if (m_toHedPlayer.Length() <= 300)
 	{
 		if (m_isAttack && !m_ATKoff) {
 			if (m_count >= 60 && m_count <= 1000) {
@@ -232,8 +228,6 @@ void DrNightmare::Update()
 				m_isClawATK = true;
 				m_isBasicATK = false;
 				m_isHornATK = false;
-
-
 			}
 			if (m_isClawATKcount == 1)
 			{
@@ -241,8 +235,8 @@ void DrNightmare::Update()
 				m_isClawATK = false;
 				m_isHornATK = false;
 				m_isHornATKcount = 0;
-				//m_isATKcount = 0;
-				//m_isClawATKcount = 0;
+				m_isATKcount = 0;
+				m_isClawATKcount = 0;
 			}
 			if (m_isClawATK == true && m_isBasicATK == false && m_isHornATK == false)
 			{
@@ -271,12 +265,12 @@ void DrNightmare::Update()
 			break;
 		case Scream_state:
 			m_animState = NightmAnimInfo::enNi_Scream;
+			Sound(L"Assets/sound/SE_Dragon_Haul.wav");
 			
-			SE_Haul->Play(true);
 			if (!m_skinModelRender->GetisAnimationPlaing())
 			{
+				m_soundFlag = false;
 				m_screamflag = false;
-				SE_Haul->Stop();
 				m_animState = NightmAnimInfo::enNi_Idle01;
 				m_skinModelRender->PlayAnimation(m_animState, 0.0f);
 			}
@@ -285,11 +279,12 @@ void DrNightmare::Update()
 			m_animState = NightmAnimInfo::enNi_BasicAttack;
 			m_count++;
 			m_isAttack = true;
-			
+			Sound(L"Assets/sound/SE_Dragon_Fang.wav");
 			if (!m_skinModelRender->GetisAnimationPlaing()) {
 				m_status = Idle_state;
 				m_isAttack = false;
 				m_ATKoff = false;
+				m_soundFlag = false;
 				m_count = 0;
 				m_isATKcount++;
 				m_isBasicATK = false;
@@ -301,11 +296,12 @@ void DrNightmare::Update()
 			m_animState = NightmAnimInfo::enNi_ClawAttack;
 			m_count++;
 			m_isAttack = true;
-			
+			Sound(L"Assets/sound/SE_Dragon_Claw.wav");
 			if (!m_skinModelRender->GetisAnimationPlaing()) {
 				m_status = Idle_state;
 				m_isAttack = false;
 				m_ATKoff = false;
+				m_soundFlag = false;
 				m_count = 0;
 				m_isClawATKcount++;
 				m_isClawATK = false;
@@ -317,10 +313,12 @@ void DrNightmare::Update()
 			m_animState = NightmAnimInfo::enNi_HornAttack;
 			m_count++;
 			m_isAttack = true;
+			Sound(L"Assets/sound/SE_Dragon_Fang.wav");
 			if (!m_skinModelRender->GetisAnimationPlaing()) {
 				m_status = Idle_state;
 				m_isAttack = false;
 				m_ATKoff = false;
+				m_soundFlag = false;
 				m_count = 0;
 				m_isHornATKcount++;
 				m_isHornATK = false;
@@ -332,10 +330,12 @@ void DrNightmare::Update()
 			break;
 		case GetDamage_state:
 			m_animState = NightmAnimInfo::enNi_Gethit;
+			Sound(L"Assets/sound/SE_Dragon_Damage.wav");
 			m_isAttack = false;
 			m_ATKoff = false;
 			m_count = 0;
 			if (!m_skinModelRender->GetisAnimationPlaing()) {
+				m_soundFlag = false;
 				m_status = Idle_state;
 				m_animState = NightmAnimInfo::enNi_Idle01;
 				m_skinModelRender->PlayAnimation(m_animState, 0.0f);
@@ -343,6 +343,7 @@ void DrNightmare::Update()
 			break;
 		case Die_state:
 			m_animState = NightmAnimInfo::enNi_Die;
+			Sound(L"Assets/sound/SE_Dragon_Die2.wav");
 			break;
 		default:
 			break;

@@ -95,7 +95,7 @@ void DrUsurper::Move()
 		m_movespeed = playerLen * 1.7f;
 		m_movespeed.y = m_speedY;
 	}
-	if (m_toPlayer.Length() <= 200.0f )
+	if (m_toPlayer.Length() <= 300.0f )
 	{
 		m_movespeed = { 0.0f, 0.0f, 0.0f };
 		m_position = m_charaCon.Execute(1.0f, m_movespeed);
@@ -149,7 +149,7 @@ void DrUsurper::HandAttack()
 		m_toHedPlayer = m_player->GetPosition() - m_hedpos;
 	}
 	
-	if (m_toHedPlayer.Length() <= 1000 || m_toRArmPlayer.Length() <= 1000 || m_toLArmPlayer.Length() <= 1000)
+	if (m_toHedPlayer.Length() <= 700 || m_toRArmPlayer.Length() <= 500 || m_toLArmPlayer.Length() <= 700)
 	{
 		if (m_isAttack && !m_ATKoff) {
 			if (m_count >= 60 && m_count <= 70) {
@@ -176,7 +176,7 @@ void DrUsurper::MouthAttack()
 		m_toHedPlayer = m_player->GetPosition() - m_hedpos;
 	}
 	
-	if (m_toHedPlayer.Length() <= 300)
+	if (m_toHedPlayer.Length() <= 200)
 	{
 		if (m_isAttack && !m_ATKoff) {
 			if (m_count >= 60 && m_count <= 70) {
@@ -305,9 +305,10 @@ void DrUsurper::Update()
 			break;
 		case Scream_state:
 			m_animState = UsurperAnimInfo::enUs_Scream;
-
+			Sound(L"Assets/sound/SE_Dragon_Haul3.wav");
 			if (!m_skinModelRender->GetisAnimationPlaing())
 			{
+				m_soundFlag = false;
 				m_screamflag = false;
 				m_animState = UsurperAnimInfo::enUs_Idle01;
 				m_skinModelRender->PlayAnimation(m_animState, 0.0f);
@@ -317,10 +318,12 @@ void DrUsurper::Update()
 			m_animState = UsurperAnimInfo::enUs_HandAttack;
 			m_count++;
 			m_isAttack = true;
+			Sound(L"Assets/sound/SE_Dragon_Fang.wav");
 			if (!m_skinModelRender->GetisAnimationPlaing()) {
 				m_status = Idle_state;
 				m_isAttack = false;
 				m_ATKoff = false;
+				m_soundFlag = false;
 				m_count = 0;
 				m_HandATKCount++;
 				m_isHandATK = false;
@@ -332,10 +335,12 @@ void DrUsurper::Update()
 			m_animState = UsurperAnimInfo::enUs_MouthAttack;
 			m_count++;
 			m_isAttack = true;
+			Sound(L"Assets/sound/SE_Dragon_Claw.wav");
 			if (!m_skinModelRender->GetisAnimationPlaing()) {
 				m_status = Idle_state;
 				m_isAttack = false;
 				m_ATKoff = false;
+				m_soundFlag = false;
 				m_count = 0;
 				m_MouthATKCont++;
 				m_isMouthATK = false;
@@ -347,10 +352,12 @@ void DrUsurper::Update()
 			m_animState = UsurperAnimInfo::enUs_FlameAttack;
 			m_count++;
 			m_isAttack = true;
+			Sound(L"Assets/sound/SE_Dragon_Haul3.wav");
 			if (!m_skinModelRender->GetisAnimationPlaing()) {
 				m_status = Idle_state;
 				m_isAttack = false;
 				m_ATKoff = false;
+				m_soundFlag = false;
 				m_count = 0;
 				m_FlameATKCount++;
 				m_HandATKCount = 0;
@@ -375,10 +382,12 @@ void DrUsurper::Update()
 			break;
 		case GetDamage_state:
 			m_animState = UsurperAnimInfo::enUs_Gethit;
+			Sound(L"Assets/sound/SE_Dragon_Damage.wav");
 			m_isAttack = false;
 			m_ATKoff = false;
 			m_count = 0;
 			if (!m_skinModelRender->GetisAnimationPlaing()) {
+				m_soundFlag = false;
 				m_status = Idle_state;
 				m_animState = UsurperAnimInfo::enUs_Idle01;
 				m_skinModelRender->PlayAnimation(m_animState, 0.0f);
@@ -386,6 +395,7 @@ void DrUsurper::Update()
 			break;
 		case Die_state:
 			m_animState = UsurperAnimInfo::enUs_Die;
+			Sound(L"Assets/sound/SE_Dragon_Die2.wav");
 			break;
 		default:
 			break;
