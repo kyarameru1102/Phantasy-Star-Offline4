@@ -34,6 +34,13 @@ public:
 	{
 		return m_sceanChangeOK;
 	}
+	/// <summary>
+	/// “|‚µ‚½“G‚Ì”‚ğ•Ô‚·B
+	/// </summary>
+	int GetDeathEnemyNum() const
+	{
+		return m_downEnemy;
+	}
 
 protected:
 	/// <summary>

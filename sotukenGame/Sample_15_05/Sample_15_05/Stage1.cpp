@@ -45,8 +45,10 @@ bool Stage1::Start()
 	else if (m_game->GetStage3ClearCount() <= 3) {
 		PutOutDrBoar(en3);
 	}
-	else if (m_game->GetStage3ClearCount() <= 4) {
+	else {
 		PutOutDrBoar(en4);
+		m_drUsurperNum = 2;
+		PutOutDrUsurper(en4);
 	}
 	
 	m_recoveryItem = NewGO<RecoveryItem>(0, "recoveryItem");

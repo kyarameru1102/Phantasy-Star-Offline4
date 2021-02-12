@@ -55,6 +55,7 @@ void PlayerStatus::Update()
 	if (g_pad[0]->IsTrigger(enButtonStart)) {
 		DeleteGO(this);
 	}
+	m_player = FindGO<Player>("player");
 
 	//プレイヤーステータスのフォントナンバーを設定。
 	//プレイヤーのレベル。
@@ -66,4 +67,5 @@ void PlayerStatus::Update()
 	//プレイヤーの攻撃力。
 	m_fontNumber[en_playerStatusAttack]->SetDisplayNum(m_player->GetmAtaackPow());
 	m_fontNumber[en_playerStatusAttack]->SetPosition({-350.0f, -60.0f, 0.0f});
+
 }

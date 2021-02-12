@@ -37,7 +37,11 @@ bool Stage3::Start()
 		PutOutDrTerrorBringer(en3);
 	}
 	else {
+		m_drTerrorBringerNum = 3;
 		PutOutDrTerrorBringer(en4);
+
+		m_drNightmareNum = 3;
+		PutOutDrNightmare(en4);
 	}
 	
     return true;

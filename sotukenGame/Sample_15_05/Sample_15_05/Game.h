@@ -6,6 +6,7 @@
 #include "DrBoar.h"
 #include "FontNumber.h"
 
+#include "sound/SoundSource.h"
 
 
 /// <summary>
@@ -61,12 +62,32 @@ public:
 		return m_stage3ClearCount;
 	}
 
+	/// <summary>
+	/// クリア階数を返す。
+	/// </summary>
+	/// <returns></returns>
+	const int GetClearFloorNumber() const
+	{
+		return m_clearFloorNum;
+	}
+
+	/// <summary>
+	/// t倒した敵の数を返す。
+	/// </summary>
+	/// <returns></returns>
+	const int GetDfeateEnemyNum() const
+	{
+		return m_enemyDeadNum;
+	}
+
+
 private:
 	SkinModelRender* m_ladySkinModelRender = nullptr;
 	Player* m_player = nullptr;
 	GameCamera* m_gameCam = nullptr;
 	PlayerStatusUI* m_playerStatusUI = nullptr;
 	Menu* m_menu = nullptr;				//メニューのインスタンス。
+	CSoundSource* m_bgm = nullptr;		//BGM
 	bool m_isWave = false;				//ウェイブ中かどうか判定。
 
 	Stage1* m_stage1 = nullptr;
@@ -76,6 +97,10 @@ private:
 	Random* m_rand = nullptr;
 	int m_stage3ClearCount = 0; //stage3をクリアする度にカウントしていく。
 	bool m_playerDeath = false;
+	int m_clearFloorNum = 0;	//クリアステージカウント格納。
+	int m_enemyDeadNum = 0;		//敵を倒した数。
 	int m_currentStage = 0;
+
+	bool m_resultflag = false;
 };
 
