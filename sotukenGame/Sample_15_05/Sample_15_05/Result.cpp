@@ -8,11 +8,19 @@
 #include "Stage3.h"
 
 #include "Fade.h"
+#include "Fade.h"
 
 Result::Result()
 {}
 Result::~Result() 
 {
+
+
+	DeleteGO(m_spriteRender[Result_BackGround]);
+	DeleteGO(m_spriteRender[Result_Board]);
+	DeleteGO(m_spriteRender[Result_ScoreBoardFrame]);
+	DeleteGO(m_spriteRender[Result_RankSprite]);
+
 	for (int i = 0; i < Result_ScoreNum; i++)
 	{
 		DeleteGO(m_fontNumber[i]);
@@ -217,12 +225,16 @@ bool Result::Start()
 		//プレイヤーのレベル。
 		m_fontNumber[Result_ClearFloorScore] = NewGO<FontNumber>(4);
 		m_fontNumber[Result_ClearFloorScore]->SetAlpha(0.0f);
+		m_fontNumber[Result_ClearFloorScore]->SetPosition({ -50.0f, 120.0f, 0.0f });
 		m_fontNumber[Result_LastLevelScore] = NewGO<FontNumber>(4);
 		m_fontNumber[Result_LastLevelScore]->SetAlpha(0.0f);
+		m_fontNumber[Result_LastLevelScore]->SetPosition({ -50.0f, 0.0f, 0.0f });
 		m_fontNumber[Result_DfeartEnemyScore] = NewGO<FontNumber>(4);
 		m_fontNumber[Result_DfeartEnemyScore]->SetAlpha(0.0f);
+		m_fontNumber[Result_DfeartEnemyScore]->SetPosition({ -50.0f, -130.0f, 0.0f });
 		m_fontNumber[Result_TotalScore] = NewGO<FontNumber>(4);
 		m_fontNumber[Result_TotalScore]->SetAlpha(0.0f);
+		m_fontNumber[Result_TotalScore]->SetPosition({ -50.0f, -250.0f, 0.0f });
 
 	}
 
@@ -446,9 +458,8 @@ void Result::ClearFloorScoreCal()
 {
 	//突破階層のスコア計算。
 	m_fontNumber[Result_ClearFloorScore]->SetDisplayNum(m_clearFloor);
-	m_fontNumber[Result_ClearFloorScore]->SetAlpha(1.0f);
 	m_fontNumber[Result_ClearFloorScore]->SetPosition({ -50.0f, 120.0f, 0.0f });
-
+	m_fontNumber[Result_ClearFloorScore]->SetAlpha(1.0f);
 }
 void Result::LastLevelScore()
 {
@@ -499,8 +510,8 @@ void Result::LastLevelScoreCal()
 {
 	//最終レベルのスコア計算。
 	m_fontNumber[Result_LastLevelScore]->SetDisplayNum(m_laseLevel);
-	m_fontNumber[Result_LastLevelScore]->SetAlpha(1.0f);
 	m_fontNumber[Result_LastLevelScore]->SetPosition({ -50.0f, 0.0f, 0.0f });
+	m_fontNumber[Result_LastLevelScore]->SetAlpha(1.0f);
 }
 void Result::DefaultBossScore()
 {
@@ -572,8 +583,8 @@ void Result::DefaultBossScoreCal()
 	//撃破エネミーのスコア計算。
 
 	m_fontNumber[Result_DfeartEnemyScore]->SetDisplayNum(m_defeatEnemy);
-	m_fontNumber[Result_DfeartEnemyScore]->SetAlpha(1.0f);
 	m_fontNumber[Result_DfeartEnemyScore]->SetPosition({ -50.0f, -130.0f, 0.0f });
+	m_fontNumber[Result_DfeartEnemyScore]->SetAlpha(1.0f);
 }
 void Result::TotalScore()
 {
@@ -611,8 +622,8 @@ void Result::TotalScoreCal()
 	//トータルスコア計算。	
 
 	m_fontNumber[Result_TotalScore]->SetDisplayNum(m_totalScore);
-	m_fontNumber[Result_TotalScore]->SetAlpha(1.0f);
 	m_fontNumber[Result_TotalScore]->SetPosition({ -50.0f, -250.0f, 0.0f });
+	m_fontNumber[Result_TotalScore]->SetAlpha(1.0f);
 }
 void Result::RankSet()
 {
@@ -630,24 +641,44 @@ void Result::PlayerSet()
 	//今は何もないのでスルーする。
 	if (m_totalScore < 1000) {
 		SpriteIndicate(m_rankSR[Rank_D]);
+		if (m_rankSR[Rank_D]->GetAlpha() >= 1.0f) {
+			m_resultState = Result_Next;
+		}
 	}
 	else if (m_totalScore > 1000 && m_totalScore < 2000) {
 		SpriteIndicate(m_rankSR[Rank_C]);
+		if (m_rankSR[Rank_C]->GetAlpha() >= 1.0f) {
+			m_resultState = Result_Next;
+		}
 	}
 	else if (m_totalScore > 2000 && m_totalScore < 3000) {
 		SpriteIndicate(m_rankSR[Rank_B]);
+		if (m_rankSR[Rank_B]->GetAlpha() >= 1.0f) {
+			m_resultState = Result_Next;
+		}
 	}
 	else if (m_totalScore > 3000 && m_totalScore < 6000) {
 		SpriteIndicate(m_rankSR[Rank_A]);
+		if (m_rankSR[Rank_A]->GetAlpha() >= 1.0f) {
+			m_resultState = Result_Next;
+		}
 	}
 	else if (m_totalScore > 6000) {
 		SpriteIndicate(m_rankSR[Rank_S]);
+		if (m_rankSR[Rank_S]->GetAlpha() >= 1.0f) {
+			m_resultState = Result_Next;
+		}
 	}
-
 }
 void Result::Next()
 {
 	//ゲーム終わり。
+	m_timer++;
+	if (m_timer > 300) {
+		DeleteGO(this);
+		DeleteGOs("Game");
+		NewGO<Title>(0, "Title");
+	}
 }
 
 void Result::Update()
