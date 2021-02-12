@@ -41,6 +41,13 @@ bool Stage2::Start()
 		PutOutDrNightmare(en4);
 		PutOutDrUsurper(en2);
 	}
+	else {
+		m_drNightmareNum = 3;
+		PutOutDrNightmare(en4);
+
+		m_drUsurperNum = 3;
+		PutOutDrUsurper(en3);
+	}
 	return true;
 }
 
