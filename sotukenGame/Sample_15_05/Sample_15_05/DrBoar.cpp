@@ -17,32 +17,68 @@ bool DrBoar::Start()
 	//プレイヤーのアニメーションのインスタンス作成。
 	m_boarAnim = NewGO<BoarAnimation>(0, "boarAnim");
 	//配色を決める。
-	m_appearcolor = boarcolor[rand() % boarcolor.size()];
+	//m_appearcolor = boarcolor[rand() % boarcolor.size()];
 	//モデルの初期化
-	if (m_appearcolor == 1) {
+	//if (m_appearcolor == 1) {
+	//	m_skinModelRender = NewGO<SkinModelRender>(0);
+	//	m_skinModelRender->Init("Assets/modelData/enemy/DragonBoar/Blue/DrBoarBl.tkm", m_boarAnim->GetAnimationClip(), BoarAnimInfo::enBoarAnimClip_num);
+	//	//m_position = { 300.0f, 0.0f, -100.0f };
+	//}
+	//else if (m_appearcolor == 2)
+	//{
+	//	m_skinModelRender = NewGO<SkinModelRender>(0);
+	//	m_skinModelRender->Init("Assets/modelData/enemy/DragonBoar/Gold/DrBoarGo.tkm", m_boarAnim->GetAnimationClip(), BoarAnimInfo::enBoarAnimClip_num);
+	//	//m_position = { 300.0f, 0.0f, 100.0f };
+	//}
+	//else if (m_appearcolor == 3)
+	//{
+	//	m_skinModelRender = NewGO<SkinModelRender>(0);
+	//	m_skinModelRender->Init("Assets/modelData/enemy/DragonBoar/Green/DrBoarGr.tkm", m_boarAnim->GetAnimationClip(), BoarAnimInfo::enBoarAnimClip_num);
+	//	//m_position = { -300.0f, 0.0f, -100.0f };
+	//}
+	//else if (m_appearcolor == 4)
+	//{
+	//	m_skinModelRender = NewGO<SkinModelRender>(0);
+	//	m_skinModelRender->Init("Assets/modelData/enemy/DragonBoar/Red/DrBoarRe.tkm", m_boarAnim->GetAnimationClip(), BoarAnimInfo::enBoarAnimClip_num);
+	//	//m_position = { -300.0f, 0.0f, 100.0f };
+	//}
+	
+	if (m_basicStatusNum == en1) {
 		m_skinModelRender = NewGO<SkinModelRender>(0);
 		m_skinModelRender->Init("Assets/modelData/enemy/DragonBoar/Blue/DrBoarBl.tkm", m_boarAnim->GetAnimationClip(), BoarAnimInfo::enBoarAnimClip_num);
-		//m_position = { 300.0f, 0.0f, -100.0f };
+		//攻撃力を初期化。
+		m_attackPower = 10.0f;
+		//HPを初期化。
+		m_hp = 100.0f;
 	}
-	else if (m_appearcolor == 2)
+	else if (m_basicStatusNum == en2)
 	{
 		m_skinModelRender = NewGO<SkinModelRender>(0);
 		m_skinModelRender->Init("Assets/modelData/enemy/DragonBoar/Gold/DrBoarGo.tkm", m_boarAnim->GetAnimationClip(), BoarAnimInfo::enBoarAnimClip_num);
-		//m_position = { 300.0f, 0.0f, 100.0f };
+		//攻撃力を初期化。
+		m_attackPower = 15.0f;
+		//HPを初期化。
+		m_hp = 150.0f;
 	}
-	else if (m_appearcolor == 3)
+	else if (m_basicStatusNum == en3)
 	{
 		m_skinModelRender = NewGO<SkinModelRender>(0);
 		m_skinModelRender->Init("Assets/modelData/enemy/DragonBoar/Green/DrBoarGr.tkm", m_boarAnim->GetAnimationClip(), BoarAnimInfo::enBoarAnimClip_num);
-		//m_position = { -300.0f, 0.0f, -100.0f };
+		//攻撃力を初期化。
+		m_attackPower = 20.0f;
+		//HPを初期化。
+		m_hp = 200.0f;
 	}
-	else if (m_appearcolor == 4)
+	else if (m_basicStatusNum == en4)
 	{
 		m_skinModelRender = NewGO<SkinModelRender>(0);
 		m_skinModelRender->Init("Assets/modelData/enemy/DragonBoar/Red/DrBoarRe.tkm", m_boarAnim->GetAnimationClip(), BoarAnimInfo::enBoarAnimClip_num);
-		//m_position = { -300.0f, 0.0f, 100.0f };
+		//攻撃力を初期化。
+		m_attackPower = 25.0f;
+		//HPを初期化。
+		m_hp = 250.0f;
 	}
-	
+
 	//.SetRotationDegY(90.0f);
 	//キャラコン初期化。
 	m_charaCon.Init(145.0f, 200.0f, m_position);
@@ -53,12 +89,13 @@ bool DrBoar::Start()
 	m_game = FindGO<Game>("Game");
 
 	//攻撃力を初期化。
-	m_attackPower = 10.0f;
+	//m_attackPower = 10.0f;
+	//攻撃力に倍率をかける。
 	m_attackPower *= m_magnificationAP;
 	//HPを初期化。
-	m_hp = 100.0f;
+	//m_hp = 100.0f;
+	//HPに倍率をかける。
 	m_hp *= m_magnificationHP;
-
 
 	return true;
 }

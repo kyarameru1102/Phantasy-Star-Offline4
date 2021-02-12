@@ -414,7 +414,7 @@ private:
 	bool m_kaihiFlag = false; //回避フラグ。
 	int m_kaihiTimer = 0;
 	int m_playerLevel = 1; //プレイヤーのレベル。
-	int m_levelToOpen = 1; //開放するレベル。
+	int m_levelToOpen = 10; //開放するレベル。
 	float m_experiencePoint = 10.0f;  //経験値。
 	float m_nextExperiencePoint = 10.0f; //次に必要な経験値。
 	Vector3 m_dir = Vector3::Zero; //向いている方向。
