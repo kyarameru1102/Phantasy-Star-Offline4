@@ -1,12 +1,8 @@
 #pragma once
 #include "IStage.h"
-
 /// <summary>
 /// ステージ2。
 /// </summary>
-
-class DrUsurper;
-class Game;
 class Stage2 : public IStage
 {
 public:
@@ -24,11 +20,6 @@ public:
 	/// </summary>
 	void Update()override;
 private:
-	int ENEMY_NUM = 2;		//エネミーの数。
-	//enum {
-	//	ENEMY_NUM = 2		//エネミーの数。
-	//};
-	//
-	//DrUsurper* m_drUsurper[ENEMY_NUM] = { nullptr }; 
+	
 };
 
