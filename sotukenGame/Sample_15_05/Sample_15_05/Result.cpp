@@ -404,7 +404,7 @@ void Result::ClearFloorScore()
 	}
 	if (m_clearFloorSR[Result_ClearFloorScore_r2]->GetAlpha() >= 1.0f) {
 		Game* game = FindGO<Game>("Game");
-		m_clearFloor = (game->GetClearFloorNumber()) * 100;
+		m_clearFloor = (game->GetClearFloorNumber());
 		m_timer = 0;
 		m_CFflag = true;
 		m_resultState = Result_LastLevel_Score;
@@ -456,7 +456,7 @@ void Result::LastLevelScore()
 	}
 	if (m_lastLevelSR[Result_LastLevelScore_l3]->GetAlpha() >= 1.0f) {
 		Player* player = FindGO<Player>("player");
-		m_laseLevel = (player->GetPlayerLevel()) * 120;
+		m_laseLevel = (player->GetPlayerLevel());
 		m_timer = 0;
 		m_LLflag = true;
 		m_resultState = Result_DefaultBoss_Score;
@@ -516,18 +516,18 @@ void Result::DefaultBossScore()
 		{
 			//敵のスコア計算
 			Game* game = FindGO<Game>("Game");
-			m_defeatEnemy = (game->GetDfeateEnemyNum()) * 100;
+			m_defeatEnemy = (game->GetDfeateEnemyNum());
 			Stage1* m_stage1 = FindGO<Stage1>("stage");
 			Stage2* m_stage2 = FindGO<Stage2>("stage");
 			Stage3* m_stage3 = FindGO<Stage3>("stage");
 			if (m_stage1 != nullptr) {
-				m_defeatEnemy += (m_stage1->GetDeathEnemyNum()) * 100;
+				m_defeatEnemy += (m_stage1->GetDeathEnemyNum());
 			}
 			if (m_stage2 != nullptr) {
-				m_defeatEnemy += (m_stage2->GetDeathEnemyNum()) * 100;
+				m_defeatEnemy += (m_stage2->GetDeathEnemyNum());
 			}
 			if (m_stage3 != nullptr) {
-				m_defeatEnemy += (m_stage3->GetDeathEnemyNum()) * 100;
+				m_defeatEnemy += (m_stage3->GetDeathEnemyNum());
 			}
 		}
 		m_timer = 0;
@@ -566,7 +566,7 @@ void Result::TotalScore()
 	}
 	if (m_scoreSR[Result_Score_e]->GetAlpha() >= 1.0f) {
 		//各スコアを一つにまとめる。
-		m_totalScore =  m_clearFloor + m_laseLevel + m_defeatEnemy;
+		m_totalScore =  (m_clearFloor*100) + (m_laseLevel*80) + (m_defeatEnemy*150);
 		m_timer = 0;
 		m_TSflag = true;
 		m_resultState = Result_Rank;
@@ -596,19 +596,19 @@ void Result::PlayerSet()
 {
 	//ランクイラストを変更して表示する。
 	//今は何もないのでスルーする。
-	if (m_totalScore < 500) {
+	if (m_totalScore < 1000) {
 		SpriteIndicate(m_rankSR[Rank_D]);
 	}
-	else if (m_totalScore > 500 && m_totalScore < 1000) {
+	else if (m_totalScore > 1000 && m_totalScore < 2000) {
 		SpriteIndicate(m_rankSR[Rank_C]);
 	}
-	else if (m_totalScore > 1000 && m_totalScore < 1500) {
+	else if (m_totalScore > 2000 && m_totalScore < 3000) {
 		SpriteIndicate(m_rankSR[Rank_B]);
 	}
-	else if (m_totalScore > 1500 && m_totalScore < 2000) {
+	else if (m_totalScore > 3000 && m_totalScore < 6000) {
 		SpriteIndicate(m_rankSR[Rank_A]);
 	}
-	else if (m_totalScore > 2000 && m_totalScore < 2500) {
+	else if (m_totalScore > 6000) {
 		SpriteIndicate(m_rankSR[Rank_S]);
 	}
 

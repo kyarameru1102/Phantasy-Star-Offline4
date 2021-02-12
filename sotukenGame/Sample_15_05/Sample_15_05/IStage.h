@@ -34,7 +34,6 @@ public:
 	{
 		return m_sceanChangeOK;
 	}
-<<<<<<< HEAD
 	/// <summary>
 	/// “|‚µ‚½“G‚Ì”‚ğ•Ô‚·B
 	/// </summary>
@@ -42,8 +41,6 @@ public:
 	{
 		return m_downEnemy;
 	}
-=======
->>>>>>> 5735714fe9f9105b6036d19439e917c70f6833a0
 
 protected:
 	/// <summary>

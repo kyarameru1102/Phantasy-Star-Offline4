@@ -135,4 +135,12 @@ void PlayerStatusUI::Update()
 	//プレイヤーの最大HP。
 	m_fontNumber[en_playerStatusMaxHP]->SetDisplayNum(m_player->GetMaxHP());
 	m_fontNumber[en_playerStatusMaxHP]->SetPosition({ 510.0f, -250.0f, 0.0f });
+
+	if (m_player->GetDeathFlag() != false) {
+		m_fontNumber[en_playerStatusLevel]->SetAlpha(0.0f);
+		m_fontNumber[en_playerStatusHP]->SetAlpha(0.0f);
+		m_fontNumber[en_playerStatusMaxHP]->SetAlpha(0.0f);
+
+	}
+
 }

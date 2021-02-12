@@ -6,12 +6,10 @@
 #include "Stage2.h"
 #include "Stage3.h"
 #include "Random.h"
-<<<<<<< HEAD
-
 #include "Result.h"
-=======
 #include "StageWave.h"
->>>>>>> 5735714fe9f9105b6036d19439e917c70f6833a0
+
+#include "sound/SoundSource.h"
 
 Game::Game()
 {
@@ -42,6 +40,10 @@ bool Game::Start()
 	m_gameCam = NewGO<GameCamera>(0, "gameCamera");
 	m_rand = NewGO<Random>(0, "rnad");
 	m_rand->Init((unsigned long)time(NULL));
+
+	m_bgm = NewGO<CSoundSource>(0);
+	m_bgm->Init(L"Assets/sound/BGM_Battle.wav");
+	m_bgm->Play(true);
 	return true;
 }
 
@@ -100,9 +102,10 @@ void Game::Update()
 		}
 	}
 	m_playerDeath = m_player->GetDeathFlag();
-	if (m_playerDeath != false) {
+	if (m_resultflag != true && m_playerDeath != false) {
 		//‚è‚´‚é‚ÆNewGO‚µ‚Ä‚ËB
+		m_bgm->Stop();
 		NewGO<Result>(0, "result");
-
+		m_resultflag = true;
 	}
 }

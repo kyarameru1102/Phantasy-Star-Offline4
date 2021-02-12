@@ -68,10 +68,4 @@ void PlayerStatus::Update()
 	m_fontNumber[en_playerStatusAttack]->SetDisplayNum(m_player->GetmAtaackPow());
 	m_fontNumber[en_playerStatusAttack]->SetPosition({-350.0f, -60.0f, 0.0f});
 
-	if (m_player->GetDeathFlag() != false) {
-		m_fontNumber[en_playerStatusLevel]->SetAlpha(0.0f);
-		m_fontNumber[en_playerStatusHP]->SetAlpha(0.0f);
-		m_fontNumber[en_playerStatusAttack]->SetAlpha(0.0f);
-
-	}
 }
