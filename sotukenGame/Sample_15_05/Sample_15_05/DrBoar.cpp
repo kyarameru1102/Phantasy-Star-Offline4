@@ -23,7 +23,7 @@ bool DrBoar::Start()
 		m_skinModelRender = NewGO<SkinModelRender>(0);
 		m_skinModelRender->Init("Assets/modelData/enemy/DragonBoar/Blue/DrBoarBl.tkm", m_boarAnim->GetAnimationClip(), BoarAnimInfo::enBoarAnimClip_num);
 		//攻撃力を初期化。
-		m_attackPower = 10.0f;
+		m_attackPower = 20.0f;
 		//HPを初期化。
 		m_hp = 100.0f;
 	}
@@ -32,7 +32,7 @@ bool DrBoar::Start()
 		m_skinModelRender = NewGO<SkinModelRender>(0);
 		m_skinModelRender->Init("Assets/modelData/enemy/DragonBoar/Gold/DrBoarGo.tkm", m_boarAnim->GetAnimationClip(), BoarAnimInfo::enBoarAnimClip_num);
 		//攻撃力を初期化。
-		m_attackPower = 15.0f;
+		m_attackPower = 20.0f;
 		//HPを初期化。
 		m_hp = 150.0f;
 	}
@@ -41,7 +41,7 @@ bool DrBoar::Start()
 		m_skinModelRender = NewGO<SkinModelRender>(0);
 		m_skinModelRender->Init("Assets/modelData/enemy/DragonBoar/Green/DrBoarGr.tkm", m_boarAnim->GetAnimationClip(), BoarAnimInfo::enBoarAnimClip_num);
 		//攻撃力を初期化。
-		m_attackPower = 20.0f;
+		m_attackPower = 25.0f;
 		//HPを初期化。
 		m_hp = 200.0f;
 	}
@@ -59,17 +59,17 @@ bool DrBoar::Start()
 	//キャラコン初期化。
 	m_charaCon.Init(145.0f, 200.0f, m_position);
 	Vector3 ghostPos = m_position;
-	m_ghostObj.CreateBox(ghostPos, m_rotation, Vector3(50.0f, 50.0f, 50.0f));
+	m_ghostObj.CreateBox(ghostPos, m_rotation, Vector3(60.0f, 50.0f, 60.0f));
 
 	m_player = FindGO<Player>("player");
 	m_game = FindGO<Game>("Game");
 
 	//攻撃力を初期化。
-	//m_attackPower = 10.0f;
+	
 	//攻撃力に倍率をかける。
 	m_attackPower *= m_magnificationAP;
 	//HPを初期化。
-	//m_hp = 100.0f;
+	
 	//HPに倍率をかける。
 	m_hp *= m_magnificationHP;
 
@@ -81,7 +81,7 @@ void DrBoar::Move()
 	m_status = Walk_state;
 	Vector3 playerLen = m_toPlayer;
 	playerLen.Normalize();
-	m_movespeed = playerLen * 1.4f;
+	m_movespeed = playerLen * 1.6f;
 	if (m_toPlayer.Length() <= 150.0f)
 	{
 		m_movespeed = { 0.0f, 0.0f, 0.0f };

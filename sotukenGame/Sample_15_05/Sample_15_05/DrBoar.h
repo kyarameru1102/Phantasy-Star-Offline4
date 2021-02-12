@@ -57,7 +57,7 @@ public:
 	void ReceiveDamage(int damage) override
 	{
 		m_hp -= damage;
-		m_status = GetDamage_state;
+		//m_status = GetDamage_state;
 	}
 
 	const int& GetDeathCount()const

@@ -103,8 +103,7 @@ private:
 	int                 m_FlameATKCount = 0;            //火炎攻撃のカウント
 	GhostObject			m_ghostObj;						//ゴースト。
 	int					m_deathCount = 0;				//死んだときのカウント。
-	int                 m_basicStatusNum = 0;                   //基礎ステータスの数値。EnPowerの数値のいずれかが入る。
-	int                 m_stageNumber = 0;                      //敵のいるステージの番号。
+	
 
 	//頭部のボーンの情報
 	int m_hedboneNum = 0;
