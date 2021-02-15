@@ -52,10 +52,15 @@ bool PlayerStatus::Start()
 
 void PlayerStatus::Update()
 {
+	//スタートボタンを押した。
 	if (g_pad[0]->IsTrigger(enButtonStart)) {
 		DeleteGO(this);
 	}
-	m_player = FindGO<Player>("player");
+
+	//プレイヤーのHPが0になった。
+	if (m_player->GetHP() <= 0.0f) {
+		DeleteGO(this);
+	}
 
 	//プレイヤーステータスのフォントナンバーを設定。
 	//プレイヤーのレベル。
