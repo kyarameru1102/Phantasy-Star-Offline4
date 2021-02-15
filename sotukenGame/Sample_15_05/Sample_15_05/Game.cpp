@@ -21,6 +21,12 @@ Game::~Game()
 	DeleteGO(m_player);
 	DeleteGO(m_gameCam);
 	DeleteGO(m_playerStatusUI);
+
+	QueryGOs<Menu>("menu", [](Menu* menu)->bool {
+		DeleteGO(menu);
+		return true;
+		});
+	
 	QueryGOs<IStage>("stage", [](IStage* stage)->bool
 		{
 			DeleteGO(stage);
@@ -50,18 +56,20 @@ bool Game::Start()
 
 void Game::Update()
 {
-	if (g_pad[0]->IsTrigger(enButtonStart) && m_menu != nullptr) {
-		//メニュー画面を開いていて、STARTボタンを押したら、
-		//メニュー画面を閉じる。
-		DeleteGO(m_menu);
-		m_menu = nullptr;
+	if (m_resultflag != true && m_player->GetHP() > 0.0f) {
+		if (g_pad[0]->IsTrigger(enButtonStart) && m_menu != nullptr) {
+			//メニュー画面を開いていて、STARTボタンを押したら、
+			//メニュー画面を閉じる。
+			m_menu->MenuSelectSE();
+			DeleteGO(m_menu);
+			m_menu = nullptr;
+		}
+		else if (g_pad[0]->IsTrigger(enButtonStart) && m_menu == nullptr) {
+			//メニュー画面を閉じていて、STARTボタンを押したら、
+			//メニュー画面を開く。
+			m_menu = NewGO<Menu>(0, "menu");
+		}
 	}
-	else if (g_pad[0]->IsTrigger(enButtonStart) && m_menu == nullptr) {
-		//メニュー画面を閉じていて、STARTボタンを押したら、
-		//メニュー画面を開く。
-		m_menu = NewGO<Menu>(0);
-    }
-
 	if (m_stage1 != nullptr) {
 		if (m_stage1->GetsceanChangeOK()) {
 			m_enemyDeadNum += m_stage1->GetDeathEnemyNum();

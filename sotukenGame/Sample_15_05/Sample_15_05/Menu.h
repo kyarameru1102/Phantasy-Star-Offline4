@@ -5,6 +5,8 @@
 /// <summary>
 /// メニュー画面クラス
 /// </summary>
+
+class Player;
 class Game;
 class Menu : public IGameObject
 {
@@ -53,4 +55,5 @@ private:
 	PlayerStatus* m_playerStatus = nullptr;		//プレイヤーステータスのインスタンス。
 	Title* m_title = nullptr;					//タイトルのインスタンス。
 	Game* m_game = nullptr;						//ゲームのインスタンス。
+	Player* m_player = nullptr;					//プレイヤーのインスタンス。
 };

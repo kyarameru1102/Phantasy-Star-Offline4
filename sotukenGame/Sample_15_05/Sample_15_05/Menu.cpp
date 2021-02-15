@@ -2,6 +2,7 @@
 #include "Menu.h"
 #include "Game.h"
 #include "sound/SoundSource.h"
+#include "Player.h"
 
 Menu::Menu()
 {
@@ -9,7 +10,6 @@ Menu::Menu()
 
 Menu::~Menu()
 {
-	MenuSelectSE();
 	for (int i = 0; i < en_menuUINum; i++) {
 		DeleteGO(m_spriteRender[i]);
 	}
@@ -38,6 +38,8 @@ bool Menu::Start()
 	m_spritePosition[en_menuUIStatusMoji] = { 0.0f, 50.0f, 0.0f };
 	m_spriteRender[en_menuUIStatusMoji]->SetPosition(m_spritePosition[en_menuUIStatusMoji]);
 
+	m_player = FindGO<Player>("player");
+
 	return true;
 }
 
@@ -47,6 +49,11 @@ void Menu::Update()
 	ArrowButtonMove();
 	//メニューの項目を選択する。
 	MenuSelect();
+
+	//プレイヤーのHPが0になった。
+	if (m_player->GetHP() <= 0) {
+		DeleteGO(this);
+	}
 
 	//座標を設定。
 	m_spriteRender[en_menuUIArrowButton]->SetPosition(m_spritePosition[en_menuUIArrowButton]);
