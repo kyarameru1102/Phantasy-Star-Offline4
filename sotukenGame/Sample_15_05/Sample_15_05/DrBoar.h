@@ -98,7 +98,19 @@ private:
 	GhostObject			m_ghostObj;						//ゴースト。
 	int					m_deathCount = 0;				//死んだときのカウント。
 
+	//頭のボーンの情報
+	int m_hedboneNum = 0;
+	Vector3             m_hedpos = Vector3::Zero;
+	Vector3             m_hedscale = Vector3::Zero;
+	Quaternion          m_hedrot = Quaternion::Identity;
+	Vector3             m_toHedPlayer = Vector3::Zero;
 	
-	
+	//下顎のボーンの情報
+	int m_jawboneNum = 0;
+	Vector3             m_jawpos = Vector3::Zero;
+	Vector3             m_jawscale = Vector3::Zero;
+	Quaternion          m_jawrot = Quaternion::Identity;
+	Vector3             m_toJawPlayer = Vector3::Zero;
+	Skeleton m_skelton;
 };
 

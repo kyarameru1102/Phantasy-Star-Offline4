@@ -102,13 +102,7 @@ void DrBoar::AttackMove()
 
 	m_movespeed = playerLen * 1.3f;
 
-	/*CharacterController& charaCon = *m_player->GetCharacterController();
-	g_physics.ContactTestCharaCon(charaCon, [&](const btCollisionObject& collisionObject) {
-		if (m_ghostObj.IsSelf(collisionObject) == true) {
-			m_movespeed = { 0.0f, 0.0f, 0.0f };
-			m_position = m_charaCon.Execute(1.0f, m_movespeed);
-		}
-	});*/
+	
 	if (m_toPlayer.Length() <= 160.0f)
 	{
 		m_movespeed = { 0.0f, 0.0f, 0.0f };
@@ -131,43 +125,72 @@ void DrBoar::Turn()
 
 void DrBoar::Attack()
 {
+
+	
 	if (m_toPlayer.Length() <= 180.0f && m_isATK == true)
 	{
 		m_status = Attack_state;
-		CharacterController& charaCon = *m_player->GetCharacterController();
-		g_physics.ContactTestCharaCon(charaCon, [&](const btCollisionObject& collisionObject) {
-			if (m_ghostObj.IsSelf(collisionObject) == true) {
-				if (m_isAttack && !m_ATKoff) {
-					if (m_count >= 60 && m_count <= 70) {
-						m_player->ReceiveDamage(m_attackPower);
-						m_ATKoff = true;
-						printf_s("Enemy_KOUGEKI\n");
-					}
+		if (m_skinModelRender->GetisAnimationPlaing() == true && m_toPlayer.Length() >= 500)
+		{
+			m_hedboneNum = m_skinModelRender->GetModel().GetSkeleton().FindBoneID(L"UpperMouth2");
+			m_skinModelRender->GetModel().GetSkeleton().GetBone(m_hedboneNum)->CalcWorldTRS(
+				m_hedpos,
+				m_hedrot,
+				m_hedscale
+			);
+
+			m_jawboneNum = m_skinModelRender->GetModel().GetSkeleton().FindBoneID(L"Jaw3");
+			m_skinModelRender->GetModel().GetSkeleton().GetBone(m_jawboneNum)->CalcWorldTRS(
+				m_jawpos,
+				m_jawrot,
+				m_jawscale
+			);
+
+			m_toHedPlayer = m_player->GetPosition() - m_hedpos;
+			m_toJawPlayer = m_player->GetPosition() - m_jawpos;
+		}
+		if (m_toHedPlayer.Length() <= 100 && m_toJawPlayer.Length() <= 100)
+		{
+			if (m_isAttack && !m_ATKoff) {
+				if (m_count >= 60 && m_count <= 70) {
+					m_player->ReceiveDamage(m_attackPower);
+					m_ATKoff = true;
+					printf_s("Enemy_KOUGEKI\n");
 				}
 			}
-		});
-
+		}
 	}
 }
 
 void DrBoar::HornAttack()
 {
 
+
 	if ( m_isHornATK == true && m_ishornATKFlag == false)
 	{
 		m_status = HornAttack_state;
-		CharacterController& charaCon = *m_player->GetCharacterController();
-		g_physics.ContactTestCharaCon(charaCon, [&](const btCollisionObject& collisionObject) {
-			if (m_ghostObj.IsSelf(collisionObject) == true) {
-				if (m_isAttack && !m_ATKoff) {
-					if (m_count >= 60 && m_count <= 70) {
-						m_player->ReceiveDamage(m_attackPower);
-						m_ATKoff = true;
-						printf_s("Enemy_KOUGEKI\n");
-					}
+		if (m_skinModelRender->GetisAnimationPlaing() == true && m_toPlayer.Length() >= 100)
+		{
+			m_hedboneNum = m_skinModelRender->GetModel().GetSkeleton().FindBoneID(L"UpperMouth2");
+			m_skinModelRender->GetModel().GetSkeleton().GetBone(m_hedboneNum)->CalcWorldTRS(
+				m_hedpos,
+				m_hedrot,
+				m_hedscale
+			);
+
+			m_toHedPlayer = m_player->GetPosition() - m_hedpos;
+		}
+		if (m_toHedPlayer.Length() <= 100)
+		{
+			if (m_isAttack && !m_ATKoff) {
+				if (m_count >= 60 && m_count <= 70) {
+					m_player->ReceiveDamage(m_attackPower);
+					m_ATKoff = true;
+					printf_s("Enemy_KOUGEKI\n");
 				}
 			}
-		});
+		}
+		
 	}
 }
 
