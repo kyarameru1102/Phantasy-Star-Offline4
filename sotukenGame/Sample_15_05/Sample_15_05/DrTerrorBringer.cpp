@@ -27,6 +27,7 @@ bool DrTerrorBringer::Start()
 		m_attackPower = 15.0f;
 		//HPを初期化。
 		m_hp = 150.0f;
+		m_fullhp = m_hp;
 	}
 	else if (m_basicStatusNum == en2)
 	{
@@ -36,6 +37,7 @@ bool DrTerrorBringer::Start()
 		m_attackPower = 15.0f;
 		//HPを初期化。
 		m_hp = 200.0f;
+		m_fullhp = m_hp;
 	}
 	else if (m_basicStatusNum == en3)
 	{
@@ -45,6 +47,7 @@ bool DrTerrorBringer::Start()
 		m_attackPower = 23.0f;
 		//HPを初期化。
 		m_hp = 250.0f;
+		m_fullhp = m_hp;
 	}
 	else if (m_basicStatusNum == en4)
 	{
@@ -54,13 +57,8 @@ bool DrTerrorBringer::Start()
 		m_attackPower = 25.0f;
 		//HPを初期化。
 		m_hp = 270.0f;
+		m_fullhp = m_hp;
 	}
-
-
-
-
-
-
 
 	//キャラコン初期化。
 	m_charaCon.Init(120.0f, 200.0f, m_position);

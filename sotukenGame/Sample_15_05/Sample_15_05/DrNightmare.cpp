@@ -26,6 +26,7 @@ bool DrNightmare::Start()
 		m_attackPower = 15.0f;
 		//HPを初期化。
 		m_hp = 130.0f;
+		m_fullhp = m_hp;
 	}
 	else if (m_basicStatusNum == en2)
 	{
@@ -35,6 +36,7 @@ bool DrNightmare::Start()
 		m_attackPower = 20.0f;
 		//HPを初期化。
 		m_hp = 180.0f;
+		m_fullhp = m_hp;
 	}
 	else if (m_basicStatusNum == en3)
 	{
@@ -44,6 +46,7 @@ bool DrNightmare::Start()
 		m_attackPower = 25.0f;
 		//HPを初期化。
 		m_hp = 220.0f;
+		m_fullhp = m_hp;
 	}
 	else if (m_basicStatusNum == en4)
 	{
@@ -53,6 +56,7 @@ bool DrNightmare::Start()
 		m_attackPower = 25.0f;
 		//HPを初期化。
 		m_hp = 270.0f;
+		m_fullhp = m_hp;
 	}
 
 	//キャラコン初期化。
