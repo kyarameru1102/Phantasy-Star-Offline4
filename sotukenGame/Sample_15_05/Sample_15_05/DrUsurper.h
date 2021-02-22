@@ -67,8 +67,10 @@ public:
 	void ReceiveDamage(int damage) override
 	{
 		m_hp -= damage;
-		if (m_hp <= m_fullhp / 3) {
+		m_accumulationdamage += damage;
+		if (m_accumulationdamage >= m_fullhp / 3) {
 			m_status = GetDamage_state;
+			m_accumulationdamage = 0;
 		}
 	}
 

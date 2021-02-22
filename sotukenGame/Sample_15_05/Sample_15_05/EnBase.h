@@ -229,6 +229,7 @@ protected:
 	CharacterController m_charaCon;								//キャラコン。
 	float				m_hp = 50.0f;						    //HP
 	float               m_fullhp = 0;                           //HPの保存
+	float               m_accumulationdamage = 0;               //蓄積ダメージ
 	float               m_magnificationHP = 1.0f;               //HPの倍率。
 	Player*				m_player = nullptr;						//プレイヤー。
 	Game*               m_game = nullptr;                       //Game
