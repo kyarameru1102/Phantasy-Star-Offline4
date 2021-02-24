@@ -26,6 +26,7 @@ bool DrBoar::Start()
 		m_attackPower = 20.0f;
 		//HPを初期化。
 		m_hp = 100.0f;
+		m_fullhp = m_hp;
 	}
 	else if (m_basicStatusNum == en2)
 	{
@@ -35,6 +36,7 @@ bool DrBoar::Start()
 		m_attackPower = 20.0f;
 		//HPを初期化。
 		m_hp = 150.0f;
+		m_fullhp = m_hp;
 	}
 	else if (m_basicStatusNum == en3)
 	{
@@ -42,8 +44,9 @@ bool DrBoar::Start()
 		m_skinModelRender->Init("Assets/modelData/enemy/DragonBoar/Green/DrBoarGr.tkm", m_boarAnim->GetAnimationClip(), BoarAnimInfo::enBoarAnimClip_num);
 		//攻撃力を初期化。
 		m_attackPower = 25.0f;
-		//HPを初期化。
+		//HPを初期化。a
 		m_hp = 200.0f;
+		m_fullhp = m_hp;
 	}
 	else if (m_basicStatusNum == en4)
 	{
@@ -53,6 +56,7 @@ bool DrBoar::Start()
 		m_attackPower = 25.0f;
 		//HPを初期化。
 		m_hp = 250.0f;
+		m_fullhp = m_hp;
 	}
 
 	//.SetRotationDegY(90.0f);

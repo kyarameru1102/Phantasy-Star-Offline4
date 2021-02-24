@@ -228,6 +228,8 @@ protected:
 	Vector3             m_oldpos = Vector3::Zero;                //古い座標
 	CharacterController m_charaCon;								//キャラコン。
 	float				m_hp = 50.0f;						    //HP
+	float               m_fullhp = 0;                           //HPの保存
+	float               m_accumulationdamage = 0;               //蓄積ダメージ
 	float               m_magnificationHP = 1.0f;               //HPの倍率。
 	Player*				m_player = nullptr;						//プレイヤー。
 	Game*               m_game = nullptr;                       //Game
@@ -237,7 +239,6 @@ protected:
 	Vector3				m_dir, m_ghostPos;
 	float               m_attackPower = 0.0f;                   //攻撃力。Start関数で初期化する。
 	float               m_magnificationAP = 1.0f;               //攻撃力の倍率。
-
 	int                 m_basicStatusNum = 0;                   //基礎ステータスの数値。EnPowerの数値のいずれかが入る。
 	int                 m_stageNumber = 0;                      //敵のいるステージの番号。
 

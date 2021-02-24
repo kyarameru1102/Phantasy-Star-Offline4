@@ -26,6 +26,7 @@ bool DrNightmare::Start()
 		m_attackPower = 15.0f;
 		//HPを初期化。
 		m_hp = 130.0f;
+		m_fullhp = m_hp;
 	}
 	else if (m_basicStatusNum == en2)
 	{
@@ -35,6 +36,7 @@ bool DrNightmare::Start()
 		m_attackPower = 20.0f;
 		//HPを初期化。
 		m_hp = 180.0f;
+		m_fullhp = m_hp;
 	}
 	else if (m_basicStatusNum == en3)
 	{
@@ -44,6 +46,7 @@ bool DrNightmare::Start()
 		m_attackPower = 25.0f;
 		//HPを初期化。
 		m_hp = 220.0f;
+		m_fullhp = m_hp;
 	}
 	else if (m_basicStatusNum == en4)
 	{
@@ -53,6 +56,7 @@ bool DrNightmare::Start()
 		m_attackPower = 25.0f;
 		//HPを初期化。
 		m_hp = 270.0f;
+		m_fullhp = m_hp;
 	}
 
 	//キャラコン初期化。
@@ -96,13 +100,13 @@ void DrNightmare::Move()
 	if (m_toPlayer.Length() <= 800.0f && m_isClawATK == false && m_isBasicATK == false && m_isHornATK ==false && m_isHornATKcount != 1)
 	{
 		m_status = Walk_state;
-		m_movespeed = playerLen * 1.4;
+		m_movespeed = playerLen * 1.7;
 		m_isHornATK = true;
 	}
 	
 	else {
 		m_status = Run_state;
-		m_movespeed = playerLen * 1.6f;
+		m_movespeed = playerLen * 2.0f;
 		
 	}
 	
@@ -352,6 +356,9 @@ void DrNightmare::Update()
 			m_isAttack = false;
 			m_ATKoff = false;
 			m_count = 0;
+			if (m_screamflag == true) {
+				m_screamflag = false;
+			}
 			if (!m_skinModelRender->GetisAnimationPlaing()) {
 				m_soundFlag = false;
 				m_status = Idle_state;

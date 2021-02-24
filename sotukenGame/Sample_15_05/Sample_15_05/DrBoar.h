@@ -57,7 +57,11 @@ public:
 	void ReceiveDamage(int damage) override
 	{
 		m_hp -= damage;
-		//m_status = GetDamage_state;
+		m_accumulationdamage += damage;
+		if (m_accumulationdamage >= m_fullhp / 3) {
+			m_status = GetDamage_state;
+			m_accumulationdamage = 0;
+		}
 	}
 
 	const int& GetDeathCount()const

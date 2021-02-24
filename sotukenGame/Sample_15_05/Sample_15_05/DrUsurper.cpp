@@ -28,6 +28,7 @@ bool DrUsurper::Start()
 		m_attackPower = 20.0f;
 		//HPを初期化。
 		m_hp = 180.0f;
+		m_fullhp = m_hp;
 	}
 	else if (m_basicStatusNum == en2)
 	{
@@ -37,6 +38,7 @@ bool DrUsurper::Start()
 		m_attackPower = 20.0f;
 		//HPを初期化。
 		m_hp = 200.0f;
+		m_fullhp = m_hp;
 	}
 	else if (m_basicStatusNum == en3)
 	{
@@ -46,6 +48,7 @@ bool DrUsurper::Start()
 		m_attackPower = 25.0f;
 		//HPを初期化。
 		m_hp = 250.0f;
+		m_fullhp = m_hp;
 	}
 	else if (m_basicStatusNum == en4)
 	{
@@ -55,6 +58,7 @@ bool DrUsurper::Start()
 		m_attackPower = 30.0f;
 		//HPを初期化。
 		m_hp = 300.0f;
+		m_fullhp = m_hp;
 	}
 	//キャラコン初期化。
 	m_charaCon.Init(200.0f, 200.0f, m_position);
@@ -111,7 +115,7 @@ void DrUsurper::Move()
 	{
 		m_status = Run_state;
 
-		m_movespeed = playerLen * 1.7f;
+		m_movespeed = playerLen * 2.0f;
 		m_movespeed.y = m_speedY;
 	}
 	if (m_toPlayer.Length() <= 100.0f )
@@ -405,6 +409,9 @@ void DrUsurper::Update()
 			m_isAttack = false;
 			m_ATKoff = false;
 			m_count = 0;
+			if (m_screamflag == true) {
+				m_screamflag = false;
+			}
 			if (!m_skinModelRender->GetisAnimationPlaing()) {
 				m_soundFlag = false;
 				m_status = Idle_state;
